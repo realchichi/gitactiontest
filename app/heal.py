@@ -10,12 +10,12 @@ with open('heal.jpg', 'rb') as file:
 
 type_iden = ["health_assessment","identification"]
 
-url_iden = "https://plant.id/api/v3/" + type_iden[1]
+# url_iden = "https://plant.id/api/v3/" + type_iden[1]
 url_heal = "https://plant.id/api/v3/" + type_iden[0]
-DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
-q_iden = "?details=" + DETAILS +"&language=en"
+# DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
+# q_iden = "?details=" + DETAILS +"&language=en"
 q_heal = "?full_disease_list=true&details=local_name,description,url,treatment,classification,common_names,cause"
-url_iden += q_iden
+# url_iden += q_iden
 url_heal += q_heal
 
 
@@ -25,7 +25,7 @@ payload = json.dumps({
   "similar_images": True
 })
 headers = {
-  'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
+  'Api-Key': 'FXtTSWi74JjnZ2p4A7EYDpjo9tubC6avOe53Ox8iUrgD0dqYak',
   'Content-Type': 'application/json'
 }
 
