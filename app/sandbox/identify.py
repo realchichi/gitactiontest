@@ -3,6 +3,9 @@ import json
 import requests
 import http.client
 from urllib.request import urlopen
+
+
+
 TEMP = {
     "access_token": "NQ9ErOcn2A3QTsH",
     "model_version": "plant_id:3.4.1",
@@ -134,6 +137,7 @@ def get_data(res):
   # propagation_methods : propagation method
   list_data = []
   for val in name:
+    dict_val["id"] = val["id"]
     dict_val["name"] = val["name"]
     dict_val["probability"] = val["probability"]
     dict_val["similar_img"] = val["similar_images"]
@@ -148,3 +152,6 @@ def get_data(res):
     list_data.append(dict_val)
   print(list_data)
 
+
+
+get_data(TEMP)
