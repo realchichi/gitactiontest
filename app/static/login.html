@@ -10,10 +10,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
      <meta name="description" content="Facebook Login">
     <script src="https://apis.google.com/js/platform.js?onload=bindGpLoginBtn" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- <link rel="stylesheet" href="static/css/csss.css"> -->
   </head>
   <body>
-    <div class="login_box">
+    <div>
       <button onclick="checkFbLoginState();">Login with Facebook</button>
       <button id="gp-login-btn">Sign in with Google</button>
       <br>
@@ -22,17 +23,16 @@
     </div>
     <script>
         window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '2498763683629022',
-      cookie     : true,
-      xfbml      : true,
-      version    : 'v3.1'
-    });
-
+      FB.init({
+        appId      : '2498763683629022',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v3.1'
+      });
     FB.AppEvents.logPageView();
 
   };
-  
+
   (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
      if (d.getElementById(id)) {return;}
@@ -40,6 +40,44 @@
      js.src = "https://connect.facebook.net/en_US/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
+
+
+      
+      var fbLoginStatus = false;
+      function checkFbLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        },true);
+      }
+
+      function statusChangeCallback(response) {
+
+        FB.login(function(response) {
+          if (response.authResponse){
+            fbLoginStatus = true;
+            getCurrentUserInfofb(response);
+          } else {
+            console.log('Auth failed.');
+          }
+        }, {scope: 'public_profile,email'});
+      }
+  
+      function getCurrentUserInfofb(response) {   
+        userID = response["authResponse"]["userID"]
+        $.ajax({ 
+                url: '/process',
+                type: 'POST',
+                contentType: 'application/json', 
+                data: JSON.stringify({ 'userID': userID }), 
+                success: function(response) { 
+                    document.getElementById('output').innerHTML = response.result; 
+                }, 
+                error: function(error) { 
+                    console.log(error); 
+                }
+      });
+      }
+      // Google site
         function bindGpLoginBtn() {
         gapi.load('auth2', function(){
           // Retrieve the singleton for the GoogleAuth library and set up the client.
@@ -54,51 +92,19 @@
         auth2.attachClickHandler(element, {},
           function(googleUser) {
             // Success
-            removeDivByClass();
+            console.log(googleUser);
+            getCurrentGpUserInfoGg(googleUser);
           }, function(error) {
             // Error
+            // console.log(googleUser);
             console.log(JSON.stringify(error, undefined, 2));
           }
         );
       }
 
-      
-      var fbLoginStatus = false;
-      function checkFbLoginState() {
-        FB.getLoginStatus(function(response) {
-          statusChangeCallback(response);
-        });
-      }
-
-      function statusChangeCallback(response) {
-        if(fbLoginStatus == false) {  
-          if (response.status == 'connected') {
-            fbLoginStatus = true;
-
-          } else {
-            FB.login(function(response) {
-              if (response.authResponse){
-                fbLoginStatus = true;
-                getCurrentUserInfo(response);
-              } else {
-                console.log('Auth failed.');
-              }
-            }, {scope: 'public_profile,email'});
-          }
-        } 
-      }
-      function getCurrentUserInfo() {   
-        FB.api('/me?fields=name,email,first_name,last_name,id', function(userInfo) {
-          var result = '';
-          result+= "ID: "+userInfo.id+"\r";
-          result+= "First Name: "+userInfo.first_name+"\r";
-          result+= "Last Name: "+userInfo.last_name+"\r";
-          result+= "E-mail: "+userInfo.email+"\r";
-          document.getElementById("result").text = result;
-        }); 
-      }
-      
-
+      function getCurrentGpUserInfoGg(userInfo) {
+        console.log(userInfo);
+    }
     </script>
     
     
