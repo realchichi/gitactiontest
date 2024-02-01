@@ -4,7 +4,9 @@ import http.client
 # from urllib.request import urlopen
 
 from flask import jsonify, render_template
-from app import app
+from app import app, create_app
+import psycopg2
+
 
 def read_file(filename, mode="rt"):
     with open(filename, mode, encoding='utf-8') as fin:
@@ -13,6 +15,25 @@ def read_file(filename, mode="rt"):
 def write_file(filename, contents, mode="wt"):
     with open(filename, mode, encoding="utf-8") as fout:
         fout.write(contents)
+
+# plant_data = create_app()
+conn = psycopg2.connect(
+    host="test",
+    database="plant_data",
+    user="postgres",
+    password="password"
+)
+cursor = conn.cursor()
+table = '''CREATE TABLE plant_data (plant_id VARCHAR(45), name VARCHAR(255))'''
+# cursor.execute("CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))")
+# cursor.execute('''INSERT INTO customers (name, address) VALUES ('wachi', '510')''')
+# conn.commit()
+
+
+# rows = cursor.fetchall()
+# for row in rows:
+#     print(row)
+
 
 @app.route("/")
 def call_api():
@@ -38,9 +59,11 @@ def call_api():
   # response = requests.request("POST", url_iden, headers=headers, data=payload)
 
   # list_data = get_data(response)
-  raw_data = read_file("app/sandbox/fake_data.txt")
+  raw_data = read_file("app/sandbox/Tle_sandbox/fake_data.txt")
   fake_data = get_data(eval(raw_data))
-  print(fake_data)
+  # print(fake_data)
+
+
   return render_template("temp.html", data=fake_data)
 
 
