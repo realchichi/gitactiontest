@@ -3,7 +3,7 @@ import json
 import http.client
 # from urllib.request import urlopen
 
-from flask import (jsonify, render_template,request)
+from flask import jsonify, render_template
 from app import app
 
 def read_file(filename, mode="rt"):
@@ -13,14 +13,8 @@ def read_file(filename, mode="rt"):
 def write_file(filename, contents, mode="wt"):
     with open(filename, mode, encoding="utf-8") as fout:
         fout.write(contents)
-@app.route('/process', methods=['POST']) 
-def process(): 
-    data = request.form.get('data')
-    return 
-@app.route('/')
-def home():
-    return app.send_static_file('login.html')
-@app.route("/home")
+        
+@app.route("/")
 def call_api():
   # with open('static/img/photo1.jpg', 'rb') as file:
   #     images = [base64.b64encode(file.read()).decode('ascii')]

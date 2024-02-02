@@ -3,6 +3,8 @@
   <head>
     <title>Google+ Login Custom Button</title>
     <meta charset="utf-8">
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="343917643771-7bllh4644qg6nmovso7s2vep24iqkc8p.apps.googleusercontent.com">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <meta name="description" content="Google+ Login Custom Button">
       <meta name="author" content="AiNoTsubasa">
@@ -16,10 +18,9 @@
   <body>
     <div>
       <button onclick="checkFbLoginState();">Login with Facebook</button>
-      <button id="gp-login-btn">Sign in with Google</button>
+      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
       <br>
-      <br>
-      Result: <textarea id="result"></textarea>
+
     </div>
     <script>
         window.fbAsyncInit = function() {
@@ -78,33 +79,21 @@
       });
       }
       // Google site
-        function bindGpLoginBtn() {
-        gapi.load('auth2', function(){
-          // Retrieve the singleton for the GoogleAuth library and set up the client.
-          auth2 = gapi.auth2.init({
-            client_id: '343917643771-7bllh4644qg6nmovso7s2vep24iqkc8p.apps.googleusercontent.com',
-            scope: 'profile email'
-          });
-          attachSignin(document.getElementById('gp-login-btn'));
-        });
-      }
-      function attachSignin(element) {
-        auth2.attachClickHandler(element, {},
-          function(googleUser) {
-            // Success
-            console.log(googleUser);
-            getCurrentGpUserInfoGg(googleUser);
-          }, function(error) {
-            // Error
-            // console.log(googleUser);
-            console.log(JSON.stringify(error, undefined, 2));
-          }
-        );
-      }
-
-      function getCurrentGpUserInfoGg(userInfo) {
-        console.log(userInfo);
-    }
+        function onSignIn(userInfo) {
+        var result = '';
+        
+        // Useful data for your client-side scripts:
+        var profile = userInfo.getBasicProfile();
+        
+        result+= "ID: "+profile.getId()+"\n";
+        result+= "Full Name:  "+profile.getName()+"\n";
+        result+= "Given Name: "+profile.getGivenName()+"\n";
+        result+= "Family Name: "+profile.getFamilyName()+"\n";
+        result+= "Email: "+profile.getEmail()+"\n";
+        result+= "ID Token: "+userInfo.getAuthResponse().id_token+"\n";
+        
+        document.getElementById("result").value = result;
+      };
     </script>
     
     
