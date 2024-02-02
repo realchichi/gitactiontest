@@ -33,9 +33,16 @@ def write_file(filename, contents, mode="wt"):
 # rows = cursor.fetchall()
 # for row in rows:
 #     print(row)
+@app.route("/home")
+def home():
+    return render_template("login.html")
 
 
-@app.route("/")
+@app.route("/camera")
+def camera_access():
+    return render_template("camera.html")
+
+@app.route("/api")
 def call_api():
   # with open('static/img/photo1.jpg', 'rb') as file:
   #     images = [base64.b64encode(file.read()).decode('ascii')]
@@ -62,8 +69,6 @@ def call_api():
   raw_data = read_file("app/sandbox/Tle_sandbox/fake_data.txt")
   fake_data = get_data(eval(raw_data))
   # print(fake_data)
-
-
   return render_template("temp.html", data=fake_data)
 
 

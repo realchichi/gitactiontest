@@ -4,10 +4,15 @@
     <title>Google+ Login Custom Button</title>
     <meta charset="utf-8">
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content="343917643771-7bllh4644qg6nmovso7s2vep24iqkc8p.apps.googleusercontent.com">
 >>>>>>> 2b7ddc8ecab70a11aaba85d952354282224b5d7f
+=======
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="343917643771-7bllh4644qg6nmovso7s2vep24iqkc8p.apps.googleusercontent.com">
+>>>>>>> main
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <meta name="description" content="Google+ Login Custom Button">
       <meta name="author" content="AiNoTsubasa">
@@ -22,6 +27,7 @@
     <div>
       <button onclick="checkFbLoginState();">Login with Facebook</button>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <button id="gp-login-btn">Sign in with Google</button>
       <br>
       <br>
@@ -31,6 +37,11 @@
       <br>
 
 >>>>>>> 2b7ddc8ecab70a11aaba85d952354282224b5d7f
+=======
+      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+      <br>
+
+>>>>>>> main
     </div>
     <script>
         window.fbAsyncInit = function() {
@@ -90,6 +101,7 @@
       }
       // Google site
 <<<<<<< HEAD
+<<<<<<< HEAD
         function bindGpLoginBtn() {
         gapi.load('auth2', function(){
           // Retrieve the singleton for the GoogleAuth library and set up the client.
@@ -118,6 +130,8 @@
         console.log(userInfo);
     }
 =======
+=======
+>>>>>>> main
         function onSignIn(userInfo) {
         var result = '';
         
@@ -133,7 +147,10 @@
         
         document.getElementById("result").value = result;
       };
+<<<<<<< HEAD
 >>>>>>> 2b7ddc8ecab70a11aaba85d952354282224b5d7f
+=======
+>>>>>>> main
     </script>
     
     
