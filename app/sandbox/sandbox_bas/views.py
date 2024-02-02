@@ -3,15 +3,8 @@ import json
 import http.client
 # from urllib.request import urlopen
 
-<<<<<<< HEAD
 from flask import jsonify, render_template
-from app import app, create_app
-import psycopg2
-
-=======
-from flask import (jsonify, render_template,request)
 from app import app
->>>>>>> 2b7ddc8ecab70a11aaba85d952354282224b5d7f
 
 def read_file(filename, mode="rt"):
     with open(filename, mode, encoding='utf-8') as fin:
@@ -20,38 +13,8 @@ def read_file(filename, mode="rt"):
 def write_file(filename, contents, mode="wt"):
     with open(filename, mode, encoding="utf-8") as fout:
         fout.write(contents)
-<<<<<<< HEAD
-
-# plant_data = create_app()
-conn = psycopg2.connect(
-    host="test",
-    database="plant_data",
-    user="postgres",
-    password="password"
-)
-cursor = conn.cursor()
-table = '''CREATE TABLE plant_data (plant_id VARCHAR(45), name VARCHAR(255))'''
-# cursor.execute("CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))")
-# cursor.execute('''INSERT INTO customers (name, address) VALUES ('wachi', '510')''')
-# conn.commit()
-
-
-# rows = cursor.fetchall()
-# for row in rows:
-#     print(row)
-
-
+        
 @app.route("/")
-=======
-@app.route('/process', methods=['POST']) 
-def process(): 
-    data = request.form.get('data')
-    return 
-@app.route('/')
-def home():
-    return app.send_static_file('login.html')
-@app.route("/home")
->>>>>>> 2b7ddc8ecab70a11aaba85d952354282224b5d7f
 def call_api():
   # with open('static/img/photo1.jpg', 'rb') as file:
   #     images = [base64.b64encode(file.read()).decode('ascii')]
@@ -75,17 +38,9 @@ def call_api():
   # response = requests.request("POST", url_iden, headers=headers, data=payload)
 
   # list_data = get_data(response)
-<<<<<<< HEAD
-  raw_data = read_file("app/sandbox/Tle_sandbox/fake_data.txt")
-  fake_data = get_data(eval(raw_data))
-  # print(fake_data)
-
-
-=======
   raw_data = read_file("app/sandbox/fake_data.txt")
   fake_data = get_data(eval(raw_data))
   print(fake_data)
->>>>>>> 2b7ddc8ecab70a11aaba85d952354282224b5d7f
   return render_template("temp.html", data=fake_data)
 
 

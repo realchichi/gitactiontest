@@ -37,5 +37,8 @@ ENTRYPOINT [ "./gunicorn_starter.sh" ]
 
 # keep the Docker process running even when crashes
 CMD ["tail", "-f", "/dev/null"]
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2b7ddc8ecab70a11aaba85d952354282224b5d7f
