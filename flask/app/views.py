@@ -6,7 +6,8 @@ import http.client
 import psycopg2
 from flask import (jsonify, render_template,request)
 from app import app
-
+from app import db
+from sqlalchemy.sql import text
 
 def read_file(filename, mode="rt"):
     with open(filename, mode, encoding='utf-8') as fin:
@@ -18,22 +19,14 @@ def write_file(filename, contents, mode="wt"):
 
 
 
-# conn = psycopg2.connect(
-#     host="test",
-#     database="plant_data",
-#     user="postgres",
-#     password="password"
-# )
-# cursor = conn.cursor()
-# table = '''CREATE TABLE plant_data (plant_id VARCHAR(45), name VARCHAR(255))'''
-# cursor.execute("CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))")
-# cursor.execute('''INSERT INTO customers (name, address) VALUES ('wachi', '510')''')
-# conn.commit()
-
-
-# rows = cursor.fetchall()
-# for row in rows:
-#     print(row)
+@app.route('/db')
+def db_connection():
+    try:
+        with db.engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        return '<h1>db works.</h1>'
+    except Exception as e:
+        return '<h1>db is broken.</h1>' + str(e)
 
 
 @app.route("/home")

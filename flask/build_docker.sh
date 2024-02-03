@@ -2,7 +2,7 @@
 
 
 [ -e "$PWD"/.env.dev ] && . "$PWD"/.env.dev
-app="docker.project"
+app="BotaniBuzz"
 docker build -t ${app} .
 docker run -p 56700:8000 -d \
   --name=${app} \
