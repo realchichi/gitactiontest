@@ -5,16 +5,16 @@ class User(db.Model, SerializerMixin):
 	__tablename__ = "users"
 
 	id = db.Column(db.Integer, primary_key=True)
-    firstname = db.Column(db.String(50))
-    lastname = db.Column(db.String(50))
+    email = db.Column(db.String(50))
+    password = db.Column(db.String(50))
     
 
 
-    def __init__(self, firstname, lastname):
-    	self.firstname = firstname
-    	self.lastname = lastname
+    def __init__(self, email, password):
+    	self.email = email
+    	self.password = password
 
 
-    def update(self, firstname, lastname):
-       	self.firstname = firstname
-    	self.lastname = lastname
+    def update(self, email, password):
+       	self.email = email
+    	self.password = password
