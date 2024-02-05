@@ -18,7 +18,7 @@ def read_file(filename, mode="rt"):
 def write_file(filename, contents, mode="wt"):
     with open(filename, mode, encoding="utf-8") as fout:
         fout.write(contents)
-<<<<<<< HEAD:app/views.py
+
 @app.route('/process', methods=['POST']) 
 def process(): 
     data = request.form.get('data')
@@ -60,7 +60,7 @@ def form():
 @app.route('/')
 def home():
     return app.send_static_file('login.html')
-=======
+
 
 
 
@@ -74,7 +74,6 @@ def db_connection():
         return '<h1>db is broken.</h1>' + str(e)
 
 
->>>>>>> main:flask/app/views.py
 @app.route("/home")
 def home():
     return render_template("login.html")
