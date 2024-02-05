@@ -5,8 +5,11 @@ import http.client
 from app.forms import forms
 
 
+import psycopg2
 from flask import (jsonify, render_template,request)
 from app import app
+from app import db
+from sqlalchemy.sql import text
 
 def read_file(filename, mode="rt"):
     with open(filename, mode, encoding='utf-8') as fin:
@@ -15,6 +18,7 @@ def read_file(filename, mode="rt"):
 def write_file(filename, contents, mode="wt"):
     with open(filename, mode, encoding="utf-8") as fout:
         fout.write(contents)
+<<<<<<< HEAD:app/views.py
 @app.route('/process', methods=['POST']) 
 def process(): 
     data = request.form.get('data')
@@ -56,7 +60,32 @@ def form():
 @app.route('/')
 def home():
     return app.send_static_file('login.html')
+=======
+
+
+
+@app.route('/db')
+def db_connection():
+    try:
+        with db.engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        return '<h1>db works.</h1>'
+    except Exception as e:
+        return '<h1>db is broken.</h1>' + str(e)
+
+
+>>>>>>> main:flask/app/views.py
 @app.route("/home")
+def home():
+    return render_template("login.html")
+
+
+@app.route("/camera")
+def camera_access():
+    return render_template("camera.html")
+
+
+@app.route("/api")
 def call_api():
   # with open('static/img/photo1.jpg', 'rb') as file:
   #     images = [base64.b64encode(file.read()).decode('ascii')]
@@ -80,9 +109,12 @@ def call_api():
   # response = requests.request("POST", url_iden, headers=headers, data=payload)
 
   # list_data = get_data(response)
-  raw_data = read_file("app/sandbox/fake_data.txt")
+
+  raw_data = read_file("app/sandbox/Tle_sandbox/fake_data.txt")
   fake_data = get_data(eval(raw_data))
-  print(fake_data)
+  # print(fake_data)
+
+
   return render_template("temp.html", data=fake_data)
 
 
