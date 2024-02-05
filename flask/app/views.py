@@ -10,6 +10,9 @@ from flask import (jsonify, render_template,request)
 from app import app
 from app import db
 from sqlalchemy.sql import text
+from app.models.user import User
+
+READY = False
 
 def read_file(filename, mode="rt"):
     with open(filename, mode, encoding='utf-8') as fin:
@@ -55,35 +58,53 @@ def camera_access():
 
 @app.route("/api")
 def call_api():
-  # with open('static/img/photo1.jpg', 'rb') as file:
-  #     images = [base64.b64encode(file.read()).decode('ascii')]
+    if READY:
+      with open('static/img/photo1.jpg', 'rb') as file:
+          images = [base64.b64encode(file.read()).decode('ascii')]
 
-  # type_iden = ["health_assessment","identification"]
+      type_iden = ["health_assessment","identification"]
 
-  # url_iden = "https://plant.id/api/v3/" + type_iden[1]
-  # DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
-  # q_iden = "?details=" + DETAILS +"&language=en"
-  # url_iden += q_iden
+      url_iden = "https://plant.id/api/v3/" + type_iden[1]
+      DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
+      q_iden = "?details=" + DETAILS +"&language=en"
+      url_iden += q_iden
 
-  # payload = json.dumps({
-  #   "images": ["data:image/jpg;base64," + images[0]],
-  #   "similar_images": "true"
-  # })
-  # headers = {
-  #   'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
-  #   'Content-Type': 'application/json'
-  # }
+      payload = json.dumps({
+        "images": ["data:image/jpg;base64," + images[0]],
+        "similar_images": "true"
+      })
+      headers = {
+        'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
+        'Content-Type': 'application/json'
+      }
 
-  # response = requests.request("POST", url_iden, headers=headers, data=payload)
+      response = requests.request("POST", url_iden, headers=headers, data=payload)
 
   # list_data = get_data(response)
 
   raw_data = read_file("app/sandbox/Tle_sandbox/fake_data.txt")
-  fake_data = get_data(eval(raw_data))
+  fake_data = list(map(lambda x : get_data(eval(x)), raw_data))
+  list_data = 
+  db_plant = 
   # print(fake_data)
 
 
   return render_template("temp.html", data=fake_data)
+
+@app.route("/user")
+def user():
+    db_users = User.query.all()
+    user = list(map(lambda x: x.to_dict(), db_users))
+    return jsonify(user)
+
+@app.route("/user/validate", methods=["GET", "POST"])
+def validate_user():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        id_ = result.get("id", "")
+        validated = True
+        validated_dict = {}
+        valid_keys = ["firstname", "lastname"]
 
 
 def get_data(res):
