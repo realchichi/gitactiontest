@@ -62,19 +62,23 @@
             FB.login(function(response) {
               if (response.authResponse){
                 fbLoginStatus = true;
+
                 getCurrentUserInfo(response);
               } else {
                 console.log('Auth failed.');
               }
-            }, {scope: 'public_profile,email'});
+            }, {scope: 'public_profile'});
           }
         } 
       }
       function getCurrentUserInfo(response) {   
-          console.log(response)
-      }
-      
+          FB.api('/me?fields=name,email,first_name,last_name,id', function(userInfo) {
+            console.log(userInfo);
+  });   
 
+      }
+    
+      
     </script>
     
     
