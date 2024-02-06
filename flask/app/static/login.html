@@ -5,13 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- <link rel="stylesheet" href="static/css/csss.css"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/express/4.17.1/express.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cors/2.8.5/cors.js"></script>
   </head>
+
   <body>
     <div class="login_box">
       <form onsubmit="return login()">
-          <label for="floatingInput">Email address</label>
+          <label >Email address</label>
           <input type="email" class="form-control" id="username" placeholder="name@example.com">
-          <label for="floatingPassword">Password</label>
+          <label >Password</label>
           <input type="password" class="form-control" id="password" placeholder="Password">
           
     
@@ -21,7 +24,9 @@
       <button onclick="checkFbLoginState();">Login with Facebook</button>
       <br>
     </div>
+
     <script>
+
         window.fbAsyncInit = function() {
     FB.init({
       appId      : '2498763683629022',
@@ -81,11 +86,15 @@
 
       }
     var jwt = localStorage.getItem("jwt");
+    const express = require('express');
+    const cors = require('cors');
+    const app = express();
+    app.use(cors());
       function loadUser() {
       const xhttp = new XMLHttpRequest();
       xhttp.open("POST", "https://www.mecallapi.com/api/auth/user");
       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      // xhttp.setRequestHeader("Authorization", "Bearer "+jwt);
+      xhttp.setRequestHeader("Authorization", "Bearer "+jwt);
       xhttp.send(JSON.stringify({
     "username": username,
     "password": password
@@ -93,9 +102,9 @@
       xhttp.onreadystatechange = function() {
 
         if (this.readyState == 4) {
-
+          console.log("00000"+this.responseText,objects)
           const objects = JSON.parse(this.responseText);
-          console.log(this.responseText,objects)
+          
 
           if (objects["status"] == "ok") {
             const user = objects["user"]
