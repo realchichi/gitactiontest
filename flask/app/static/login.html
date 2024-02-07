@@ -5,10 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- <link rel="stylesheet" href="static/css/csss.css"> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/express/4.17.1/express.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cors/2.8.5/cors.js"></script>
   </head>
-
   <body>
     <div class="login_box">
       <form onsubmit="return login()">
@@ -24,9 +21,7 @@
       <button onclick="checkFbLoginState();">Login with Facebook</button>
       <br>
     </div>
-
     <script>
-
         window.fbAsyncInit = function() {
     FB.init({
       appId      : '2498763683629022',
@@ -85,42 +80,46 @@
 
 
       }
-    var jwt = localStorage.getItem("jwt");
-    const express = require('express');
-    const cors = require('cors');
-    const app = express();
-    app.use(cors());
-      function loadUser() {
-      const xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "https://www.mecallapi.com/api/auth/user");
-      xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      xhttp.setRequestHeader("Authorization", "Bearer "+jwt);
-      xhttp.send(JSON.stringify({
-    "username": username,
-    "password": password
-  }));
-      xhttp.onreadystatechange = function() {
+    
 
-        if (this.readyState == 4) {
-          console.log("00000"+this.responseText,objects)
-          const objects = JSON.parse(this.responseText);
-          
+    tenantId = 'f8cdef31-a31e-4b4a-93e4-5f571e91255a' # Paste your own tenant ID here
+    appId = '3b905491-3bea-444a-bb19-32e4fa8e2d39' # Paste your own app ID here
+    appSecret = '87548d60-a212-4e65-99b0-b67b9d6b5cf3' # Paste your own app secret here
 
-          if (objects["status"] == "ok") {
-            const user = objects["user"]
-            console.log(user)
-          }
-        }
-      };
-}
+    url = "https://login.microsoftonline.com/%s/oauth2/token" % (tenantId)
 
-loadUser();
+    resourceAppIdUri = 'https://api.securitycenter.microsoft.com'
+
+    body = {
+        'resource' : resourceAppIdUri,
+        'client_id' : appId,
+        'client_secret' : appSecret,
+        'grant_type' : 'client_credentials'
+    }
+    var headers = new Headers();
+    var bearer = "Bearer " + access_token;
+    headers.append("Authorization", bearer);
+    var options = {
+         method: "GET",
+         headers: headers
+    };
+    var graphEndpoint = "https://graph.microsoft.com/v1.0/me";
+
+    fetch(graphEndpoint, options)
+        .then(function (response) {
+             //do something with response
+        })
+    data = urllib.parse.urlencode(body).encode("utf-8")
+
+    req = urllib.request.Request(url, data)
+    response = urllib.request.urlopen(req)
+    jsonResponse = json.loads(response.read())
+    aadToken = jsonResponse["access_token"]
 
     </script>
     
     
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    </script>
 
   </body>
 </html>
