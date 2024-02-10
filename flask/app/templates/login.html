@@ -1,108 +1,72 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Google+ Login Custom Button</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <meta name="description" content="Google+ Login Custom Button">
-      <meta name="author" content="AiNoTsubasa">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-     <meta name="description" content="Facebook Login">
-    <script src="https://apis.google.com/js/platform.js?onload=bindGpLoginBtn" async defer></script>
-    <!-- <link rel="stylesheet" href="static/css/csss.css"> -->
-  </head>
-  <body>
-    <div class="login_box">
-      <button onclick="checkFbLoginState();">Login with Facebook</button>
-      <button id="gp-login-btn">Sign in with Google</button>
-      <br>
-      <br>
-      Result: <textarea id="result"></textarea>
-    </div>
-    <script>
-        window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '2498763683629022',
-      cookie     : true,
-      xfbml      : true,
-      version    : 'v3.1'
-    });
+<!doctype html>
+<html lang="en">
 
-    FB.AppEvents.logPageView();
+<head>
+  <meta charset="utf-8">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <!-- Bootstrap Table -->
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
+  <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+  <!-- our own css -->
+  <link rel="stylesheet" href="static/css/login.css">
 
-  };
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+  <!-- remixicon -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+    rel="stylesheet"/>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
   
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-        function bindGpLoginBtn() {
-        gapi.load('auth2', function(){
-          // Retrieve the singleton for the GoogleAuth library and set up the client.
-          auth2 = gapi.auth2.init({
-            client_id: '343917643771-7bllh4644qg6nmovso7s2vep24iqkc8p.apps.googleusercontent.com',
-            scope: 'profile email'
-          });
-          attachSignin(document.getElementById('gp-login-btn'));
-        });
-      }
-      function attachSignin(element) {
-        auth2.attachClickHandler(element, {},
-          function(googleUser) {
-            // Success
-            removeDivByClass();
-          }, function(error) {
-            // Error
-            console.log(JSON.stringify(error, undefined, 2));
-          }
-        );
-      }
+  <div class="container">
+    <form id="addContactForm">
+      <h1>Login</h1>
+      <p>Enter your account details to login </p>
+      <div class=box1>
+        <!-- <label for="email">Email</label> -->
+        <input type="email" id="email" name="email" placeholder="Enter email" required>
+      </div>
+      <div class=box2>
+        <!-- <label for="lastname">Password</label> -->
+        <input type="password" id="lastname" name="lastname" placeholder="Enter password" required>
+      </div>
 
+      <a href="#" class="forget-password">Forgot Password ?</a>
       
-      var fbLoginStatus = false;
-      function checkFbLoginState() {
-        FB.getLoginStatus(function(response) {
-          statusChangeCallback(response);
-        });
-      }
+      <input type="submit" name="submit" value="Login">
 
-      function statusChangeCallback(response) {
-        if(fbLoginStatus == false) {  
-          if (response.status == 'connected') {
-            fbLoginStatus = true;
+      <div class="divider d-flex align-items-center my-3">
+        <p class="text-center fw-bold mx-0 mb-0 text-muted">Or</p>
+      </div>
+           
+          <div class="OtherSingin">
+              <div class="MicrosoftButton">
+                  <button type="button" class="InputBg"><i class="ri-microsoft-fill"></i>Microsoft</button>
+                  
+              </div>
 
-          } else {
-            FB.login(function(response) {
-              if (response.authResponse){
-                fbLoginStatus = true;
-                getCurrentUserInfo(response);
-              } else {
-                console.log('Auth failed.');
-              }
-            }, {scope: 'public_profile,email'});
-          }
-        } 
-      }
-      function getCurrentUserInfo() {   
-        FB.api('/me?fields=name,email,first_name,last_name,id', function(userInfo) {
-          var result = '';
-          result+= "ID: "+userInfo.id+"\r";
-          result+= "First Name: "+userInfo.first_name+"\r";
-          result+= "Last Name: "+userInfo.last_name+"\r";
-          result+= "E-mail: "+userInfo.email+"\r";
-          document.getElementById("result").text = result;
-        }); 
-      }
-      
+              <div class="FacebookButton">
+                <button type="button" class="InputBg"> <i class="ri-facebook-fill"></i>Facebook</button>
+                
+              </div>
+          </div>
+        <div class="donothave">Don't have an account yet ? <a href="#" class="signup">Sign up</a></div>
+    </form>
 
-    </script>
-    
-    
+  </div>
 
 
-  </body>
+
+</body>
+
+
 </html>
+
