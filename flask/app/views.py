@@ -2,6 +2,8 @@ import base64
 import json
 import http.client
 # from urllib.request import urlopen
+from app.forms import forms
+
 
 import psycopg2
 from flask import (jsonify, render_template,request)
@@ -19,6 +21,49 @@ def read_file(filename, mode="rt"):
 def write_file(filename, contents, mode="wt"):
     with open(filename, mode, encoding="utf-8") as fout:
         fout.write(contents)
+
+@app.route('/process', methods=['POST']) 
+def process(): 
+    data = request.form.get('data')
+    return 
+@app.route('/forms/', methods=('GET', 'POST'))
+def form():
+    form = forms.registerForm()
+    nub=0
+
+    if form.validate_on_submit():
+        raw_json = read_file('app/data/users.json')
+        user = json.loads(raw_json)
+
+        for i in user:
+            if i["username"] == form.username.data.lower():
+                nub+=1
+                flash('Username already exists')
+                break
+        for i in user:
+            if i["email"] == form.email.data.lower():
+                nub+=1
+                flash('Email already exists')
+                break
+        
+        if nub==0:   
+           bytess = form.password.data.encode('utf-8') 
+           salt = bcrypt.gensalt() 
+           hashy = bcrypt.hashpw(bytess, salt)
+           x = hashy.decode('utf-8')
+           user.append({'username': form.username.data.lower(),
+                               'email': form.email.data.lower(),
+                               'password': x,
+                               })
+           write_file('app/data/users.json',
+                      json.dumps(user, indent=4))
+           return redirect(url_for('login.html'))
+       
+    return render_template('login.html', form=form)
+@app.route('/')
+def home():
+    return app.send_static_file('login.html')
+
 
 
 
