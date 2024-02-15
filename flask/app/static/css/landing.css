@@ -101,6 +101,7 @@ section{
 .plant-img{
     width: 200px;
     height: auto;
+    padding-left: 50px;
 }
 .plant-text a{
     display: inline-block;
