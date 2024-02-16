@@ -78,7 +78,7 @@ def db_connection():
 
 @app.route("/home")
 def home():
-    return app.send_static_file("login.html")
+    return render_template("base.html")
 
 
 @app.route("/camera")
