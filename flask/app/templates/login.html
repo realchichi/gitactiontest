@@ -1,34 +1,45 @@
-{% extends "lab11/base.html" %}
+
+{% extends "base.html" %}
+
 {% block content %}
-<div class="column is-4 is-offset-4">
-  <h3 class="title">Login</h3>
-  <div class="box">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <div class="notification is-danger">
-      {{ messages[0] }}
-    </div>
-    {% endif %}
-    {% endwith %}
-    <form method="POST">
-      <div class="field">
-        <div class="control">
-          <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="">
-        </div>
+ <div class="container">
+<form id="addContactForm">
+      <h1>Login</h1>
+      <p>Enter your account details to login </p>
+      <div class=box1>
+        <!-- <label for="email">Email</label> -->
+        <input type="email" id="email" name="email" placeholder="Enter email" required>
       </div>
-      <div class="field">
-        <div class="control">
-          <input class="input is-large" type="password" name="password" placeholder="Your Password">
-        </div>
+      <div class=box2>
+        <!-- <label for="lastname">Password</label> -->
+        <input type="password" id="lastname" name="lastname" placeholder="Enter password" required>
       </div>
-      <div class="field">
-        <label class="checkbox">
-          <input type="checkbox" name="remember">
-          Remember me
-        </label>
+
+      <a href="#" class="forget-password">Forgot Password ?</a>
+      
+      <input type="submit" name="submit" value="Login">
+
+      <div class="divider d-flex align-items-center my-3">
+        <p class="text-center fw-bold mx-0 mb-0 text-muted">Or</p>
       </div>
-      <button class="button is-block is-info is-large is-fullwidth">Login</button>
-    </form>
-  </div>
+           
+          <div class="OtherSingin">
+              <div class="MicrosoftButton">
+                  <button type="button" class="InputBg"><i class="ri-microsoft-fill"></i>Microsoft</button>
+                  
+              </div>
+
+              <div class="FacebookButton">
+                <button type="button" class="InputBg"> <i class="ri-facebook-fill"></i>Facebook</button>
+                
+              </div>
+          </div>
+        <div class="donothave">Don't have an account yet ? <a href="{{ url_for('signup')}}" class="signup">Sign up</a></div>
 </div>
+  
+
 {% endblock %}
+
+
+
+

@@ -1,0 +1,118 @@
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: linear-gradient(to right, #c9c9c7, #d3d2cc, #dcdcd0, #e7e5d5, #f1eed9);
+    
+  }
+  
+  section {
+    max-width: 800px;
+    width: 100%;
+  }
+
+.parent-container {
+    padding: 0 20px 0 20px;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .parent-container h1{
+    font-family: 'Poppins', sans-serif;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 30px;
+    font-weight: 800;
+    font-size: 40px;
+  }
+  
+  .faq {
+    list-style: none;
+    padding-left: 40px;
+    padding-right: 20px;
+  }
+  
+  .faq li {
+    border-bottom: 1px solid #999999;
+    margin-bottom: 15px;
+  }
+  
+  .faq li.active .answer {
+    max-height: 275px !important;
+    padding-bottom: 25px;
+    transition: max-height 0.2s ease, padding-bottom 0.2s ease;
+  }
+  
+  .faq li.active .question {
+    color: #808080;
+    transition: color 0.2s ease;
+  }
+  
+  .faq .answer {
+    color: #090909;
+    font-family: 'Poppins',sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease, padding-bottom 0.2s ease;
+  }
+  
+  .faq .plus-minus-toggle {
+    cursor: pointer;
+    height: 21px;
+    position: absolute;
+    width: 21px;
+    left: -40px;
+    top: 50%;
+    z-index: 2;
+  }
+  
+  .faq .plus-minus-toggle:before,
+  .faq .plus-minus-toggle:after {
+    background: #000;
+    content: '';
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 21px;
+    transition: transform 500ms ease;
+  }
+  
+  .faq .plus-minus-toggle:after {
+    transform-origin: center;
+  }
+  
+  .faq .plus-minus-toggle.collapsed:after {
+    transform: rotate(90deg);
+  }
+  
+  .faq .plus-minus-toggle.collapsed:before {
+    transform: rotate(180deg);
+  }
+  
+  .faq .question {
+    color: #090909;
+    font-family: 'Poppins',serif;
+    font-size: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    position: relative;
+    cursor: pointer;
+    padding: 20px 0;
+    transition: color 0.5s ease;
+  }
+  
+  @media screen and (max-width: 767px) {
+    .faq .question {
+      font-size: 18px;
+    }
+    .parent-container h1{
+        padding-bottom: 0px;
+    }
+  }
+  

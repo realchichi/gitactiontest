@@ -1,33 +1,56 @@
-{% extends "lab11/base.html" %}
+{% extends "base.html" %}
+
 {% block content %}
-<div class="column is-4 is-offset-4">
- <h3 class="title">Sign Up</h3>
- <div class="box">
-   {% with messages = get_flashed_messages() %}
-   {% if messages %}
-   <div class="notification is-danger">
-     {{ messages[0] }}. Go to <a href="{{ url_for('lab11_login') }}">login page</a>.
-   </div>
-   {% endif %}
-   {% endwith %}
-   <form method="POST">
-     <div class="field">
-       <div class="control">
-         <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
-       </div>
-     </div>
-     <div class="field">
-       <div class="control">
-         <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="">
-       </div>
-     </div>
-     <div class="field">
-       <div class="control">
-         <input class="input is-large" type="password" name="password" placeholder="Password">
-       </div>
-     </div>
-     <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
-   </form>
- </div>
-</div>
+<div class="container">
+    <form id="addContactForm">
+      <h1>Signup</h1>
+      <p>Welcome to BotaniBuzz !</p>
+      <div class=box1>
+        <input type="text" id="username" name="username" placeholder="Username" required maxlength="20"  oninput="checkLength(this)">
+        <!-- <div id="alertContainer"></div> -->
+      </div>
+      <div class=box2>
+        <input type="email" id="email" name="email" placeholder="Enter email" required>
+      </div>
+      <div class=box3>
+        <input type="password" id="lastname" name="lastname" placeholder="Enter password" required>
+      </div>
+        
+      <input type="submit" name="submit" value="Signup">
+
+      <div class="divider d-flex align-items-center my-3">
+        <p class="text-center fw-bold mx-0 mb-0 text-muted">Or</p>
+      </div>
+           
+          <div class="OtherSingin">
+              <div class="MicrosoftButton">
+                  <button type="button" class="InputBg"><i class="ri-microsoft-fill"></i>Microsoft</button>
+                  
+              </div>
+
+              <div class="FacebookButton">
+                <button type="button" class="InputBg"> <i class="ri-facebook-fill"></i>Facebook</button>
+                
+              </div>
+          </div>
+        <div class="donothave">Already have an account ? <a href="{{ url_for('login')}}" class="login">Login</a></div>
+    </form>
+
+  </div>
 {% endblock %}
+
+<!-- <script> src="static/js/signup.js"</script>
+<script>
+  const email = document.getElementById("mail");
+
+
+  email.addEventListener("input", (event) => {
+    if (email.validity.typeMismatch) {
+      email.setCustomValidity("I am expecting an email address!");
+    } else {
+      email.setCustomValidity("");
+    }
+  });
+</script> -->
+
+

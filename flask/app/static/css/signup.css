@@ -1,0 +1,186 @@
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: linear-gradient(to right, #c9c9c7, #d3d2cc, #dcdcd0, #e7e5d5, #f1eed9);
+}
+
+
+* {
+    box-sizing: border-box;
+    /* align-items: center; */
+    
+}
+
+
+input[type=text],
+input[type=password],
+input[type=email],
+select {
+    width: 280px;
+    margin: 8px 0;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-sizing: border-box;
+    margin-top: 4px;
+    margin-bottom: 16px;
+    
+}
+
+
+label {
+    font-weight: 500;
+}
+/* .forget-password{
+    color: black;
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    /* font-weight: 100; */
+    /* border-bottom: 2px solid transparent; */
+    /* transition: all .55s ease; */
+/* } */
+
+/* .forget-password:hover{
+    color:#56ab5a;
+    text-decoration: none;
+} */ 
+
+input[type=submit] {
+    font-weight: 500;
+    width: 280px;
+    background-color: #ACCAAC;
+    color: white;
+    padding: 6px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto; 
+    margin-top: 8px;
+    
+}
+
+
+input[type=submit]:hover {
+    background-color: #56ab5a;
+    transition: 0.5s;
+}
+
+
+.box1 {
+    width: 100%;
+    float: top;
+}
+
+
+.box2 {
+    width: 100%;
+    float:bottom;
+}
+
+
+.container {
+    width: 380px;
+    height: 560px;
+    border-radius: 40px;
+    background-color: #f2f2f2;
+    padding: 50px;
+    margin-top: 80px; 
+    margin-left: 200px;
+    
+}
+.container h1{
+    font-weight: 700;
+    text-align: center;
+}
+
+.container p{
+    text-align: center;
+}
+.divider:after,
+.divider:before {
+    display: flex;
+    content: "";
+    flex: 1;
+    height: 0.5px;
+    background: #000;
+    opacity: 0.5;
+    margin: 0 30px;
+    
+}
+
+.OtherSingin{
+    width: 367px; 
+    height: 48px; 
+    position: relative;
+}
+.MicrosoftButton{
+    width: 160px; 
+    height: 48px; 
+    left: 6px;
+    top: 0px; 
+    position: absolute;
+}
+
+.InputBg{
+    width: 126px; 
+    height: 48px; 
+    position: absolute; 
+    background: white; 
+    border-radius: 12px; 
+    border: 1px #D0D4D9 solid;
+    left: 35%;
+    transform: translateX(-50%);
+    font-size: 16px;
+}
+
+.InputBg:hover{
+    background-color: #eaeae3;
+    transition: 0.5s;
+}
+
+.FacebookButton{
+    width: 160px; 
+    height: 48px; 
+    left: 164px; 
+    top: 0px; 
+    position: absolute;
+}
+
+.ri-microsoft-fill{
+    font-size: 22px;
+    left: 2px; 
+    top: 7px; 
+    position: absolute;
+}
+.ri-facebook-fill{
+    font-size: 25px;
+    left: 0px; 
+    top: 4px; 
+    position: absolute;
+}
+
+.donothave{
+    font-size: 12px;
+    display: block;
+    text-align: center;
+    border-bottom: 2px solid transparent;
+    margin-top: 20px;
+}
+.login{
+    /* display: block; */
+    color: #ACCAAC;
+}
+.login:hover{
+    color:#56ab5a;
+    text-decoration: none;
+}
+
+.alert {
+    background-color: #f44336;
+    color: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
