@@ -14,7 +14,7 @@ class CourseForm(FlaskForm):
                        choices=['Beginner', 'Intermediate', 'Advanced'],
                        validators=[InputRequired()])
     available = BooleanField('Available', default='checked')
-class registerForm(FlaskForm):
+class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(),Length(min=2,max=20)])
     email = EmailField('Email',validators=[InputRequired(),Email(message="Invalid Email")])
     password = PasswordField('Password', validators=[InputRequired(),Regexp(".*[0-9].*",message="Password must contain at least one number"),Length(min=1)])
