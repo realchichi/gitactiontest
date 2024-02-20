@@ -116,6 +116,7 @@ def test1():
 
 @app.route("/faqs")
 def test2():
+<<<<<<< HEAD
     return render_template("faqs.html")
 
 # Written by Wachirapong
@@ -191,3 +192,13 @@ def get_data(res):
         dict_val["propagation_methods"] = val["details"]["propagation_methods"]
         list_data.append(dict_val)
     return list_data
+
+
+@app.route("/search")
+def test3():
+   return render_template("search.html")
+
+@app.route("/signup")
+def test4():
+    return render_template("signup.html")
+>>>>>>> chi

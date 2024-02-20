@@ -31,7 +31,7 @@ select {
 label {
     font-weight: 500;
 }
-.forget-password{
+/* .forget-password{
     color: black;
     display: block;
     text-align: center;
@@ -39,12 +39,12 @@ label {
     /* font-weight: 100; */
     /* border-bottom: 2px solid transparent; */
     /* transition: all .55s ease; */
-}
+/* } */
 
-.forget-password:hover{
+/* .forget-password:hover{
     color:#56ab5a;
     text-decoration: none;
-}
+} */ 
 
 input[type=submit] {
     font-weight: 500;
@@ -95,6 +95,9 @@ input[type=submit]:hover {
     text-align: center;
 }
 
+.container p{
+    text-align: center;
+}
 .divider:after,
 .divider:before {
     display: flex;
@@ -165,11 +168,19 @@ input[type=submit]:hover {
     border-bottom: 2px solid transparent;
     margin-top: 20px;
 }
-.signup{
+.login{
     /* display: block; */
     color: #ACCAAC;
 }
-.signup:hover{
+.login:hover{
     color:#56ab5a;
     text-decoration: none;
 }
+
+.alert {
+    background-color: #f44336;
+    color: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
