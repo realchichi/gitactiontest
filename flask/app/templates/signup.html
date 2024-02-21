@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <div class="container">
     <form id="addContactForm">
       <h1>Signup</h1>
       <p>Welcome to BotaniBuzz !</p>
       <div class=box1>
-        <input type="text" id="username" name="username" placeholder="Username" required maxlength="20"  oninput="checkLength(this)">
+        <input type="text" id="signup" name="name" placeholder="Username" required maxlength="20">
         <!-- <div id="alertContainer"></div> -->
       </div>
       <div class=box2>
         <input type="email" id="email" name="email" placeholder="Enter email" required>
       </div>
       <div class=box3>
-        <input type="password" id="lastname" name="lastname" placeholder="Enter password" required>
+        <input type="password" id="password" name="password" placeholder="Enter password" required>
       </div>
         
       <input type="submit" name="submit" value="Signup">
@@ -37,20 +38,34 @@
     </form>
 
   </div>
+  <script>
+  $("#addContactForm").submit(function (event) {
+        event.preventDefault();
+        var formData = {};
+        $(":input").each(function () {
+          var key = $(this).attr('name');
+          var val = $(this).val();
+          if(key != "submit"){
+            formData[key] = val;
+            console.log(key,val)
+          }
+          
+          
+      });
+
+
+        var $form = $(this);
+        var url = $form.attr("action");
+
+
+      // make a POST call to the back end w/ a callback to refresh the table
+        // console.log("555555555555555555",url)
+        $.post("/signup", formData, function (contact_data) {
+          // location.reload()
+        });
+      });
+</script>
 {% endblock %}
 
-<!-- <script> src="static/js/signup.js"</script>
-<script>
-  const email = document.getElementById("mail");
-
-
-  email.addEventListener("input", (event) => {
-    if (email.validity.typeMismatch) {
-      email.setCustomValidity("I am expecting an email address!");
-    } else {
-      email.setCustomValidity("");
-    }
-  });
-</script> -->
 
 

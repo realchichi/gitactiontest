@@ -4,13 +4,15 @@ import http.client
 # from urllib.request import urlopen
 from app.forms import forms
 # from flask_wtf import FlaskForm
+from flask import (jsonify, render_template,request, url_for, flash, redirect)
+from werkzeug.security import generate_password_hash,check_password_hash
 
 import psycopg2
-from flask import (jsonify, render_template,request)
 from app import app
-# from app import db
+
+from app import db
 # from sqlalchemy.sql import text
-# from app.models.user import User
+from app.models.user import User
 
 READY = False
 
@@ -110,12 +112,25 @@ def validate_user():
 
 
 
-@app.route("/login")
+@app.route("/login",methods=('GET','POST'))
 def login():
-    return render_template("login.html")
+    print("00000000000000000000000000000000000")
+    if request.method == 'POST':
+        print("*********************************")
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user = User.query.filter_by(email=email).first()
+        if not user or not check_password_hash(user.password, password):
+            flash('Please check your login details and try again.')
+            return redirect(url_for('login'))
+        login_user(user)
+        return redirect(url_for('landing'))
+
+    print("pppppppppppppppppppppppppppppp")
+    return render_template('login.html')
 
 @app.route("/faqs")
-def test2():
+def feqs():
     return render_template("faqs.html")
 
 # Written by Wachirapong
@@ -164,17 +179,7 @@ def get_data(res):
     is_plant = res["result"]["is_plant"]["probability"]
     name = res["result"]["classification"]["suggestions"]
     dict_val = {}
-    # name                : latin name
-    # probability         : prob that is plant
-    # similar_img         : similar image
-    # common_name         : common name
-    # taxonomy            : taxonomy
-    # url                 : wiki pedia url
-    # description         : description
-    # synonyms            : synonyms
-    # img                 : image of this plant
-    # watering            : watering how wet environment the plant prefers(1 = dry, 2 = medium, 3 = wet)
-    # propagation_methods : propagation method
+
     list_data = []
     for val in name:
         dict_val["id"] = val["id"]
@@ -197,6 +202,47 @@ def get_data(res):
 def test3():
    return render_template("search.html")
 
-@app.route("/signup")
+@app.route("/signup", methods=('GET', 'POST'))
 def signup():
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        validated = True
+        validated_dict = {}
+        valid_keys = ['email', 'name', 'password']
+        for key in result:
+            if key not in valid_keys:
+                continue
+            value = result[key].strip()
+            if not value or value == 'undefined':
+                validated = False
+                break
+            validated_dict[key] = value
+        if validated:
+            email = validated_dict['email']
+            name = validated_dict['name']
+            password = validated_dict['password']
+            user = User.query.filter_by(email=email).first()
+            if user:
+                flash('Email address already exists')
+                return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
+            new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))  # เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ
+        else:
+            flash('Please check your input and try again.')  # เพิ่มข้อความแจ้งเตือนหากข้อมูลไม่ถูกต้อง
+            return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
     return render_template("signup.html")
+
+
+
+
+
+@app.route("/signup/data")
+def si():
+    db_contacts = User.query.all()
+    contacts = list(map(lambda x: x.to_dict(), db_contacts))
+
+    app.logger.debug(f"DB Contacts: {contacts}")
+
+    return jsonify(contacts)

@@ -2,7 +2,7 @@ from flask.cli import FlaskGroup
 
 
 from app import app, db
-from app.models.contact import Contact
+from app.models.user import User
 
 
 cli = FlaskGroup(app)

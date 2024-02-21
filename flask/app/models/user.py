@@ -1,7 +1,6 @@
-# from app import db
-# from sqlalchemy_serializer import SerializerMixin
+from app import db
+from sqlalchemy_serializer import SerializerMixin
 
-<<<<<<< HEAD
 # class User(db.Model, SerializerMixin):
 # 	__tablename__ = "users"
 
@@ -19,22 +18,21 @@
 #     def update(self, email, password):
 #        	self.email = email
 #     	self.password = password
-=======
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50))
-    password = db.Column(db.String(50))
-    
+    password = db.Column(db.String(200))
+    name = db.Column(db.String(200))
 
 
-    def __init__(self, email, password):
+    def __init__(self, email,password,name):
         self.email = email
         self.password = password
+        self.name = name
 
-
-    def update(self, email, password):
+    def update(self, email,password,name):
         self.email = email
         self.password = password
->>>>>>> main
+        self.name = name
