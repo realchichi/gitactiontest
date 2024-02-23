@@ -3,24 +3,21 @@
   <head>
     <title>Google+ Login Custom Button</title>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <meta name="description" content="Google+ Login Custom Button">
-      <meta name="author" content="AiNoTsubasa">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-     <meta name="description" content="Facebook Login">
-    <script src="https://apis.google.com/js/platform.js?onload=bindGpLoginBtn" async defer></script>
     <!-- <link rel="stylesheet" href="static/css/csss.css"> -->
   </head>
   <body>
     <div class="login_box">
-    <form method="POST" action="/forms/">
-      <label>email</label>
-      <input type="email" id="email" name="email" placeholder="Your email.." required>
-      <label >password</label>
-      <input type="password" id="password" name="password" placeholder="Your password.." required>
-    </form>
-
+      <form onsubmit="return login()">
+          <label >Email address</label>
+          <input type="email" class="form-control" id="username" placeholder="name@example.com">
+          <label >Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Password">
+          
+    
+        <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Login</button>
+      </form>
+      <div id="img"></div>
       <button onclick="checkFbLoginState();">Login with Facebook</button>
       <br>
     </div>
@@ -62,23 +59,67 @@
             FB.login(function(response) {
               if (response.authResponse){
                 fbLoginStatus = true;
+
                 getCurrentUserInfo(response);
               } else {
                 console.log('Auth failed.');
               }
-            }, {scope: 'public_profile,email'});
+            }, {scope: 'public_profile'});
           }
         } 
       }
       function getCurrentUserInfo(response) {   
-          console.log(response)
+          FB.api('/me?fields=name,email,first_name,last_name,id', function(userInfo) {
+            console.log(userInfo);
+            const profilePictureUrl =  "https://graph.facebook.com/"+response.authResponse.userID+"/picture?type=large&access_token="+response.authResponse.accessToken
+            const img = document.createElement('img');
+            img.src = profilePictureUrl;
+            img.alt = 'Profile Picture';
+            document.getElementById('img').appendChild(img);
+  });   
+
+
       }
-      
-
-    </script>
-    
     
 
+    // tenantId = 'f8cdef31-a31e-4b4a-93e4-5f571e91255a' # Paste your own tenant ID here
+    // appId = '3b905491-3bea-444a-bb19-32e4fa8e2d39' # Paste your own app ID here
+    // appSecret = '87548d60-a212-4e65-99b0-b67b9d6b5cf3' # Paste your own app secret here
+    // // SVj8Q~_ZbrTy--I-0BgirGB3GteuvbDq~gai1bLD
+    // url = "https://login.microsoftonline.com/%s/oauth2/token" % (tenantId)
+
+    // resourceAppIdUri = 'https://api.securitycenter.microsoft.com'
+
+    // body = {
+    //     'resource' : resourceAppIdUri,
+    //     'client_id' : appId,
+    //     'client_secret' : appSecret,
+    //     'grant_type' : 'client_credentials'
+    // }
+    // var headers = new Headers();
+    // var bearer = "Bearer " + access_token;
+    // headers.append("Authorization", bearer);
+    // var options = {
+    //      method: "GET",
+    //      headers: headers
+    // };
+    // var graphEndpoint = "https://graph.microsoft.com/v1.0/me";
+
+    // fetch(graphEndpoint, options)
+    //     .then(function (response) {
+    //          //do something with response
+    //     })
+    // data = urllib.parse.urlencode(body).encode("utf-8")
+
+    // req = urllib.request.Request(url, data)
+    // response = urllib.request.urlopen(req)
+    // jsonResponse = json.loads(response.read())
+    // aadToken = jsonResponse["access_token"]
+
+     </script>
+    
+    
+    <!-- </script> -->
 
   </body>
 </html>

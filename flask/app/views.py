@@ -3,13 +3,15 @@ import json
 import http.client
 # from urllib.request import urlopen
 from app.forms import forms
-
+# from flask_wtf import FlaskForm
+from flask import (jsonify, render_template,request, url_for, flash, redirect)
+from werkzeug.security import generate_password_hash,check_password_hash
 
 import psycopg2
-from flask import (jsonify, render_template,request)
 from app import app
+
 from app import db
-from sqlalchemy.sql import text
+# from sqlalchemy.sql import text
 from app.models.user import User
 
 READY = False
@@ -21,51 +23,18 @@ def read_file(filename, mode="rt"):
 def write_file(filename, contents, mode="wt"):
     with open(filename, mode, encoding="utf-8") as fout:
         fout.write(contents)
-
 @app.route('/process', methods=['POST']) 
 def process():
     data = request.form.get('data')
     return
-@app.route('/forms/', methods=('GET', 'POST'))
-def form():
-    form = forms.registerForm()
-    nub=0
-
-    if form.validate_on_submit():
-        raw_json = read_file('app/data/users.json')
-        user = json.loads(raw_json)
-
-        for i in user:
-            if i["username"] == form.username.data.lower():
-                nub+=1
-                flash('Username already exists')
-                break
-        for i in user:
-            if i["email"] == form.email.data.lower():
-                nub+=1
-                flash('Email already exists')
-                break
-
-        if nub==0:
-           bytess = form.password.data.encode('utf-8')
-           salt = bcrypt.gensalt()
-           hashy = bcrypt.hashpw(bytess, salt)
-           x = hashy.decode('utf-8')
-           user.append({'username': form.username.data.lower(),
-                               'email': form.email.data.lower(),
-                               'password': x,
-                               })
-           write_file('app/data/users.json',
-                      json.dumps(user, indent=4))
-           return redirect(url_for('login.html'))
-
-    return render_template('login.html', form=form)
 
 # @app.route('/')
 # def home():
 #     return app.send_static_file('login.html')
 
 
+#     #         db.session.commit()
+#     return app.send_static_file('login.html')
 
 
 @app.route('/db')
@@ -77,10 +46,13 @@ def db_connection():
     except Exception as e:
         return '<h1>db is broken.</h1>' + str(e)
 
-
-@app.route("/home")
+@app.route("/")
 def home():
-    return render_template("login.html")
+    return render_template("landing.html")
+
+@app.route("/landing")
+def landing():
+    return render_template("landing.html")
 
 
 @app.route("/camera")
@@ -88,6 +60,40 @@ def camera_access():
     return render_template("camera.html")
 
 
+# @app.route("/api")
+# def call_api():
+#     if READY:
+#       with open('static/img/photo1.jpg', 'rb') as file:
+#           images = [base64.b64encode(file.read()).decode('ascii')]
+
+#       type_iden = ["health_assessment","identification"]
+
+#       url_iden = "https://plant.id/api/v3/" + type_iden[1]
+#       DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
+#       q_iden = "?details=" + DETAILS +"&language=en"
+#       url_iden += q_iden
+
+#       payload = json.dumps({
+#         "images": ["data:image/jpg;base64," + images[0]],
+#         "similar_images": "true"
+#       })
+#       headers = {
+#         'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
+#         'Content-Type': 'application/json'
+#       }
+
+#       response = requests.request("POST", url_iden, headers=headers, data=payload)
+
+#   # list_data = get_data(response)
+
+#       raw_data = read_file("app/sandbox/Tle_sandbox/fake_data.txt")
+#       fake_data = list(map(lambda x : get_data(eval(x)), raw_data))
+#   # list_data = 
+#   # db_plant = 
+#   # print(fake_data)
+
+
+#   return render_template("temp.html", data=fake_data)
 
 @app.route("/user")
 def user():
@@ -105,18 +111,26 @@ def validate_user():
         valid_keys = ["firstname", "lastname"]
 
 
-@app.route("/landing")
-def test():
-    return render_template("landing.html")
 
+@app.route("/login",methods=('GET','POST'))
+def login():
+    print("00000000000000000000000000000000000")
+    if request.method == 'POST':
+        print("*********************************")
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user = User.query.filter_by(email=email).first()
+        if not user or not check_password_hash(user.password, password):
+            flash('Please check your login details and try again.')
+            return redirect(url_for('login'))
+        login_user(user)
+        return redirect(url_for('landing'))
 
-@app.route("/login")
-def test1():
-    return render_template("login.html")
+    print("pppppppppppppppppppppppppppppp")
+    return render_template('login.html')
 
 @app.route("/faqs")
-def test2():
-<<<<<<< HEAD
+def feqs():
     return render_template("faqs.html")
 
 # Written by Wachirapong
@@ -165,17 +179,7 @@ def get_data(res):
     is_plant = res["result"]["is_plant"]["probability"]
     name = res["result"]["classification"]["suggestions"]
     dict_val = {}
-    # name                : latin name
-    # probability         : prob that is plant
-    # similar_img         : similar image
-    # common_name         : common name
-    # taxonomy            : taxonomy
-    # url                 : wiki pedia url
-    # description         : description
-    # synonyms            : synonyms
-    # img                 : image of this plant
-    # watering            : watering how wet environment the plant prefers(1 = dry, 2 = medium, 3 = wet)
-    # propagation_methods : propagation method
+
     list_data = []
     for val in name:
         dict_val["id"] = val["id"]
@@ -198,7 +202,47 @@ def get_data(res):
 def test3():
    return render_template("search.html")
 
-@app.route("/signup")
-def test4():
+@app.route("/signup", methods=('GET', 'POST'))
+def signup():
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        validated = True
+        validated_dict = {}
+        valid_keys = ['email', 'name', 'password']
+        for key in result:
+            if key not in valid_keys:
+                continue
+            value = result[key].strip()
+            if not value or value == 'undefined':
+                validated = False
+                break
+            validated_dict[key] = value
+        if validated:
+            email = validated_dict['email']
+            name = validated_dict['name']
+            password = validated_dict['password']
+            user = User.query.filter_by(email=email).first()
+            if user:
+                flash('Email address already exists')
+                return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
+            new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))  # เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ
+        else:
+            flash('Please check your input and try again.')  # เพิ่มข้อความแจ้งเตือนหากข้อมูลไม่ถูกต้อง
+            return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
     return render_template("signup.html")
->>>>>>> chi
+
+
+
+
+
+@app.route("/signup/data")
+def si():
+    db_contacts = User.query.all()
+    contacts = list(map(lambda x: x.to_dict(), db_contacts))
+
+    app.logger.debug(f"DB Contacts: {contacts}")
+
+    return jsonify(contacts)
