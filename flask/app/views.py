@@ -124,6 +124,7 @@ def login():
             flash('Please check your login details and try again.')
             return redirect(url_for('login'))
         login_user(user)
+
         return redirect(url_for('landing'))
 
     print("pppppppppppppppppppppppppppppp")
@@ -204,7 +205,9 @@ def test3():
 
 @app.route("/signup", methods=('GET', 'POST'))
 def signup():
+    print("1111111111111111111")
     if request.method == 'POST':
+        print("2222222222222222")
         result = request.form.to_dict()
         validated = True
         validated_dict = {}
@@ -218,20 +221,23 @@ def signup():
                 break
             validated_dict[key] = value
         if validated:
+            print("333333333333333")
             email = validated_dict['email']
             name = validated_dict['name']
             password = validated_dict['password']
             user = User.query.filter_by(email=email).first()
             if user:
+                print("4444444444")
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
             new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
             db.session.add(new_user)
+            print("5555555555555555")
             db.session.commit()
             return redirect(url_for('login'))  # เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ
         else:
             flash('Please check your input and try again.')  # เพิ่มข้อความแจ้งเตือนหากข้อมูลไม่ถูกต้อง
-            return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
+            return redirect({{url_for('signup')}})  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
     return render_template("signup.html")
 
 

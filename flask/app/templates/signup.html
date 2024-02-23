@@ -6,6 +6,13 @@
     <form id="addContactForm">
       <h1>Signup</h1>
       <p>Welcome to BotaniBuzz !</p>
+      {% with messages = get_flashed_messages() %}
+       {% if messages %}
+       <div class="notification is-danger">
+         {{ messages[0] }}.
+       </div>
+       {% endif %}
+       {% endwith %}
       <div class=box1>
         <input type="text" id="signup" name="name" placeholder="Username" required maxlength="20">
         <!-- <div id="alertContainer"></div> -->
@@ -45,10 +52,11 @@
         $(":input").each(function () {
           var key = $(this).attr('name');
           var val = $(this).val();
-          if(key != "submit"){
-            formData[key] = val;
-            console.log(key,val)
+            if(key != "submit" && key != undefined){
+              formData[key] = val;
+              console.log(key,val)
           }
+          
           
           
       });
@@ -62,6 +70,7 @@
         // console.log("555555555555555555",url)
         $.post("/signup", formData, function (contact_data) {
           // location.reload()
+          console.log(formData)
         });
       });
 </script>
