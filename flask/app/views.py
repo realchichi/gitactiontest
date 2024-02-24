@@ -12,7 +12,7 @@ from app import app
 
 from app import db
 # from sqlalchemy.sql import text
-from app.models.user import User
+from app.models.accounts import Account
 
 READY = False
 
@@ -97,7 +97,7 @@ def camera_access():
 
 @app.route("/user")
 def user():
-    db_users = User.query.all()
+    db_users = Account.query.all()
     user = list(map(lambda x: x.to_dict(), db_users))
     return jsonify(user)
 
@@ -119,7 +119,7 @@ def login():
         print("*********************************")
         email = request.form.get('email')
         password = request.form.get('password')
-        user = User.query.filter_by(email=email).first()
+        user = Account.query.filter_by(email=email).first()
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
             return redirect(url_for('login'))
@@ -178,22 +178,19 @@ def call_api():
 def get_data(res):
     is_plant = res["result"]["is_plant"]["probability"]
     name = res["result"]["classification"]["suggestions"]
-    dict_val = {}
+    dict_val = {"is_plant":is_plant}
 
     list_data = []
     for val in name:
-        dict_val["id"] = val["id"]
         dict_val["name"] = val["name"]
-        dict_val["probability"] = val["probability"]
-        dict_val["similar_img"] = val["similar_images"]
-        dict_val["common_name"] = val["details"]["common_names"]
-        dict_val["taxonomy"] = val["details"]["taxonomy"]
-        dict_val["url"] = val["details"]["url"]
-        dict_val["description"] = val["details"]["description"]["value"]
-        dict_val["synonyms"] = val["details"]["synonyms"]
         dict_val["img"] = val["details"]["image"]["value"]
-        dict_val["watering"] = val["details"]["watering"]
-        dict_val["propagation_methods"] = val["details"]["propagation_methods"]
+        dict_val["description"] = val["details"]["description"]["value"]
+        dict_val["url"] = val["details"]["url"]
+        dict_val["taxonomy"] = val["details"]["taxonomy"]
+        dict_val["common_name"] = val["details"]["common_names"]
+        dict_val["similar_img"] = val["similar_images"]
+        dict_val["probability"] = val["probability"]
+
         list_data.append(dict_val)
     return list_data
 
@@ -221,11 +218,11 @@ def signup():
             email = validated_dict['email']
             name = validated_dict['name']
             password = validated_dict['password']
-            user = User.query.filter_by(email=email).first()
+            user = Account.query.filter_by(email=email).first()
             if user:
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
-            new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
             return redirect(url_for('login'))  # เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ
@@ -240,7 +237,7 @@ def signup():
 
 @app.route("/signup/data")
 def si():
-    db_contacts = User.query.all()
+    db_contacts = Account.query.all()
     contacts = list(map(lambda x: x.to_dict(), db_contacts))
 
     app.logger.debug(f"DB Contacts: {contacts}")
