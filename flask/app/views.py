@@ -6,6 +6,7 @@ from app.forms import forms
 # from flask_wtf import FlaskForm
 from flask import (jsonify, render_template,request, url_for, flash, redirect)
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_login import login_user, login_required, logout_user,current_user, LoginManager
 
 import psycopg2
 from app import app
@@ -13,6 +14,11 @@ from app import app
 from app import db
 # from sqlalchemy.sql import text
 from app.models.user import User
+from app import login_manager
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 READY = False
 
@@ -114,20 +120,19 @@ def validate_user():
 
 @app.route("/login",methods=('GET','POST'))
 def login():
-    print("00000000000000000000000000000000000")
     if request.method == 'POST':
-        print("*********************************")
         email = request.form.get('email')
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
+        remember = bool(request.form.get('is_active'))
+        print(user.id,"lllllllllllllllllllllllllllll")
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
             return redirect(url_for('login'))
-        login_user(user)
+        login_user(user,remember=remember)
 
         return redirect(url_for('landing'))
 
-    print("pppppppppppppppppppppppppppppp")
     return render_template('login.html')
 
 @app.route("/faqs")
