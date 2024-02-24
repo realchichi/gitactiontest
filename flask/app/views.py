@@ -7,13 +7,13 @@ from app.forms import forms
 from flask import (jsonify, render_template,request, url_for, flash, redirect)
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user, login_required, logout_user,current_user, LoginManager
-
+import random
 import psycopg2
 from app import app
 
 from app import db
 # from sqlalchemy.sql import text
-from app.models.user import Account
+from app.models.accounts import Account
 from app import login_manager
 
 @login_manager.user_loader
@@ -60,6 +60,9 @@ def home():
 def landing():
     return render_template("landing.html")
 
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
 
 @app.route("/camera")
 def camera_access():
@@ -120,18 +123,22 @@ def validate_user():
 
 @app.route("/login",methods=('GET','POST'))
 def login():
+    logout_user()
+    print(current_user.is_authenticated,"1111111111111111111111111111111")
     if request.method == 'POST':
+        print(current_user.is_authenticated,"000000000000000000000000000000000")
+
         email = request.form.get('email')
         password = request.form.get('password')
         user = Account.query.filter_by(email=email).first()
-        remember = bool(request.form.get('is_active'))
-        print(user.id,"lllllllllllllllllllllllllllll")
+        # remember = bool(request.form.get('is_active'))
+        # print(user.id,"lllllllllllllllllllllllllllll")
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
             return redirect(url_for('login'))
-        login_user(user,remember=remember)
-
+        login_user(user)
         return redirect(url_for('landing'))
+    print(current_user.is_authenticated,"222222222222222222222222222222")
 
     return render_template('login.html')
 
@@ -210,9 +217,7 @@ def search():
 
 @app.route("/signup", methods=('GET', 'POST'))
 def signup():
-    print("1111111111111111111")
     if request.method == 'POST':
-        print("2222222222222222")
         result = request.form.to_dict()
         validated = True
         validated_dict = {}
@@ -226,23 +231,24 @@ def signup():
                 break
             validated_dict[key] = value
         if validated:
-            print("333333333333333")
             email = validated_dict['email']
             name = validated_dict['name']
             password = validated_dict['password']
             user = Account.query.filter_by(email=email).first()
             if user:
-                print("4444444444")
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
-            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+            print(current_user.is_authenticated,"4444444444444444444444444")
+            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 7))+".png")
+            print(current_user.is_authenticated,"333333333333333333333333333")
             db.session.add(new_user)
-            print("5555555555555555")
+            print(current_user.is_authenticated,"555555555555555555555555555")
+
             db.session.commit()
-            return redirect(url_for('login'))  # เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ
-        else:
-            flash('Please check your input and try again.')  # เพิ่มข้อความแจ้งเตือนหากข้อมูลไม่ถูกต้อง
-            return redirect({{url_for('signup')}})  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
+            print(current_user.is_authenticated,"6666666666666666666666666")
+
+        return redirect(url_for('login'))  # เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ
+        
     return render_template("signup.html")
 
 

@@ -36,12 +36,15 @@
     
         <header>
             <a href="#" class="logo">BotaniBuzz</a>
-
+                
             <ul class="navlist">
+                {% if current_user.is_authenticated %}
+                    <li><img src={{current_user.avatar_url}} width="40"><li>
+                {% endif %}
                 <li><a href="{{ url_for('landing')}}">Home</a></li>
                 <li><a href="#">Contact us</a></li>
                 <li><a href="#">Blog</a></li>
-                <li><a href="#">Profile</a></li>
+                <li><a href="{{ url_for('profile')}}">Profile</a></li>
             </ul>
             <i class="ri-menu-line" id="menu-icon"></i>
             

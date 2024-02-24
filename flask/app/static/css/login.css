@@ -10,8 +10,23 @@ body {
     /* align-items: center; */
     
 }
+#edit_profile{
+    text-align: center;
+    margin: auto;
+    background-color: gray;
+    padding-top:20% ;
+    padding-bottom:20% ;
+    color: white;
+/*    transition: background-color 1s ease;*/
+}
 
+#edit_button{
+    border-radius: 5px;
+}
 
+#text-show{
+    margin-top: 10%;
+}
 input[type=text],
 input[type=password],
 input[type=email],
