@@ -21,7 +21,24 @@ body {
 }
 
 #edit_button{
-    border-radius: 5px;
+    border-radius: 15px;
+/*    margin-top: 10%;*/
+/*    background-color: none;*/
+/*    margin-bottom: 50px;*/
+/*    margin-top:10px;*/
+    margin-left: -20px;
+    border: 1px solid black;
+}
+#select_avatar{
+    background-color: whitesmoke;
+    padding: auto;
+    border-radius: 10px;
+    border: 2px solid #333;
+    margin-top: 5%;
+}
+.avatarna{
+    border:none;
+    margin-left: 4%;
 }
 
 #text-show{

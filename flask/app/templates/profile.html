@@ -4,19 +4,56 @@
     <div class="search-box">
 
         <div id="edit_profile">
-            <img src={{current_user.avatar_url}} width="200">
+            <div>
+                <img src={{current_user.avatar_url}} width="200">
+                <button id ="edit_button"><img  src="static/img/pen.png" width="20" ></button>
+            </div>
+            
+            <div class="row" id="select_avatar" style="display:none;">
+                <div class ="col" id="avatar_to_select">
+                    <button class="avatarna" id="avatar" value="1">
+                        <img src="static/img/avatar/1.png" width="50">
+                    </button >
+                    <button class="avatarna" id="avatar" value="2">
+                        <img src="static/img/avatar/2.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="3">
+                        <img src="static/img/avatar/3.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="4">
+                        <img src="static/img/avatar/4.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="5">
+                        <img src="static/img/avatar/5.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="6">
+                        <img src="static/img/avatar/6.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="7">
+                        <img src="static/img/avatar/7.png" width="50">
+                    </button>
+                    
+                </div>
+            </div>
             <div id="text-show">
                 <p>email : {{current_user.email}}</p>
                 <p>Name : {{current_user.name}}</p>
             </div>
-            <button id ="edit_button"><img src="static/img/pen.png" width="20"></button>
+            
         </div>
 
     </div>
     <script>
         $("#edit_button").click(function(){
-
+            $("#select_avatar").toggle("fast")
         })
+        var buttons = document.querySelectorAll(".avatarna");
+        buttons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var buttonValue = this.value;
+                console.log("Button value:", buttonValue);
+            });
+        });
     </script>    
     
 {% endblock %}
