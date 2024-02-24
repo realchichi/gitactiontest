@@ -237,17 +237,13 @@ def signup():
             user = Account.query.filter_by(email=email).first()
             if user:
                 flash('Email address already exists')
-                return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
-            print(current_user.is_authenticated,"4444444444444444444444444")
-            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 7))+".png")
-            print(current_user.is_authenticated,"333333333333333333333333333")
+                return redirect(url_for('signup'))  
+            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 8))+".png")
             db.session.add(new_user)
-            print(current_user.is_authenticated,"555555555555555555555555555")
 
             db.session.commit()
-            print(current_user.is_authenticated,"6666666666666666666666666")
 
-        return redirect(url_for('login'))  # เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ
+        return redirect(url_for('login')) 
         
     return render_template("signup.html")
 

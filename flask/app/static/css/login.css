@@ -19,6 +19,15 @@ body {
     color: white;
 /*    transition: background-color 1s ease;*/
 }
+#edit_emai{
+/*    text-align: right;*/
+/*    margin-left: 50%;*/
+/*    background-color: gray;*/
+/*    padding-top:20% ;*/
+/*    padding-bottom:20% ;*/
+    color: white;
+/*    transition: background-color 1s ease;*/
+}
 
 #edit_button{
     border-radius: 15px;
@@ -28,6 +37,11 @@ body {
 /*    margin-top:10px;*/
     margin-left: -20px;
     border: 1px solid black;
+}
+.text-show{
+    margin-top: 10%;
+    text-align: center;
+/*    background-color: blue;*/
 }
 #select_avatar{
     background-color: whitesmoke;
@@ -42,7 +56,7 @@ body {
 }
 
 #text-show{
-    margin-top: 10%;
+    
 }
 input[type=text],
 input[type=password],
