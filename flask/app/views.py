@@ -1,24 +1,22 @@
 import base64
 import json
 import http.client
-# from urllib.request import urlopen
+import requests
 from app.forms import forms
-# from flask_wtf import FlaskForm
 from flask import (jsonify, render_template,request, url_for, flash, redirect)
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import login_user, login_required, logout_user,current_user, LoginManager
-import requests
-import psycopg2
+from flask_login import login_user, login_required, logout_user,current_user
 from app import app
-
 from app import db
-# from sqlalchemy.sql import text
 from app.models.accounts import Account
+from app.models.history import History
+from app.models.plantinfo import PlantInfo
 from app import login_manager
 
 @login_manager.user_loader
 def load_user(user_id):
     return Account.query.get(int(user_id))
+
 
 
 def read_file(filename, mode="rt"):
@@ -28,18 +26,13 @@ def read_file(filename, mode="rt"):
 def write_file(filename, contents, mode="wt"):
     with open(filename, mode, encoding="utf-8") as fout:
         fout.write(contents)
+
+
 @app.route('/process', methods=['POST']) 
 def process():
     data = request.form.get('data')
     return
 
-# @app.route('/')
-# def home():
-#     return app.send_static_file('login.html')
-
-
-#     #         db.session.commit()
-#     return app.send_static_file('login.html')
 
 
 @app.route('/db')
@@ -111,34 +104,35 @@ def feqs():
 # Written by Wachirapong
 # To call API
 @app.route("/api")
-def call_api():
-    with open('app/static/img/longan1.jpg', 'rb') as file:
-        images = [base64.b64encode(file.read()).decode('ascii')]
+def call_api(img):
+    # with open('app/static/img/longan1.jpg', 'rb') as file:
+    #     images = [base64.b64encode(file.read()).decode('ascii')]
 
-    url = "https://plant.id/api/v3/identification"
-    DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
-    query = "?details=" + DETAILS +"&language=th"
-    url += query
+    # url = "https://plant.id/api/v3/identification"
+    # DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
+    # query = "?details=" + DETAILS +"&language=th"
+    # url += query
 
-    payload = json.dumps({
-        "images": ["data:image/jpg;base64," + images[0]],
-        "similar_images": True
-    })
-    headers = {
-        'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
-        'Content-Type': 'application/json'
-    }
+    # payload = json.dumps({
+    #     "images": ["data:image/jpg;base64," + images[0]],
+    #     "similar_images": True
+    # })
+    # headers = {
+    #     'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
+    #     'Content-Type': 'application/json'
+    # }
     # if u need to call API use these 2 lines
     # response = requests.request("POST", url, headers=headers, data=payload)
     # list_data = get_data(json.loads(response.text))
     # these 2 lines for temp data
     raw_data = read_file("app/sandbox/data.txt")
     list_data = eval(raw_data)
-    return render_template("plant_data.html", data=list_data)
+    # return render_template("plant_data.html", data=list_data)
+    return list_data
 
 
 # Written by Wachirapong
-# To get data from API that we need into list
+# To get data from API that we need to put into list
 def get_data(data):
     name = data["result"]["classification"]["suggestions"]
     list_data = []
@@ -170,9 +164,30 @@ def get_data(data):
     return list_data
 
 
-@app.route("/search")
-def search():
-   return render_template("search.html")
+# Written by Wachirapong
+# To store plant data table that user who identified plant
+# and store it to history table
+@app.route("/identification", methods=["POST", "GET"])
+def identification():
+    if request.method == "POST"
+        result = request.to_dict()
+        account_id = current_user.id
+        if result.get("idendtfied_img",""):
+            idendtfied_img = result["idendtfied_img"]
+            entry = History(account_id, idendtfied_img)
+            db.session.add(entry)
+            history = History.query.filter_by(idendtfied_img=idendtfied_img).first()
+            plant_data = call_api(idendtfied_img)
+            for i in range(len(plant_data)):
+                temp = plant_data[i]
+                temp["history_id"] = history.id
+                plant_info = PlantInfo(**temp)
+                db.session.add(plant_info)
+
+            db.session.commit()
+            return render_template("plant_data.html", plant_data=plant_data)
+
+    return render_template("identification.html")
 
 @app.route("/signup", methods=('GET', 'POST'))
 def signup():
@@ -212,9 +227,6 @@ def signup():
     return render_template("signup.html")
 
 
-
-
-
 @app.route("/signup/data")
 def si():
     db_contacts = Account.query.all()
@@ -223,3 +235,11 @@ def si():
     app.logger.debug(f"DB Contacts: {contacts}")
 
     return jsonify(contacts)
+
+
+@app.route("/history")
+@login_required
+def history():
+    pass
+
+

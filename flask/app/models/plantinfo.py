@@ -14,7 +14,8 @@ class PlantInfo(db.Model, SerializerMixin):
 	commom_name = db.Column(db.String(100))
 	similar_image = db.Column(db.String(100))
 	probability = db.Column(db.Float)
-	def __init__(self, name, url_image, description, wiki_url, taxonomy, commom_name, similar_image, probability):
+	history_id = db.Column(db.Integer, db.ForeignKey('histories.id'))
+	def __init__(self, name, url_image, description, wiki_url, taxonomy, commom_name, similar_image, probability, history_id):
 		self.name = name
 		self.url_image = url_image
 		self.description = description
@@ -23,3 +24,4 @@ class PlantInfo(db.Model, SerializerMixin):
 		self.commom_name = commom_name
 		self.similar_image = similar_image
 		self.probability = probability
+		self.history_id = history_id
