@@ -7,7 +7,7 @@
         <div id="edit_profile">
             <div>
                 <img id ="current_avatar"src={{current_user.avatar_url}} width="200">
-                <button id ="edit_button"><img  src="static/img/pen.png" width="20" ></button>
+                <button hidden="hidden" id ="edit_button"><img  src="static/img/pen.png" width="20" ></button>
             </div>
             
             <div class="row" id="select_avatar" style="display:none;">
@@ -23,7 +23,7 @@
                     </button>
                     <button class="avatarna" id="avatar" value="4">
                         <img src="static/img/avatar/4.png" width="50">
-                    </button>
+                    </button><br>
                     <button class="avatarna" id="avatar" value="5">
                         <img src="static/img/avatar/5.png" width="50">
                     </button>
@@ -33,7 +33,7 @@
                     <button class="avatarna" id="avatar" value="7">
                         <img src="static/img/avatar/7.png" width="50">
                     </button>
-                    <button class="avatarna" id="avatar" value="7">
+                    <button class="avatarna" id="avatar" value="8">
                         <img src="static/img/avatar/8.png" width="50">
                     </button>
                 </div>
@@ -41,14 +41,42 @@
             <div class="text-show">
                 <div class="">
                     <p id ="edit_email">email : {{current_user.email}}</p>
-                <button id ="edit_button_email">edit</button>
+                <button hidden="hidden" id ="edit_button_email">edit</button>
+                <div id= "div_edit_email"style="display: none;">
+                    <input id="email_value" placeholder="Enter new email">
+                    <button id ="confirm_edit_button_email">check</button>
+                </div>
+                
                 </div>
                 <div class="">
-                <p>Name : {{current_user.name}}</p>
-                <button id ="edit_button_name">edit</button>
+                <p id ="edit_name">Name : {{current_user.name}}</p>
+                <button hidden="hidden" id ="edit_button_name">edit</button>
+                <div id= "div_edit_name"style="display: none;">
+                    <input id="name_value" placeholder="Enter new name">
+                    <button id ="confirm_edit_button_name">check</button>
+                </div>
+                </div>
+                <div class="">
+                <p id ="edit_password">Password</p>
+                <button hidden="hidden" id ="edit_button_password">edit</button>
+                <div id= "div_edit_password"style="display: none;">
+                    <input id="password_value" placeholder="Enter new password">
+                    <button id ="confirm_edit_button_password">check</button>
+                </div>
                 </div>
             </div>
-            
+            <div id="to_edit">
+                <button id="go_edit">edit</button>
+                <div id="div_check_password" style="display:none;">
+                    <input id="Enter_password" type="password" placeholder="Enter password">
+                    <button id="check_password">submit</button>
+                </div>
+                
+            </div>
+            <div id="form" hidden="hidden">
+                <button id="submitt">confirm</button>
+                <button id="cancel">cancel</button>
+            </div>
         </div>
 
     </div>
@@ -58,7 +86,7 @@
         var email = divElement.getAttribute('email');
         var avatar = divElement.getAttribute('avatar');
         var name = divElement.getAttribute('name');
-
+        var password = "";
         $("#edit_button").click(function(){
             $("#select_avatar").toggle("fast")
         })
@@ -71,7 +99,72 @@
                 avatar = "static/img/avatar/"+buttonValue+".png"
             });
         });
+        $("#edit_button_email").click(function(){
+            $("#div_edit_email").toggle("fast")
+        })
+        $("#edit_button_name").click(function(){
+            $("#div_edit_name").toggle("fast")
+        })
+        $("#edit_button_password").click(function(){
+            $("#div_edit_password").toggle("fast")
+        })
+        $("#confirm_edit_button_email").click(function(){
+            // console.log("11")
+            var email_value = document.getElementById("email_value")
+            var confirmButton = document.getElementById("confirm_edit_button_email");
+            confirmButton.innerHTML = '<img id="check_email"  src="static/img/check.png" width="30">';
+            email = email_value.value
+            // console.log(email)
+        })
+        $("#confirm_edit_button_name").click(function(){
+            // console.log("11")
+            var name_value = document.getElementById("name_value")
+            var confirmButton = document.getElementById("confirm_edit_button_name");
+            confirmButton.innerHTML = '<img id="check_name"  src="static/img/check.png" width="30">';
+            name = name_value.value
+            // console.log(email)
+        })
+        $("#confirm_edit_button_password").click(function(){
+            // console.log("11")
+            var name_value = document.getElementById("password_value")
+            var confirmButton = document.getElementById("confirm_edit_button_password");
+            confirmButton.innerHTML = '<img id="check_password"  src="static/img/check.png" width="30">';
+            password = password_value.value
+            // console.log(email)
+        })
+        $("#go_edit").click(function(){
+            $('#div_check_password').toggle('fast')
 
+            
+        })
+        $("#check_password").click(function(){
+            var values = document.getElementById("Enter_password").value
+            
+            var formData = {"password":values}  
+            console.log(formData,"1111")
+            $.post("/checkpassword", formData, function (response) {
+            if (response.ans) {
+                $('#form').removeAttr('hidden');
+                $('#to_edit').attr('hidden', 'hidden');
+                $('#edit_button_name').removeAttr('hidden');
+                $('#edit_button_email').removeAttr('hidden');
+                $('#edit_button_password').removeAttr('hidden');
+                $('#edit_button').removeAttr('hidden');
+            } else {
+                alert("Password not correct!");
+            }
+        })
+        })
+        $("#cancel").click(function(){
+            location.reload()
+        })
+        $("#submitt").click(function(){
+
+            var formData={"email":email,"name":name,"avatar_url":avatar,"password":password}
+            $.post("/update", formData, function () {
+                location.reload()
+            });
+        })
     </script>    
     
 {% endblock %}

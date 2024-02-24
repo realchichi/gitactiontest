@@ -34,7 +34,8 @@ class Account(db.Model, UserMixin,SerializerMixin):
         self.password = password
         self.name = name
         self.avatar_url = avatar_url
-    def update(self, email,password,name):
+    def update(self, email,avatar_url,name,password):
         self.email = email
-        self.password = password
+        self.avatar_url = avatar_url
         self.name = name
+        self.password = password

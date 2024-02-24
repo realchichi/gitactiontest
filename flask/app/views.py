@@ -124,9 +124,7 @@ def validate_user():
 @app.route("/login",methods=('GET','POST'))
 def login():
     logout_user()
-    print(current_user.is_authenticated,"1111111111111111111111111111111")
     if request.method == 'POST':
-        print(current_user.is_authenticated,"000000000000000000000000000000000")
 
         email = request.form.get('email')
         password = request.form.get('password')
@@ -138,7 +136,6 @@ def login():
             return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('landing'))
-    print(current_user.is_authenticated,"222222222222222222222222222222")
 
     return render_template('login.html')
 
@@ -253,9 +250,38 @@ def signup():
 
 @app.route("/signup/data")
 def si():
-    db_contacts = Account.query.all()
-    contacts = list(map(lambda x: x.to_dict(), db_contacts))
+    db_accounts = Account.query.all()
+    accounts = list(map(lambda x: x.to_dict(), db_accounts))
 
-    app.logger.debug(f"DB Contacts: {contacts}")
+    # app.logger.debug(f"DB Contacts: {accounts}")
 
-    return jsonify(contacts)
+    return jsonify(accounts)
+
+@app.route("/update",methods=('POST','GET'))
+def update():
+
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        email = result.get('email','')
+        name = result.get('name','')
+        avatar = result.get('avatar_url','')
+        password = result.get('password','')
+        accounts = Account.query.get(current_user.id)
+        if password == '':
+            password = current_user.password
+        accounts.update(email=email,name=name, avatar_url=avatar,password=generate_password_hash(password, method='sha256'))
+        db.session.commit()
+    return redirect(url_for('profile'))
+
+@app.route("/checkpassword",methods=('GET','POST'))
+def hw10_update():
+    ans={"ans":False}
+    if request.method == "POST":
+        result = request.form.to_dict()
+        password = result.get('password','')
+        contact = Account.query.get(current_user.id)
+        if check_password_hash(contact.password,password):
+            ans["ans"]=True
+            return ans
+    return ans
+

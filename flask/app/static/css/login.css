@@ -10,6 +10,15 @@ body {
     /* align-items: center; */
     
 }
+#edit_email, #edit_button_email {
+        display: inline;
+    }
+#edit_name, #edit_button_name {
+        display: inline;
+    }
+#edit_password, #edit_button_password {
+        display: inline;
+    }
 #edit_profile{
     text-align: center;
     margin: auto;
@@ -28,7 +37,13 @@ body {
     color: white;
 /*    transition: background-color 1s ease;*/
 }
-
+#go_edit,#submitt,#cancel{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
 #edit_button{
     border-radius: 15px;
 /*    margin-top: 10%;*/
@@ -40,8 +55,10 @@ body {
 }
 .text-show{
     margin-top: 10%;
-    text-align: center;
+    text-align: left;
 /*    background-color: blue;*/
+    margin-left: 20%;
+    margin-bottom: 20%;
 }
 #select_avatar{
     background-color: whitesmoke;
@@ -55,9 +72,7 @@ body {
     margin-left: 4%;
 }
 
-#text-show{
-    
-}
+
 input[type=text],
 input[type=password],
 input[type=email],
