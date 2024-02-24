@@ -10,7 +10,6 @@ class History(db.Model, SerializerMixin):
 	account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
 	idendtfied_date = db.Column(db.DateTime)
 	idendtfied_img = db.Column(db.String(100))
-	is_removed = db.Column(db.Boolean(), default=False)
 	removed_date = db.Column(db.DateTime)
 	removed_by = db.Column(db.String(100))
 	def __init__(self, plant_id, account_id, idendtfied_date, idendtfied_img):
@@ -21,6 +20,5 @@ class History(db.Model, SerializerMixin):
 
 
 	def remove_history(self, account_id):
-		self.is_removed = True
 		self.removed_date = datetime.now(timezone.utc)
 		self.removed_by = account_id
