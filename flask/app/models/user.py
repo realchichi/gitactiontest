@@ -19,8 +19,8 @@ from flask_login import UserMixin
 #     def update(self, email, password):
 #        	self.email = email
 #     	self.password = password
-class User(db.Model, UserMixin):
-    __tablename__ = "users"
+class Account(db.Model, UserMixin):
+    __tablename__ = "accounts"
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50))

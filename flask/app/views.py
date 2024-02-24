@@ -13,12 +13,12 @@ from app import app
 
 from app import db
 # from sqlalchemy.sql import text
-from app.models.user import User
+from app.models.user import Account
 from app import login_manager
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return Account.query.get(int(user_id))
 
 READY = False
 
@@ -103,7 +103,7 @@ def camera_access():
 
 @app.route("/user")
 def user():
-    db_users = User.query.all()
+    db_users = Account.query.all()
     user = list(map(lambda x: x.to_dict(), db_users))
     return jsonify(user)
 
@@ -123,7 +123,7 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        user = User.query.filter_by(email=email).first()
+        user = Account.query.filter_by(email=email).first()
         remember = bool(request.form.get('is_active'))
         print(user.id,"lllllllllllllllllllllllllllll")
         if not user or not check_password_hash(user.password, password):
@@ -205,7 +205,7 @@ def get_data(res):
 
 
 @app.route("/search")
-def test3():
+def search():
    return render_template("search.html")
 
 @app.route("/signup", methods=('GET', 'POST'))
@@ -230,12 +230,12 @@ def signup():
             email = validated_dict['email']
             name = validated_dict['name']
             password = validated_dict['password']
-            user = User.query.filter_by(email=email).first()
+            user = Account.query.filter_by(email=email).first()
             if user:
                 print("4444444444")
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
-            new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'))
             db.session.add(new_user)
             print("5555555555555555")
             db.session.commit()
@@ -251,7 +251,7 @@ def signup():
 
 @app.route("/signup/data")
 def si():
-    db_contacts = User.query.all()
+    db_contacts = Account.query.all()
     contacts = list(map(lambda x: x.to_dict(), db_contacts))
 
     app.logger.debug(f"DB Contacts: {contacts}")
