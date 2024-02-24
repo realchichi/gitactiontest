@@ -6,15 +6,20 @@ from app.forms import forms
 # from flask_wtf import FlaskForm
 from flask import (jsonify, render_template,request, url_for, flash, redirect)
 from werkzeug.security import generate_password_hash,check_password_hash
-
+from flask_login import login_user, login_required, logout_user,current_user, LoginManager
+import requests
 import psycopg2
 from app import app
 
 from app import db
 # from sqlalchemy.sql import text
 from app.models.accounts import Account
+from app import login_manager
 
-READY = False
+@login_manager.user_loader
+def load_user(user_id):
+    return Account.query.get(int(user_id))
+
 
 def read_file(filename, mode="rt"):
     with open(filename, mode, encoding='utf-8') as fin:
@@ -60,40 +65,7 @@ def camera_access():
     return render_template("camera.html")
 
 
-# @app.route("/api")
-# def call_api():
-#     if READY:
-#       with open('static/img/photo1.jpg', 'rb') as file:
-#           images = [base64.b64encode(file.read()).decode('ascii')]
 
-#       type_iden = ["health_assessment","identification"]
-
-#       url_iden = "https://plant.id/api/v3/" + type_iden[1]
-#       DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
-#       q_iden = "?details=" + DETAILS +"&language=en"
-#       url_iden += q_iden
-
-#       payload = json.dumps({
-#         "images": ["data:image/jpg;base64," + images[0]],
-#         "similar_images": "true"
-#       })
-#       headers = {
-#         'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
-#         'Content-Type': 'application/json'
-#       }
-
-#       response = requests.request("POST", url_iden, headers=headers, data=payload)
-
-#   # list_data = get_data(response)
-
-#       raw_data = read_file("app/sandbox/Tle_sandbox/fake_data.txt")
-#       fake_data = list(map(lambda x : get_data(eval(x)), raw_data))
-#   # list_data = 
-#   # db_plant = 
-#   # print(fake_data)
-
-
-#   return render_template("temp.html", data=fake_data)
 
 @app.route("/user")
 def user():
@@ -114,94 +86,99 @@ def validate_user():
 
 @app.route("/login",methods=('GET','POST'))
 def login():
-    print("00000000000000000000000000000000000")
     if request.method == 'POST':
-        print("*********************************")
         email = request.form.get('email')
         password = request.form.get('password')
         user = Account.query.filter_by(email=email).first()
+
+        remember = bool(request.form.get('is_active'))
+        print(user.id,"lllllllllllllllllllllllllllll")
+
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
             return redirect(url_for('login'))
-        login_user(user)
+        login_user(user,remember=remember)
+
         return redirect(url_for('landing'))
 
-    print("pppppppppppppppppppppppppppppp")
     return render_template('login.html')
 
 @app.route("/faqs")
 def feqs():
     return render_template("faqs.html")
 
+
 # Written by Wachirapong
 # To call API
 @app.route("/api")
 def call_api():
-    # if READY:
-    #     with open('static/img/photo1.jpg', 'rb') as file:
-    #         images = [base64.b64encode(file.read()).decode('ascii')]
+    with open('app/static/img/longan1.jpg', 'rb') as file:
+        images = [base64.b64encode(file.read()).decode('ascii')]
 
-    #     type_iden = ["health_assessment","identification"]
+    url = "https://plant.id/api/v3/identification"
+    DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
+    query = "?details=" + DETAILS +"&language=th"
+    url += query
 
-    #     url_iden = "https://plant.id/api/v3/" + type_iden[1]
-    #     DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
-    #     q_iden = "?details=" + DETAILS +"&language=en"
-    #     url_iden += q_iden
-
-    #     payload = json.dumps({
-    #         "images": ["data:image/jpg;base64," + images[0]],
-    #         "similar_images": "true"
-    #     })
-    #     headers = {
-    #         'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
-    #         'Content-Type': 'application/json'
-    #     }
-
-    #     response = requests.request("POST", url_iden, headers=headers, data=payload)
-
-  # list_data = get_data(response)
-
-    raw_data = read_file("app/sandbox/Tle_sandbox/fake_data.txt")
-    data_list = eval(raw_data)
-    
-    fake_data = list(map(lambda x : get_data(x), data_list))
-    # list_data = 
-    # db_plant = 
-    # print(fake_data)
-
-
-    return render_template("plant_data.html", data=fake_data)
+    payload = json.dumps({
+        "images": ["data:image/jpg;base64," + images[0]],
+        "similar_images": True
+    })
+    headers = {
+        'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
+        'Content-Type': 'application/json'
+    }
+    # if u need to call API use these 2 lines
+    # response = requests.request("POST", url, headers=headers, data=payload)
+    # list_data = get_data(json.loads(response.text))
+    # these 2 lines for temp data
+    raw_data = read_file("app/sandbox/data.txt")
+    list_data = eval(raw_data)
+    return render_template("plant_data.html", data=list_data)
 
 
 # Written by Wachirapong
-# To get data from API that we need to list
-def get_data(res):
-    is_plant = res["result"]["is_plant"]["probability"]
-    name = res["result"]["classification"]["suggestions"]
-    dict_val = {"is_plant":is_plant}
-
+# To get data from API that we need into list
+def get_data(data):
+    name = data["result"]["classification"]["suggestions"]
     list_data = []
+    count = 0
     for val in name:
-        dict_val["name"] = val["name"]
-        dict_val["img"] = val["details"]["image"]["value"]
-        dict_val["description"] = val["details"]["description"]["value"]
-        dict_val["url"] = val["details"]["url"]
-        dict_val["taxonomy"] = val["details"]["taxonomy"]
-        dict_val["common_name"] = val["details"]["common_names"]
-        dict_val["similar_img"] = val["similar_images"]
-        dict_val["probability"] = val["probability"]
-
+        dict_val = {}
+        if count == 5:
+            break
+        dict_val["name"] = val.get("name", "N/A")
+        dict_val["url_image"] = val["details"]["image"].get("value", "N/A")
+        # print(val["details"]["description"])
+        if val["details"]["description"]:
+            dict_val["description"] = val["details"]["description"]["value"]
+        else:
+            dict_val["description"] = "N/A"
+        dict_val["wiki_url"] = val["details"].get("url", "N/A")
+        dict_val["taxonomy"] = val["details"].get("taxonomy", "N/A")
+        dict_val["common_name"] = val["details"].get("common_names", "N/A")
+        dict_val["similar_images"] = []
+        count_img = 0
+        for simi_img in val["similar_images"]:
+            if count_img == 3:
+                break
+            dict_val["similar_images"].append(simi_img["url"])
+            count_img += 1
+        dict_val["probability"] = val.get("probability", "N/A")
+        count += 1
         list_data.append(dict_val)
     return list_data
 
 
 @app.route("/search")
-def test3():
+def search():
    return render_template("search.html")
 
 @app.route("/signup", methods=('GET', 'POST'))
 def signup():
+    print("1111111111111111111")
     if request.method == 'POST':
+        print("2222222222222222")
         result = request.form.to_dict()
         validated = True
         validated_dict = {}
@@ -215,20 +192,23 @@ def signup():
                 break
             validated_dict[key] = value
         if validated:
+            print("333333333333333")
             email = validated_dict['email']
             name = validated_dict['name']
             password = validated_dict['password']
             user = Account.query.filter_by(email=email).first()
             if user:
+                print("4444444444")
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
             new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'))
             db.session.add(new_user)
+            print("5555555555555555")
             db.session.commit()
             return redirect(url_for('login'))  # เปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ
         else:
             flash('Please check your input and try again.')  # เพิ่มข้อความแจ้งเตือนหากข้อมูลไม่ถูกต้อง
-            return redirect(url_for('signup'))  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
+            return redirect({{url_for('signup')}})  # เปลี่ยนเส้นทางไปยังหน้าลงทะเบียนอีกครั้ง
     return render_template("signup.html")
 
 

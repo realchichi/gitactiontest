@@ -1,98 +1,829 @@
-[{
-  "access_token": "NQ9ErOcn2A3QTsH",
-  "model_version": "plant_id:3.4.1",
-  "custom_id": "null",
+[
+{
+  "access_token": "yZO7oDJoOJeUs4w",
+  "model_version": "plant_id:3.6.0",
+  "custom_id": null,
   "input": {
-    "latitude": "null",
-    "longitude": "null",
-    "similar_images": "true",
+    "latitude": null,
+    "longitude": null,
+    "similar_images": true,
     "images": [
-      "https://plant.id/media/imgs/08b9062e640a4200aabf16f1f29f6ee3.jpg"
+      "https://plant.id/media/imgs/7af146abbebe4df390fcfaa09ea7c0f6.jpg"
     ],
-    "datetime": "2024-01-29T18:22:49.127406+00:00"
+    "datetime": "2024-02-20T15:51:40.942643+00:00"
   },
   "result": {
-    "is_plant": {
-      "probability": 0.99992275,
-      "binary": "true",
-      "threshold": 0.5
-    },
     "classification": {
       "suggestions": [
         {
-          "id": "f12b23ca000d0506",
-          "name": "Epipremnum aureum",
-          "probability": 0.99,
+          "id": "3ee61a3830229229",
+          "name": "Dimocarpus longan",
+          "probability": 0.4985,
           "similar_images": [
             {
-              "id": "ae74da534b854b5bb274c8f48a50e4d2702332ce",
-              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/ae7/4da534b854b5bb274c8f48a50e4d2702332ce.jpeg",
-              "similarity": 0.83,
-              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/ae7/4da534b854b5bb274c8f48a50e4d2702332ce.small.jpeg"
+              "id": "87818cf02612d9d93f57148dff57b5c33002fb22",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/878/18cf02612d9d93f57148dff57b5c33002fb22.jpeg",
+              "license_name": "CC BY-SA 4.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+              "citation": "florent Palach",
+              "similarity": 0.671,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/878/18cf02612d9d93f57148dff57b5c33002fb22.small.jpeg"
             },
             {
-              "id": "13e5a7c86224ce3e4c217553e2235bdc4d362972",
-              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/13e/5a7c86224ce3e4c217553e2235bdc4d362972.jpeg",
-              "similarity": 0.807,
-              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/13e/5a7c86224ce3e4c217553e2235bdc4d362972.small.jpeg"
+              "id": "6fe31193a977ea77f13142dd2041f53b5d617df1",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/6fe/31193a977ea77f13142dd2041f53b5d617df1.jpeg",
+              "license_name": "CC BY-SA 4.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+              "citation": "- Mecky",
+              "similarity": 0.631,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/6fe/31193a977ea77f13142dd2041f53b5d617df1.small.jpeg"
             }
           ],
           "details": {
             "common_names": [
-              "Golden Pothos",
-              "Ivy-arum",
-              "Silver Vine",
-              "Taro vine",
-              "Money Plant",
-              "Devil's-Ivy"
+              "ลำไย"
             ],
             "taxonomy": {
-              "class": "Liliopsida",
-              "genus": "Epipremnum",
-              "order": "Alismatales",
-              "family": "Araceae",
+              "class": "Magnoliopsida",
+              "genus": "Dimocarpus",
+              "order": "Sapindales",
+              "family": "Sapindaceae",
               "phylum": "Tracheophyta",
               "kingdom": "Plantae"
             },
-            "url": "https://en.wikipedia.org/wiki/Epipremnum_aureum",
-            "gbif_id": 2868323,
-            "inaturalist_id": 69223,
+            "url": "https://th.wikipedia.org/wiki/ลำไย",
+            "gbif_id": 3190008,
+            "inaturalist_id": 191503,
             "rank": "species",
             "description": {
-              "value": "Epipremnum aureum is a species in the arum family Araceae, native to Mo'orea in the Society Islands of French Polynesia. The species is a popular houseplant in temperate regions but has also become naturalised in tropical and sub-tropical forests worldwide, including northern South Africa, Australia, Southeast Asia, South Asia, the Pacific Islands and the West Indies, where it has caused severe ecological damage in some cases.The plant has a number of common names including golden pothos, Ceylon creeper, hunter's robe, ivy arum, house plant, money plant, silver vine, Solomon Islands ivy, marble queen, and taro vine. It is also called devil's vine or devil's ivy because it is almost impossible to kill and it stays green even when kept in the dark. It is sometimes mistakenly labeled as a Philodendron, Pothos or Scindapsus in plant stores. It is commonly known as a money plant in many parts of the Indian subcontinent. It rarely flowers without artificial hormone supplements; the last known spontaneous flowering in cultivation was reported in 1964.The plant has gained the Royal Horticultural Society's Award of Garden Merit.",
-              "citation": "https://en.wikipedia.org/wiki/Epipremnum_aureum",
+              "value": "ลำไย (ชื่อวิทยาศาสตร์: Dimocarpus longan, มักเขียนผิดเป็น ลำใย) มีชื่อเรียกทางพื้นบ้านภาคเหนือว่า \"บ่าลำไย\" ชื่อภาษาอังกฤษว่า Longan อยู่ในวงศ์ Sapindaceae เป็นพืชไม้ผลเขตร้อนและกึ่งร้อน เป็นไม้ยืนต้นขนาดกลาง ลำต้นสีน้ำตาล ออกดอกเป็นช่อ สีขาวครีม ผลทรงกลมเป็นช่อ ผลดิบเปลือกสีน้ำตาลอมเขียว ผลสุกสีน้ำตาลล้วน เนื้อลำไยสีขาวหรือชมพูอ่อน เมล็ดสีดำเป็นมัน เนื้อล่อนเม็ด",
+              "citation": "https://th.wikipedia.org/wiki/ลำไย",
               "license_name": "CC BY-SA 3.0",
               "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
             },
             "synonyms": [
-              "Epipremnum mooreense",
-              "Pothos aureus",
-              "Rhaphidophora aurea",
-              "Scindapsus aureum",
-              "Scindapsus aureus"
+              "Dimocarpus longana",
+              "Dimocarpus longus",
+              "Euphoria echinulata",
+              "Euphoria longan",
+              "Euphoria longana",
+              "Euphoria longana var. obtusa",
+              "Nephelium echinulatum",
+              "Nephelium longan",
+              "Scytalia longan"
             ],
             "image": {
-              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikidata/401/40124b6396a64bf855b2ee2875118b0b127489bb.jpg",
-              "citation": "//commons.wikimedia.org/wiki/User:Joydeep",
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikidata/2ed/2ed927498c0bbb1112302919596f6ef67161e655.jpg",
+              "citation": "//commons.wikimedia.org/wiki/User:B%C3%B9i_Th%E1%BB%A5y_%C4%90%C3%A0o_Nguy%C3%AAn",
               "license_name": "CC BY-SA 3.0",
               "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
             },
-            "edible_parts": "null",
+            "edible_parts": [
+              "fruit"
+            ],
+            "watering": null,
+            "propagation_methods": [
+              "grafting"
+            ],
+            "language": "th",
+            "entity_id": "3ee61a3830229229"
+          }
+        },
+        {
+          "id": "4d44de20e8316540",
+          "name": "Litchi chinensis",
+          "probability": 0.1534,
+          "similar_images": [
+            {
+              "id": "350f56cc58c759d03713947e1461d41383fee31d",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/350/f56cc58c759d03713947e1461d41383fee31d.jpeg",
+              "license_name": "CC BY-SA 4.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+              "citation": "vivek goel",
+              "similarity": 0.736,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/350/f56cc58c759d03713947e1461d41383fee31d.small.jpeg"
+            },
+            {
+              "id": "7575c121d3e380f50ed7904d931cdea51a17420e",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/757/5c121d3e380f50ed7904d931cdea51a17420e.jpeg",
+              "license_name": "CC BY 4.0",
+              "license_url": "https://creativecommons.org/licenses/by/4.0/",
+              "citation": "Augustin Soulard",
+              "similarity": 0.617,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/757/5c121d3e380f50ed7904d931cdea51a17420e.small.jpeg"
+            }
+          ],
+          "details": {
+            "common_names": [
+              "ลิ้นจี่"
+            ],
+            "taxonomy": {
+              "class": "Magnoliopsida",
+              "genus": "Litchi",
+              "order": "Sapindales",
+              "family": "Sapindaceae",
+              "phylum": "Tracheophyta",
+              "kingdom": "Plantae"
+            },
+            "url": "https://th.wikipedia.org/wiki/ลิ้นจี่",
+            "gbif_id": 3190002,
+            "inaturalist_id": 223964,
+            "rank": "species",
+            "description": {
+              "value": "ลิ้นจี่ เป็นชื่อของผลไม้ประเภทผลเดี่ยวซึ่งมีลักษณะเปลือกสีแดงชนิดหนึ่งที่อยู่ในวงศ์ SAPINDACEAE (ซึ่งก็คือวงศ์เดียวกับเงาะและลำไยนั้นเอง) ลิ้นจี่นั้นเป็นผลไม้ที่มีรสชาติอร่อยให้ผลผลิตคุ้มค่ากับการลงทุนจึงถือว่าเป็นผลไม้ทางเศรษฐกิจที่สำคัญของประเทศไทยที่สามารถนำผลผลิตที่ได้มาจำหน่ายในรูปของผลไม้สดและผลไม้แปรรูป ปัจจุบันนี้ลิ้นจี่ได้รับการพัฒนาสายพันธุ์ให้มีความหลากหลายขึ้นเรื่อย ๆ จากสายพันธุ์ดั้งเดิมที่มีอยู่แล้ว\nลิ้นจี่ถูกกล่าวถึงในประวัติศาสตร์จีนในสมัยราชวงศ์ถัง โดยเป็นผลไม้โปรดของหยางกุ้ยเฟย พระสนมของจักรพรรดิถังเสวียนจง ทรงบัญชาให้ทหารม้านำลิ้นจี่จากแหล่งปลูกทางตอนใต้ของจีน เดินทางข้ามวันข้ามคืนมาถวายที่ฉางอาน\nเปลือกผลของลิ้นจี่มีฤทธิ์ต้านอนุมูลอิสระ",
+              "citation": "https://th.wikipedia.org/wiki/ลิ้นจี่",
+              "license_name": "CC BY-SA 3.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+            },
+            "synonyms": [
+              "Euphoria litchi var. undulata",
+              "Laetjii chinensis",
+              "Nephelium chinense",
+              "Nephelium dimocarpus",
+              "Nephelium duriocarpum",
+              "Nephelium litchi",
+              "Scytalia chinensis",
+              "Scytalia litchi"
+            ],
+            "image": {
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikidata/b28/b283b44e7e526cab757a391a4fb92a7358355fc1.jpg",
+              "citation": "https://www.flickr.com/people/97499887@N06",
+              "license_name": "CC BY 3.0",
+              "license_url": "https://creativecommons.org/licenses/by/3.0/"
+            },
+            "edible_parts": [
+              "fruit"
+            ],
+            "watering": null,
+            "propagation_methods": [
+              "cuttings",
+              "seeds"
+            ],
+            "language": "th",
+            "entity_id": "4d44de20e8316540"
+          }
+        },
+        {
+          "id": "49f7c500df819c21",
+          "name": "Saraca asoca",
+          "probability": 0.0614,
+          "similar_images": [
+            {
+              "id": "39320cde261729d58cd650f4b4df2d20fe002db1",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/393/20cde261729d58cd650f4b4df2d20fe002db1.jpeg",
+              "license_name": "CC BY-SA 4.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+              "citation": "Vikram Kumar",
+              "similarity": 0.796,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/393/20cde261729d58cd650f4b4df2d20fe002db1.small.jpeg"
+            },
+            {
+              "id": "9a7c2e212e6f9097b57c54efd376917f1f41e934",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/9a7/c2e212e6f9097b57c54efd376917f1f41e934.jpeg",
+              "license_name": "CC BY 4.0",
+              "license_url": "https://creativecommons.org/licenses/by/4.0/",
+              "citation": "Siddarth Machado",
+              "similarity": 0.628,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/9a7/c2e212e6f9097b57c54efd376917f1f41e934.small.jpeg"
+            }
+          ],
+          "details": {
+            "common_names": [
+              "โสกน้ำ"
+            ],
+            "taxonomy": {
+              "class": "Magnoliopsida",
+              "genus": "Saraca",
+              "order": "Fabales",
+              "family": "Fabaceae",
+              "phylum": "Tracheophyta",
+              "kingdom": "Plantae"
+            },
+            "url": "https://th.wikipedia.org/wiki/อโศกน้ำ",
+            "gbif_id": 7458904,
+            "inaturalist_id": 181406,
+            "rank": "species",
+            "description": {
+              "value": "อโศกน้ำ, โสก หรือ โสกน้ำ (อังกฤษ: Ashoka tree; ชื่อวิทยาศาสตร์: Saraca asoca; บางครั้งใช้ผิดเป็น Saraca indica) เป็นพืชในวงศ์ถั่ว (Fabaceae) วงศ์ย่อยราชพฤกษ์ (Caesalpinioideae) มีถิ่นกำเนิดในอินเดียและศรีลังกา เป็นไม้ยืนต้น สูงได้ถึง 20 เมตร ใบประกอบแบบขนนกปลายคู่ เรียงสลับ ยาว 10-15 เซนติเมตร ใบย่อย 1-7 คู่ เรียงสลับรูปใบหอก กว้าง 2-10 เซนติเมตร ยาว 5-30 เซนติเมตร ปลายใบแหลม โคนใบมน รูปลิ่ม แผ่นใบหนา ดอกสีส้มหรือแดง ออกเป็นช่อแบบช่อเชิงหลั่นที่ปลายกิ่ง กลีบเลี้ยงเป็นหลอดเรียว ยาวประมาณ1-2 เซนติเมตร บริเวณปลายแยกเป็น 4 แฉก รูปไข่กลับแกมรูปขอบขนาน ปลายมน ผลแห้งแตก เป็นฝักทรงแบน กว้าง 2-6 เซนติเมตร ยาว 6-30 เซนติเมตร เมื่อแก่แตกเป็น 2 ซีก เมล็ดรูปไข่ แบน มี 1-3 เมล็ดอโศกน้ำนิยมปลูกเป็นไม้ประดับ ยอดอ่อนและดอกสามารถรับประทานได้ โดยดอกมีรสเปรี้ยวอมฝาด ช่วยขับเสมหะ เปลือกต้นมีฤทธิ์ต้านเชื้อแบคทีเรีย เช่น Escherichia coli, Pseudomonas aeruginosa และ Staphylococcus aureus",
+              "citation": "https://th.wikipedia.org/wiki/อโศกน้ำ",
+              "license_name": "CC BY-SA 3.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+            },
+            "synonyms": [
+              "Jonesia asoca",
+              "Jonesia confusa",
+              "SH1322447.09FU",
+              "SH1327973.09FU",
+              "SH1511091.08FU",
+              "Saraca asoca",
+              "Saraca confusa",
+              "Saraca indica"
+            ],
+            "image": {
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikidata/e41/e41230e75505f73efd678daf5b0cef7fdca1f2ed.jpg",
+              "citation": "//commons.wikimedia.org/wiki/User:J.M.Garg",
+              "license_name": "CC BY-SA 3.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+            },
+            "edible_parts": null,
+            "watering": null,
+            "propagation_methods": [
+              "cuttings",
+              "seeds"
+            ],
+            "language": "th",
+            "entity_id": "49f7c500df819c21"
+          }
+        },
+        {
+          "id": "8007e6d5c38835d2",
+          "name": "Guarea",
+          "probability": 0.0604,
+          "similar_images": [
+            {
+              "id": "11835997df39c9dfd9a811de75be8552d1ea08bb",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/118/35997df39c9dfd9a811de75be8552d1ea08bb.jpg",
+              "license_name": "CC0",
+              "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+              "citation": "Al Kordesch",
+              "similarity": 0.643,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/118/35997df39c9dfd9a811de75be8552d1ea08bb.small.jpg"
+            },
+            {
+              "id": "983b744bf804b6a829a29153362732d0006918e5",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/983/b744bf804b6a829a29153362732d0006918e5.jpeg",
+              "license_name": "CC BY 4.0",
+              "license_url": "https://creativecommons.org/licenses/by/4.0/",
+              "citation": "Jens-Christian Svenning",
+              "similarity": 0.608,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/983/b744bf804b6a829a29153362732d0006918e5.small.jpeg"
+            }
+          ],
+          "details": {
+            "common_names": null,
+            "taxonomy": {
+              "class": "Magnoliopsida",
+              "genus": "Guarea",
+              "order": "Sapindales",
+              "family": "Meliaceae",
+              "phylum": "Tracheophyta",
+              "kingdom": "Plantae"
+            },
+            "url": "https://en.wikipedia.org/wiki/Guarea",
+            "gbif_id": 3190499,
+            "inaturalist_id": 83921,
+            "rank": "genus",
+            "description": null,
+            "synonyms": [
+              "Plumea",
+              "Samyda",
+              "Sycocarpus",
+              "Urbanoguarea"
+            ],
+            "image": {
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikidata/919/919580b532f7f30c41681ac91e58001680ee7e79.jpg",
+              "citation": null,
+              "license_name": "CC0",
+              "license_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+            },
+            "edible_parts": null,
+            "watering": null,
+            "propagation_methods": null,
+            "language": "th",
+            "entity_id": "8007e6d5c38835d2"
+          }
+        },
+        {
+          "id": "81c217f36abb15ba",
+          "name": "Magnolia",
+          "probability": 0.0424,
+          "similar_images": [
+            {
+              "id": "c0d49b654dc533395359e190d35b3d3f487c0e3f",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/c0d/49b654dc533395359e190d35b3d3f487c0e3f.jpeg",
+              "similarity": 0.621,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/c0d/49b654dc533395359e190d35b3d3f487c0e3f.small.jpeg"
+            },
+            {
+              "id": "d123fff4e1fd3b7ac38fbb2fc21fb1d6913ac4bd",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/d12/3fff4e1fd3b7ac38fbb2fc21fb1d6913ac4bd.jpeg",
+              "similarity": 0.569,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/d12/3fff4e1fd3b7ac38fbb2fc21fb1d6913ac4bd.small.jpeg"
+            }
+          ],
+          "details": {
+            "common_names": [
+              "สกุล จำปา"
+            ],
+            "taxonomy": {
+              "class": "Magnoliopsida",
+              "genus": "Magnolia",
+              "order": "Magnoliales",
+              "family": "Magnoliaceae",
+              "phylum": "Tracheophyta",
+              "kingdom": "Plantae"
+            },
+            "url": "https://th.wikipedia.org/wiki/แมกโนเลีย",
+            "gbif_id": 2888195,
+            "inaturalist_id": 82096,
+            "rank": "genus",
+            "description": {
+              "value": "สกุลแมกโนเลีย (อังกฤษ: magnolia) เป็นพืชดอกในวงศ์จำปีที่มีด้วยกันทั้งหมดราว 210 สปีชีส์ สกุลของพืชตั้งตามชื่อนักชีววิทยาชาวฝรั่งเศสชื่อปีแยร์ มาญอล (Pierre Magnol)\nถิ่นกำเนิดของแมกโนเลียอยู่ทางตอนกลางของเอเชียตะวันออกและเอเชียตะวันออกเฉียงใต้ รวมถึงในทวีปอเมริกา\nแมกโนเลียเป็นสกุลไม้โบราณที่วิวัฒนาการขึ้นมาก่อนที่จะมีผึ้ง รูปทรงของดอกจึงเป็นทรงที่ล่อให้ด้วงมาช่วยผสมพันธุ์ ฉะนั้นเกสรตัวเมีย (carpel) จึงค่อนข้างแข็งแรงเพื่อป้องกันความเสียหายจากการถูกปีนและถูกแทะโดยด้วง ซากดึกดำบรรพ์ของ Magnolia acuminata ที่พบมีอายุกว่า 20 ล้านปีและพืชที่เป็นของวงศ์จำปีมีอายุกว่า 95 ล้านปี ลักษณะอีกอย่างหนึ่งแสดงว่าเป็นพันธุ์ไม้โบราณคือการขาดลักษณะแตกต่างของกลีบเลี้ยง (sepal) หรือกลีบดอก (petal)",
+              "citation": "https://th.wikipedia.org/wiki/แมกโนเลีย",
+              "license_name": "CC BY-SA 3.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+            },
+            "synonyms": [
+              "Alcimandra",
+              "Aromadendron",
+              "Blumia",
+              "Buergeria",
+              "Champaca",
+              "Dugandiodendron",
+              "Elmerrillia",
+              "Guillimia",
+              "Gwillimia",
+              "Houpoea",
+              "Kmeria",
+              "Kobus",
+              "Lassonia",
+              "Lirianthe",
+              "Liriopsis",
+              "Manglietia",
+              "Manglietiastrum",
+              "Metamagnolia",
+              "Michelia",
+              "Micheliopsis",
+              "Oyama",
+              "Pachylarnax",
+              "Parakmeria",
+              "Paramagnolia",
+              "Paramanglieta",
+              "Paramanglietia",
+              "Paramichelia",
+              "Sampacca",
+              "Santanderia",
+              "Sinomanglietia",
+              "Sphenocarpus",
+              "Svenhedinia",
+              "Talauma",
+              "Tsoongiodendron",
+              "Tulipastrum",
+              "Woonyoungia",
+              "Yulania"
+            ],
+            "image": {
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikidata/f87/f8739474caf84e6ad7cd62173783b22e7aaf6d15.jpg",
+              "citation": null,
+              "license_name": "CC0",
+              "license_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+            },
+            "edible_parts": null,
             "watering": {
               "max": 2,
               "min": 2
             },
-            "propagation_methods": "null",
-            "language": "en",
-            "entity_id": "f12b23ca000d0506"
+            "propagation_methods": null,
+            "language": "th",
+            "entity_id": "81c217f36abb15ba"
+          }
+        },
+        {
+          "id": "17f44f9ce86e45f0",
+          "name": "Moquilea platypus",
+          "probability": 0.0335,
+          "similar_images": [
+            {
+              "id": "dedb8136aca91a0db72b0fdbe50e88767aabf43f",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/ded/b8136aca91a0db72b0fdbe50e88767aabf43f.jpeg",
+              "license_name": "CC BY-SA 4.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+              "citation": "Daniel González Cordero",
+              "similarity": 0.642,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/ded/b8136aca91a0db72b0fdbe50e88767aabf43f.small.jpeg"
+            },
+            {
+              "id": "280c0f4edb0e3f7f2144ecbaea2c43fab0d7368e",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/280/c0f4edb0e3f7f2144ecbaea2c43fab0d7368e.jpeg",
+              "license_name": "CC BY-NC-SA 4.0",
+              "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+              "citation": "OTS - Oviedo-Brenes, Federico",
+              "similarity": 0.57,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/280/c0f4edb0e3f7f2144ecbaea2c43fab0d7368e.small.jpeg"
+            }
+          ],
+          "details": {
+            "common_names": null,
+            "taxonomy": {
+              "class": "Magnoliopsida",
+              "genus": "Moquilea",
+              "order": "Malpighiales",
+              "family": "Chrysobalanaceae",
+              "phylum": "Tracheophyta",
+              "kingdom": "Plantae"
+            },
+            "url": "https://en.wikipedia.org/wiki/Licania_platypus",
+            "gbif_id": 2985306,
+            "inaturalist_id": 1451555,
+            "rank": "species",
+            "description": null,
+            "synonyms": [
+              "Licania platypus"
+            ],
+            "image": {
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikipedia/27a/27a688fe3c38217b73a1e47cb7dcff058b014c6f.jpg",
+              "citation": "https://www.inaturalist.org/photos/85593032",
+              "license_name": "CC BY 4.0",
+              "license_url": "https://creativecommons.org/licenses/by/4.0/"
+            },
+            "edible_parts": null,
+            "watering": null,
+            "propagation_methods": [
+              "seeds"
+            ],
+            "language": "th",
+            "entity_id": "17f44f9ce86e45f0"
+          }
+        },
+        {
+          "id": "77ec4a6e6903e9a9",
+          "name": "Syzygium",
+          "probability": 0.0291,
+          "similar_images": [
+            {
+              "id": "29640f773407056aa058b015e4ac473a3ccd938a",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/296/40f773407056aa058b015e4ac473a3ccd938a.jpeg",
+              "license_name": "CC0",
+              "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+              "citation": "葉子",
+              "similarity": 0.625,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/296/40f773407056aa058b015e4ac473a3ccd938a.small.jpeg"
+            },
+            {
+              "id": "23f837c81d320438abba873810f1e9c5995a8da6",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/23f/837c81d320438abba873810f1e9c5995a8da6.jpeg",
+              "license_name": "CC BY 4.0",
+              "license_url": "https://creativecommons.org/licenses/by/4.0/",
+              "citation": "Matthew Borella",
+              "similarity": 0.592,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/23f/837c81d320438abba873810f1e9c5995a8da6.small.jpeg"
+            }
+          ],
+          "details": {
+            "common_names": [
+              "สกุล ชมพู่"
+            ],
+            "taxonomy": {
+              "class": "Magnoliopsida",
+              "genus": "Syzygium",
+              "order": "Myrtales",
+              "family": "Myrtaceae",
+              "phylum": "Tracheophyta",
+              "kingdom": "Plantae"
+            },
+            "url": "https://th.wikipedia.org/wiki/ชมพู่",
+            "gbif_id": 3029010,
+            "inaturalist_id": 72388,
+            "rank": "genus",
+            "description": {
+              "value": "ชมพู่ (อังกฤษ: Syzygium) เป็นสกุลพืชดอกชนิดหนึ่ง ที่สามารถนำผลมารับประทานได้ สามารถแบ่งออกได้เป็น 1,100 สปีชีส์สำหรับประเทศไทยจะมีแค่ช่วงเดือนมกราคมของทุกปี",
+              "citation": "https://th.wikipedia.org/wiki/ชมพู่",
+              "license_name": "CC BY-SA 3.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+            },
+            "synonyms": [
+              "Acicalyptus",
+              "Acmena",
+              "Acmenosperma",
+              "Anetholea",
+              "Aphanomyrtus",
+              "Bostrychode",
+              "Calyptranthus",
+              "Caryophyllus",
+              "Cerocarpus",
+              "Cetra",
+              "Clavimyrtus",
+              "Cleistocalyx",
+              "Cupheanthus",
+              "Gaslondia",
+              "Gelpkea",
+              "Jambolifera",
+              "Jambos",
+              "Jambosa",
+              "Leptomyrtus",
+              "Lomastelma",
+              "Macromyrtus",
+              "Macropsidium",
+              "Malidra",
+              "Microjambosa",
+              "Myrthoides",
+              "Pareugenia",
+              "Piliocalyx",
+              "Pseudoeugenia",
+              "Strongylocalyx",
+              "Syllisium",
+              "Syllysium",
+              "Tetraeugenia",
+              "Waterhousea",
+              "Xenodendron"
+            ],
+            "image": {
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikidata/554/554f46d19996cbb03e15dc22647e29d66c9fb461.jpg",
+              "citation": "http://www.hear.org/starr/",
+              "license_name": "CC BY 3.0",
+              "license_url": "https://creativecommons.org/licenses/by/3.0/"
+            },
+            "edible_parts": null,
+            "watering": {
+              "max": 2,
+              "min": 2
+            },
+            "propagation_methods": null,
+            "language": "th",
+            "entity_id": "77ec4a6e6903e9a9"
+          }
+        },
+        {
+          "id": "c0f785caf1fdee18",
+          "name": "Carapa surinamensis",
+          "probability": 0.0188,
+          "similar_images": [
+            {
+              "id": "927cf4f761b33383c0d1dda4df88011e892d7f72",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/927/cf4f761b33383c0d1dda4df88011e892d7f72.jpeg",
+              "license_name": "CC BY 4.0",
+              "license_url": "https://creativecommons.org/licenses/by/4.0/",
+              "citation": "C. Geniez",
+              "similarity": 0.494,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/927/cf4f761b33383c0d1dda4df88011e892d7f72.small.jpeg"
+            },
+            {
+              "id": "48c14b6b7e7d74f7b13da9a72b9451b2c81a3bea",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/48c/14b6b7e7d74f7b13da9a72b9451b2c81a3bea.jpeg",
+              "license_name": "CC BY 4.0",
+              "license_url": "https://creativecommons.org/licenses/by/4.0/",
+              "citation": "Jean-François Molino",
+              "similarity": 0.486,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/48c/14b6b7e7d74f7b13da9a72b9451b2c81a3bea.small.jpeg"
+            }
+          ],
+          "details": {
+            "common_names": null,
+            "taxonomy": {
+              "class": "Magnoliopsida",
+              "genus": "Carapa",
+              "order": "Sapindales",
+              "family": "Meliaceae",
+              "phylum": "Tracheophyta",
+              "kingdom": "Plantae"
+            },
+            "url": "https://www.gbif.org/species/3851350",
+            "gbif_id": 3851350,
+            "inaturalist_id": 1412732,
+            "rank": "species",
+            "description": null,
+            "synonyms": [
+              "Carapa grandiflora",
+              "Carapa guineensis",
+              "Carapa gummiflua",
+              "Carapa guyanensis",
+              "Carapa microcarpa",
+              "Carapa procera var. gentilii",
+              "Carapa surinamensis",
+              "Carapa touloucouna",
+              "Carapa velutina",
+              "Deinbollia albidokermesina",
+              "Granatum procerum",
+              "Granatum surinamense",
+              "Granatum surinamensis",
+              "Grantum procerum",
+              "Racapa procera",
+              "Touloucouna gigantea",
+              "Trichilia procera",
+              "Xylocarpus guineensis",
+              "Xylocarpus procerus",
+              "Xylocarpus touloucouna",
+              "Zelea splendens",
+              "Zurloa insignis",
+              "Zurloa splendens"
+            ],
+            "image": {
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikipedia/5ca/5cafb343023857a9387014b9c199e25504818c7b.png",
+              "citation": "https://commons.wikimedia.org/wiki/File:Angiospermes_arbre8.png",
+              "license_name": "CC BY-SA 3.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+            },
+            "edible_parts": null,
+            "watering": null,
+            "propagation_methods": null,
+            "language": "th",
+            "entity_id": "c0f785caf1fdee18"
+          }
+        },
+        {
+          "id": "e6b5aca570f54d54",
+          "name": "Castanea sativa",
+          "probability": 0.0176,
+          "similar_images": [
+            {
+              "id": "ca38f20496a1297291aef4b5fe26ade9561eac88",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/ca3/8f20496a1297291aef4b5fe26ade9561eac88.jpeg",
+              "similarity": 0.59,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/ca3/8f20496a1297291aef4b5fe26ade9561eac88.small.jpeg"
+            },
+            {
+              "id": "44fa58c610d5316f2458410c00fbcdeeded24576",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/44f/a58c610d5316f2458410c00fbcdeeded24576.jpeg",
+              "similarity": 0.533,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/44f/a58c610d5316f2458410c00fbcdeeded24576.small.jpeg"
+            }
+          ],
+          "details": {
+            "common_names": null,
+            "taxonomy": {
+              "class": "Magnoliopsida",
+              "genus": "Castanea",
+              "order": "Fagales",
+              "family": "Fagaceae",
+              "phylum": "Tracheophyta",
+              "kingdom": "Plantae"
+            },
+            "url": "https://en.wikipedia.org/wiki/Castanea_sativa",
+            "gbif_id": 5333294,
+            "inaturalist_id": 121763,
+            "rank": "species",
+            "description": null,
+            "synonyms": [
+              "? pyramidalis",
+              "Castanea castanea",
+              "Castanea fastigiata",
+              "Castanea prolifera",
+              "Castanea sativa asplenifolia",
+              "Castanea sativa aureovariegata",
+              "Castanea sativa discolor",
+              "Castanea sativa f. asplenifolia",
+              "Castanea sativa f. aureovariegata",
+              "Castanea sativa f. discolor",
+              "Castanea sativa f. fastigiata",
+              "Castanea sativa f. prolifera",
+              "Castanea sativa f. purpurea",
+              "Castanea sativa f. pyramidalis",
+              "Castanea sativa f. variegata",
+              "Castanea sativa fastigiata",
+              "Castanea sativa prolifera",
+              "Castanea sativa purpurea",
+              "Castanea sativa pyramidalis",
+              "Castanea sativa var. asplenifolia",
+              "Castanea sativa var. fastigiata",
+              "Castanea sativa var. hamulata",
+              "Castanea sativa var. microcarpa",
+              "Castanea sativa var. prolifera",
+              "Castanea sativa var. purpurea",
+              "Castanea sativa var. pyramidalis",
+              "Castanea sativa var. spicata",
+              "Castanea sativa var. typica",
+              "Castanea sativa variegata",
+              "Castanea vesca",
+              "Castanea vesca var. affinis",
+              "Castanea vesca var. albida",
+              "Castanea vesca var. argentata",
+              "Castanea vesca var. aurata",
+              "Castanea vesca var. aureovirgata",
+              "Castanea vesca var. christ",
+              "Castanea vesca var. computensis",
+              "Castanea vesca var. corticata",
+              "Castanea vesca var. delserei",
+              "Castanea vesca var. domestica",
+              "Castanea vesca var. dubia",
+              "Castanea vesca var. echinata",
+              "Castanea vesca var. elongata",
+              "Castanea vesca var. fauraut",
+              "Castanea vesca var. fructifera",
+              "Castanea vesca var. garelia",
+              "Castanea vesca var. hyacintha",
+              "Castanea vesca var. laciniata",
+              "Castanea vesca var. latissima",
+              "Castanea vesca var. lineata",
+              "Castanea vesca var. lutea",
+              "Castanea vesca var. marrona",
+              "Castanea vesca var. maxima",
+              "Castanea vesca var. media",
+              "Castanea vesca var. nigra",
+              "Castanea vesca var. oblonga",
+              "Castanea vesca var. parvifolia",
+              "Castanea vesca var. pilosa",
+              "Castanea vesca var. praecox",
+              "Castanea vesca var. rubra",
+              "Castanea vesca var. rufa",
+              "Castanea vesca var. sativa",
+              "Castanea vesca var. serotina",
+              "Castanea vesca var. siria",
+              "Castanea vesca var. strictifolia",
+              "Castanea vesca var. subalpina",
+              "Castanea vesca var. thyrsoidea",
+              "Castanea vesca var. triangularis",
+              "Castanea vesca var. tristis",
+              "Castanea vesca var. variabilis",
+              "Castanea vesca var. variegata",
+              "Castanea vesca var. vesubiana",
+              "Castanea vulgaris",
+              "Fagus castanea",
+              "Fagus castanea var. variegata",
+              "Fagus procera"
+            ],
+            "image": {
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikidata/58e/58ed95b730b88ee4dc1c11d9d4a02009844a46bf.jpg",
+              "citation": "https://commons.wikimedia.org/wiki/File:Lajen_Edelkastanie_Unterbuchfelder_Lajen_Ried_Strasse.jpg",
+              "license_name": "CC BY-SA 3.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+            },
+            "edible_parts": [
+              "seeds"
+            ],
+            "watering": {
+              "max": 2,
+              "min": 2
+            },
+            "propagation_methods": [
+              "cuttings",
+              "grafting",
+              "seeds"
+            ],
+            "language": "th",
+            "entity_id": "e6b5aca570f54d54"
+          }
+        },
+        {
+          "id": "dc9dd70e87cd71f1",
+          "name": "Heptapleurum actinophyllum",
+          "probability": 0.0175,
+          "similar_images": [
+            {
+              "id": "2c4d8fb81933d9700613729d33e20ddb7a4d36f7",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/2c4/d8fb81933d9700613729d33e20ddb7a4d36f7.jpeg",
+              "similarity": 0.654,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/2c4/d8fb81933d9700613729d33e20ddb7a4d36f7.small.jpeg"
+            },
+            {
+              "id": "cf5ac7d2df7dfc512fed06948cf6ee892391f266",
+              "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/cf5/ac7d2df7dfc512fed06948cf6ee892391f266.jpeg",
+              "license_name": "CC BY-SA 4.0",
+              "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+              "citation": "Garden Lucky",
+              "similarity": 0.626,
+              "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/3/cf5/ac7d2df7dfc512fed06948cf6ee892391f266.small.jpeg"
+            }
+          ],
+          "details": {
+            "common_names": null,
+            "taxonomy": {
+              "class": "Magnoliopsida",
+              "genus": "Heptapleurum",
+              "order": "Apiales",
+              "family": "Araliaceae",
+              "phylum": "Tracheophyta",
+              "kingdom": "Plantae"
+            },
+            "url": "https://en.wikipedia.org/wiki/Heptapleurum_actinophyllum",
+            "gbif_id": 3038546,
+            "inaturalist_id": 1268642,
+            "rank": "species",
+            "description": null,
+            "synonyms": [
+              "Aralia longipes",
+              "Brassaia actinophylla",
+              "Brassaia singaporensis",
+              "Heptapleurum actinophyllum",
+              "Schefflera actinophylla"
+            ],
+            "image": {
+              "value": "https://plant-id.ams3.cdn.digitaloceanspaces.com/knowledge_base/wikidata/ef5/ef5855d5bf6521d4396e0bf5312ef779eaf5b5b0.jpg",
+              "citation": "https://www.inaturalist.org/people/coenobita",
+              "license_name": "CC BY 4.0",
+              "license_url": "https://creativecommons.org/licenses/by/4.0/"
+            },
+            "edible_parts": null,
+            "watering": {
+              "max": 2,
+              "min": 2
+            },
+            "propagation_methods": null,
+            "language": "th",
+            "entity_id": "dc9dd70e87cd71f1"
           }
         }
       ]
+    },
+    "is_plant": {
+      "probability": 0.99999833,
+      "threshold": 0.5,
+      "binary": true
     }
   },
   "status": "COMPLETED",
-  "sla_compliant_client": "true",
-  "sla_compliant_system": "true",
-  "created": 1706552569.127406,
-  "completed": 1706552569.795698
-}]
+  "sla_compliant_client": true,
+  "sla_compliant_system": true,
+  "created": 1708444300.942643,
+  "completed": 1708444301.589707
+}
+]
