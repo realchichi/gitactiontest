@@ -7,12 +7,17 @@ from app.forms import forms
 from flask import (jsonify, render_template,request, url_for, flash, redirect)
 from werkzeug.security import generate_password_hash,check_password_hash
 
+
 import psycopg2
 from app import app
 
 from app import db
 # from sqlalchemy.sql import text
 from app.models.user import User
+
+# from flask_login import current_user
+from flask_login import login_user, login_required, logout_user,current_user, LoginManager
+
 
 READY = False
 

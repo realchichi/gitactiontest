@@ -88,6 +88,7 @@ input[type=submit]:hover {
     padding: 50px;
     margin-top: 80px; 
     margin-left: 200px;
+    /* margin: 80px auto; */
     
 }
 .container h1{

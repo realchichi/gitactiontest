@@ -18,13 +18,15 @@ header{
     padding: 33px 9%;
     background-color: transparent;
 }
-/* body{
-    background-color: #F1EED9;
-} */
+
 .logo{
     font-size: 30px;
     font-weight: 800;
     color:black;
+}
+.logo:hover {
+    text-decoration: none !important; /* Remove underline */
+    color: #accaac !important; /* Change text color to match the border */
 }
 .navlist{
     display: flex;
@@ -39,7 +41,10 @@ header{
     transition: all .55s ease;
 }
 .navlist a:hover{
+   
+    text-decoration: none;
     border-bottom: 2px solid #accaac;
+    
 }
 .navlist button{
     display: inline-block;
@@ -217,11 +222,9 @@ section{
 *{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
-.container{
+.container1{
     max-width: 1170px;
-    /* background-color: red; */
     margin: auto;
 }
 .row{

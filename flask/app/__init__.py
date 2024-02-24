@@ -1,6 +1,7 @@
 from flask import Flask
 import os
 from flask_sqlalchemy import SQLAlchemy
+# from flask_login import LoginManager, current_user
 
 
 app = Flask(__name__, static_folder="static")

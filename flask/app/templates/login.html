@@ -3,7 +3,7 @@
 
 {% block content %}
  <div class="container">
-<form id="addContactForm">
+<form id="addContactForm" method="POST">
       <h1>Login</h1>
       <p>Enter your account details to login </p>
       <div class=box1>
@@ -18,7 +18,7 @@
       <a href="#" class="forget-password">Forgot Password ?</a>
       
       <input type="submit" name="submit" value="Login">
-
+    </form>
       <div class="divider d-flex align-items-center my-3">
         <p class="text-center fw-bold mx-0 mb-0 text-muted">Or</p>
       </div>
@@ -39,7 +39,6 @@
   
 
 {% endblock %}
-
 
 
 

@@ -15,19 +15,19 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- our own css -->
   <link rel="stylesheet" href="../static/css/login.css">
+  <link rel="stylesheet" href="static/css/landing.css">
+  <link rel="stylesheet" href="../static/css/signup.css">
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <!-- Bootstrap Table -->
   <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
   <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
-
-  <link rel="stylesheet" href="static/css/landing.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" /> -->
 
   <!-- boxicons link -->
   <link rel="stylsheet" href ="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
   <!-- remixicons link -->
   <link
   href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
-  
   <!-- google fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
@@ -39,9 +39,10 @@
             <a href="#" class="logo">BotaniBuzz</a>
 
             <ul class="navlist">
-                <li><a href="{{ url_for('login')}}">Home</a></li>
+                <li><a href="{{ url_for('landing')}}">Home</a></li>
                 <li><a href="#">Contact us</a></li>
                 <li><a href="#">Blog</a></li>
+                <li><a href="#">Profile</a></li>
             </ul>
             <i class="ri-menu-line" id="menu-icon"></i>
             
@@ -57,7 +58,7 @@
         <!-- Javascript -->
         <script src="static/js/landing.js"></script>
         <footer class="footer">
-            <div class="container">
+            <div class="container1">
                 <div class="row">
                     <div class="footer-col">
                         <h4>Get to know</h4>
@@ -91,4 +92,3 @@
 
 
 </html>
-
