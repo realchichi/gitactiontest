@@ -138,6 +138,10 @@ def login():
 def feqs():
     return render_template("faqs.html")
 
+@app.route("/contactus")
+def contactus():
+    return render_template("contactus.html")
+
 # Written by Wachirapong
 # To call API
 @app.route("/api")
