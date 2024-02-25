@@ -1,6 +1,8 @@
 import base64
 import json
 import http.client
+import secrets
+import string
 from wtforms import (StringField, TextAreaField, IntegerField, BooleanField,
                      RadioField,EmailField,PasswordField)
 from wtforms.validators import InputRequired, Length,Email,Regexp,EqualTo
@@ -14,7 +16,7 @@ from flask_login import login_user, login_required, logout_user,current_user, Lo
 import random
 import psycopg2
 from app import app
-
+from app import oauth
 from app import db
 # from sqlalchemy.sql import text
 from app.models.accounts import Account
@@ -130,9 +132,10 @@ def login():
     logout_user()
     if request.method == 'POST':
 
-        email = request.form.get('email')
+        email = request.form.get('email').lower()
         password = request.form.get('password')
         user = Account.query.filter_by(email=email).first()
+        print("login",email,password)
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
             return redirect(url_for('login'))
@@ -248,13 +251,14 @@ def signup():
             flash('Password must contain at least 8 characters including at least one digit, one lowercase letter, one uppercase letter, and one special character')
             return redirect(url_for('signup'))
         elif validated:
-            email = validated_dict['email']
+            email = validated_dict['email'].lower()
             name = validated_dict['name']
             password = validated_dict['password']
             user = Account.query.filter_by(email=email).first()
             if user:
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  
+            print("signup",email,password)
             new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 8))+".png")
             db.session.add(new_user)
 
@@ -306,12 +310,19 @@ def hw10_update():
         result = request.form.to_dict()
         password = result.get('password','')
         contact = Account.query.get(current_user.id)
+        print("update",password)
         if check_password_hash(contact.password,password):
             ans["ans"]=True
             return ans
         else :
             flash('password not correct')
     return ans
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('landing'))
 
 # @app.route('/validate_email', methods=['POST'])
 # def validate_email():
@@ -328,3 +339,48 @@ def is_valid_email_domain(email):
 
 def is_valid_password(password):
     return len(password) >= 8 and any(c.isdigit() for c in password) and any(c.islower() for c in password) and any(c.isupper() for c in password) and any(c in '!@#$%^&*()-_=+[]{}|;:,.<>?/~' for c in password)
+
+@app.route('/google/')
+def google():
+
+
+    oauth.register(
+        name='google',
+        client_id=app.config['GOOGLE_CLIENT_ID'],
+        client_secret=app.config['GOOGLE_CLIENT_SECRET'],
+        server_metadata_url=app.config['GOOGLE_DISCOVERY_URL'],
+        client_kwargs={
+            'scope' : 'openid email profile',
+            # 'redirect_uri':  'postmessage'
+        }
+    )
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..",app.config['GOOGLE_CLIENT_ID'],app.config['GOOGLE_CLIENT_SECRET'],app.config['GOOGLE_DISCOVERY_URL'])
+    # app.logger.debug("str(token)")
+   # Redirect to google_auth function
+    redirect_uri = url_for('google_auth', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+
+
+
+
+@app.route('/google/auth/')
+def google_auth():
+    token = oauth.google.authorize_access_token()
+    userinfo = token['userinfo']
+    email = userinfo['email']
+    user = Account.query.filter_by(email=email).first()
+
+
+    if not user:
+        name = userinfo.get('given_name','') + " " + userinfo.get('family_name','')
+        random_pass_len = 8
+        password = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
+                          for i in range(random_pass_len))
+        picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
+        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
+        db.session.add(new_user)
+        db.session.commit()
+        user = Account.query.filter_by(email=email).first()
+    login_user(user)
+    return redirect('/landing')
