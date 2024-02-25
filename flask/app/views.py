@@ -2,6 +2,9 @@ import base64
 import json
 import http.client
 import requests
+import os
+from io import BytesIO
+from PIL import Image
 from app.forms import forms
 from flask import (jsonify, render_template,request, url_for, flash, redirect)
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -18,10 +21,10 @@ def load_user(user_id):
     return Account.query.get(int(user_id))
 
 
-
 def read_file(filename, mode="rt"):
     with open(filename, mode, encoding='utf-8') as fin:
         return fin.read()
+
 
 def write_file(filename, contents, mode="wt"):
     with open(filename, mode, encoding="utf-8") as fout:
@@ -34,7 +37,6 @@ def process():
     return
 
 
-
 @app.route('/db')
 def db_connection():
     try:
@@ -44,9 +46,11 @@ def db_connection():
     except Exception as e:
         return '<h1>db is broken.</h1>' + str(e)
 
+
 @app.route("/")
 def home():
     return render_template("landing.html")
+
 
 @app.route("/landing")
 def landing():
@@ -55,9 +59,7 @@ def landing():
 
 @app.route("/camera")
 def camera_access():
-    return render_template("camera.html")
-
-
+    return render_template("uploadImage.html")
 
 
 @app.route("/user")
@@ -65,6 +67,7 @@ def user():
     db_users = Account.query.all()
     user = list(map(lambda x: x.to_dict(), db_users))
     return jsonify(user)
+
 
 @app.route("/user/validate", methods=["GET", "POST"])
 def validate_user():
@@ -74,7 +77,6 @@ def validate_user():
         validated = True
         validated_dict = {}
         valid_keys = ["firstname", "lastname"]
-
 
 
 @app.route("/login",methods=('GET','POST'))
@@ -95,6 +97,7 @@ def login():
         return redirect(url_for('landing'))
 
     return render_template('login.html')
+
 
 @app.route("/faqs")
 def feqs():
@@ -169,8 +172,14 @@ def get_data(data):
 # and store it to history table
 @app.route("/identification", methods=["POST", "GET"])
 def identification():
-    if request.method == "POST"
-        result = request.to_dict()
+    if request.method == "POST":
+        result = {}
+        print(request)
+        image_file = request.files['image']
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.jpg')
+        image_file.save(filename)
+        # print(len(result["photoDataUrl"]))
+        print(result)
         account_id = current_user.id
         if result.get("idendtfied_img",""):
             idendtfied_img = result["idendtfied_img"]
@@ -186,7 +195,6 @@ def identification():
 
             db.session.commit()
             return render_template("plant_data.html", plant_data=plant_data)
-
     return render_template("identification.html")
 
 @app.route("/signup", methods=('GET', 'POST'))
@@ -240,6 +248,6 @@ def si():
 @app.route("/history")
 @login_required
 def history():
-    pass
+    return ""
 
 
