@@ -1,10 +1,14 @@
 import base64
 import json
 import http.client
+from wtforms import (StringField, TextAreaField, IntegerField, BooleanField,
+                     RadioField,EmailField,PasswordField)
+from wtforms.validators import InputRequired, Length,Email,Regexp,EqualTo
+# from form.forms import RegistrationForm
 # from urllib.request import urlopen
-from app.forms import forms
+from app.forms.forms import RegistrationForm
 # from flask_wtf import FlaskForm
-from flask import (jsonify, render_template,request, url_for, flash, redirect)
+from flask import (jsonify, render_template,request, url_for, flash, redirect,Flask)
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user, login_required, logout_user,current_user, LoginManager
 import random
@@ -129,8 +133,6 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
         user = Account.query.filter_by(email=email).first()
-        # remember = bool(request.form.get('is_active'))
-        # print(user.id,"lllllllllllllllllllllllllllll")
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
             return redirect(url_for('login'))
@@ -211,10 +213,16 @@ def get_data(res):
 @app.route("/search")
 def search():
    return render_template("search.html")
-
+def validate_email_domain(form, field):
+    email = field.data
+    allowed_domains = ['gmail.com', 'hotmail.com','cmu.ac.th']
+    domain = email.split('@')[-1]
+    if domain not in allowed_domains:
+        raise ValidationError(f'Invalid email domain. Allowed domains are: {", ".join(allowed_domains)}')
 @app.route("/signup", methods=('GET', 'POST'))
 def signup():
-    if request.method == 'POST':
+    
+    if request.method == 'POST' :
         result = request.form.to_dict()
         validated = True
         validated_dict = {}
@@ -224,10 +232,22 @@ def signup():
                 continue
             value = result[key].strip()
             if not value or value == 'undefined':
+                
                 validated = False
                 break
             validated_dict[key] = value
-        if validated:
+            validated_value = RegistrationForm()
+            
+        if   len(validated_dict["name"]) < 2 or len(validated_dict["name"])>20:
+            flash('name must be between 2 and 20 characters long')
+            return redirect(url_for('signup'))
+        elif   not is_valid_email_domain(validated_dict["email"]) :
+            flash('Email is required mush be *@gmail.com or *@hotmail.com or *@cmu.ac.th')
+            return redirect(url_for('signup'))
+        elif  not is_valid_password(validated_dict["password"]):
+            flash('Password must contain at least 8 characters including at least one digit, one lowercase letter, one uppercase letter, and one special character')
+            return redirect(url_for('signup'))
+        elif validated:
             email = validated_dict['email']
             name = validated_dict['name']
             password = validated_dict['password']
@@ -252,9 +272,6 @@ def signup():
 def si():
     db_accounts = Account.query.all()
     accounts = list(map(lambda x: x.to_dict(), db_accounts))
-
-    # app.logger.debug(f"DB Contacts: {accounts}")
-
     return jsonify(accounts)
 
 @app.route("/update",methods=('POST','GET'))
@@ -269,6 +286,15 @@ def update():
         accounts = Account.query.get(current_user.id)
         if password == '':
             password = current_user.password
+        if   len(name) < 2 or len(name)>20:
+            flash('name must be between 2 and 20 characters long')
+            return redirect(url_for('profile'))
+        elif   not is_valid_email_domain(email) :
+            flash('Email is required mush be *@gmail.com or *@hotmail.com or *@cmu.ac.th')
+            return redirect(url_for('profile'))
+        elif  not is_valid_password(password):
+            flash('Password must contain at least 8 characters including at least one digit, one lowercase letter, one uppercase letter, and one special character')
+            return redirect(url_for('profile'))
         accounts.update(email=email,name=name, avatar_url=avatar,password=generate_password_hash(password, method='sha256'))
         db.session.commit()
     return redirect(url_for('profile'))
@@ -283,5 +309,22 @@ def hw10_update():
         if check_password_hash(contact.password,password):
             ans["ans"]=True
             return ans
+        else :
+            flash('password not correct')
     return ans
 
+# @app.route('/validate_email', methods=['POST'])
+# def validate_email():
+#     ans={"ans":False}
+#     form = RegistrationForm(request.form.to_dict().get('email',''))
+#     if form.validate():
+#         ans["ans":True]
+#         return ans
+
+#     return ans
+def is_valid_email_domain(email):
+    domain = email.split('@')[-1]
+    return domain in ['gmail.com', 'hotmail.com', 'cmu.ac.th']
+
+def is_valid_password(password):
+    return len(password) >= 8 and any(c.isdigit() for c in password) and any(c.islower() for c in password) and any(c.isupper() for c in password) and any(c in '!@#$%^&*()-_=+[]{}|;:,.<>?/~' for c in password)

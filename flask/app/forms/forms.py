@@ -2,38 +2,26 @@ from flask_wtf import FlaskForm
 from wtforms import (StringField, TextAreaField, IntegerField, BooleanField,
                      RadioField,EmailField,PasswordField)
 from wtforms.validators import InputRequired, Length,Email,Regexp,EqualTo
+# app = Flask(__name__)
+# app.config['SECRET_KEY'] = 'your_secret_key'
 
-# class CourseForm(FlaskForm):
-#     title = StringField('Title', validators=[InputRequired(),
-#                                              Length(min=10, max=100)])
-#     description = TextAreaField('Course Description',
-#                                 validators=[InputRequired(),
-#                                             Length(max=200)])
-#     price = IntegerField('Price', validators=[InputRequired()])
-#     level = RadioField('Level',
-#                        choices=['Beginner', 'Intermediate', 'Advanced'],
-#                        validators=[InputRequired()])
-#     available = BooleanField('Available', default='checked')
-# class registerForm(FlaskForm):
-#     username = StringField('Username', validators=[InputRequired(),Length(min=2,max=20)])
-#     email = EmailField('Email',validators=[InputRequired(),Email(message="Invalid Email")])
-#     password = PasswordField('Password', validators=[InputRequired(),Regexp(".*[0-9].*",message="Password must contain at least one number"),Length(min=1)])
-#     confirm_password = PasswordField('Confirm Password',validators=[InputRequired(),EqualTo("password","Passwords must match")])
-class CourseForm(FlaskForm):
-    title = StringField('Title', validators=[InputRequired(),
-                                             Length(min=10, max=100)])
-    description = TextAreaField('Course Description',
-                                validators=[InputRequired(),
-                                            Length(max=200)])
-    price = IntegerField('Price', validators=[InputRequired()])
-    level = RadioField('Level',
-                       choices=['Beginner', 'Intermediate', 'Advanced'],
-                       validators=[InputRequired()])
-    available = BooleanField('Available', default='checked')
+def validate_email_domain(form, field):
+    email = field.data
+    allowed_domains = ['gmail.com', 'hotmail.com','cmu.ac.th']
+    domain = email.split('@')[-1]
+    if domain not in allowed_domains:
+        raise ValidationError(f'Invalid email domain. Allowed domains are: {", ".join(allowed_domains)}')
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(),Length(min=2,max=20)])
-    email = EmailField('Email',validators=[InputRequired(),Email(message="Invalid Email")])
-    password = PasswordField('Password', validators=[InputRequired(),Regexp(".*[0-9].*",message="Password must contain at least one number"),Length(min=1)])
-    confirm_password = PasswordField('Confirm Password',validators=[InputRequired(),EqualTo("password","Passwords must match")])
-                       
-#     
+    name = StringField('name', validators=[
+        InputRequired(message="name is required"),
+        Length(min=2, max=20, message="name must be between 2 and 20 characters long")
+    ])
+    email = EmailField('email', validators=[
+        InputRequired(message="Email is required mush be *@gmail.com or *@hotmail.com or *@cmu.ac.th" ),
+        validate_email_domain
+    ])
+    password = PasswordField('password', validators=[
+        InputRequired(message="Password is required"),
+        Regexp("r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,}$'", message="Password must contain at least one number"),
+        Length(min=8, message="Password must contain at least 8 characters including at least one digit, one lowercase letter, one uppercase letter, and one special character")
+    ])
