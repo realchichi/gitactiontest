@@ -282,6 +282,7 @@ def si():
 def update():
 
     if request.method == 'POST':
+        check = False
         result = request.form.to_dict()
         email = result.get('email','')
         name = result.get('name','')
@@ -290,6 +291,7 @@ def update():
         accounts = Account.query.get(current_user.id)
         if password == '':
             password = current_user.password
+            check=True
         if   len(name) < 2 or len(name)>20:
             flash('name must be between 2 and 20 characters long')
             return redirect(url_for('profile'))
@@ -299,7 +301,10 @@ def update():
         elif  not is_valid_password(password):
             flash('Password must contain at least 8 characters including at least one digit, one lowercase letter, one uppercase letter, and one special character')
             return redirect(url_for('profile'))
-        accounts.update(email=email,name=name, avatar_url=avatar,password=generate_password_hash(password, method='sha256'))
+        if check:
+            accounts.update(email=email,name=name, avatar_url=avatar,password=password)
+        else:
+            accounts.update(email=email,name=name, avatar_url=avatar,password=generate_password_hash(password, method='sha256'))
         db.session.commit()
     return redirect(url_for('profile'))
 
@@ -354,7 +359,7 @@ def google():
             # 'redirect_uri':  'postmessage'
         }
     )
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..",app.config['GOOGLE_CLIENT_ID'],app.config['GOOGLE_CLIENT_SECRET'],app.config['GOOGLE_DISCOVERY_URL'])
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..",app.config['GOOGLE_CLIENT_ID'],app.config['GOOGLE_CLIENT_SECRET'],app.config['GOOGLE_DISCOVERY_URL'])
     # app.logger.debug("str(token)")
    # Redirect to google_auth function
     redirect_uri = url_for('google_auth', _external=True)
@@ -382,5 +387,49 @@ def google_auth():
         db.session.add(new_user)
         db.session.commit()
         user = Account.query.filter_by(email=email).first()
-    login_user(user)
+        login_user(user)
+    return redirect('/landing')
+
+@app.route('/facebook/')
+def facebook():
+   
+    # Facebook Oauth Config
+    FACEBOOK_CLIENT_ID = app.config['FACEBOOK_CLIENT_ID']
+    FACEBOOK_CLIENT_SECRET = app.config['FACEBOOK_CLIENT_SECRET']
+    # print(",,,,,,,,,,,,,,",FACEBOOK_CLIENT_ID,FACEBOOK_CLIENT_SECRET)
+    oauth.register(
+        name='facebook',
+        client_id=FACEBOOK_CLIENT_ID,
+        client_secret=FACEBOOK_CLIENT_SECRET,
+        access_token_url='https://graph.facebook.com/oauth/access_token',
+        access_token_params=None,
+        authorize_url='https://www.facebook.com/dialog/oauth',
+        authorize_params=None,
+        api_base_url='https://graph.facebook.com/',
+        client_kwargs={'scope': 'email'},
+    )
+    redirect_uri = url_for('facebook_auth', _external=True)
+    return oauth.facebook.authorize_redirect(redirect_uri)
+ 
+@app.route('/facebook/auth/')
+def facebook_auth():
+    token = oauth.facebook.authorize_access_token()
+    resp = oauth.facebook.get('https://graph.facebook.com/me?fields=id,name,email,picture{url}')
+    profile = resp.json()
+    print("Facebook User ", profile)
+    email = profile['email']
+    name = profile['name']
+    random_pass_len = random_pass_len = 8
+    password = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(random_pass_len))
+    user = Account.query.filter_by(email=email).first()
+
+
+    if not user:
+        picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
+        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
+        db.session.add(new_user)
+        db.session.commit()
+        user = Account.query.filter_by(email=email).first()
+        
+        login_user(user)
     return redirect('/landing')

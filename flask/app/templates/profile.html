@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+    <style >
+        #edit_profile{
+            width: 500px;
+/*            height: 560px;*/
+            border-radius: 40px;
+            background-color: #f2f2f2;
+            padding: 50px;
+            margin-top: 80px; 
+            margin-left: 200px;
+            color: black;
+        }
+    </style>
     <div class="profile_box">
         <div>
           {% for message in get_flashed_messages() %}
@@ -48,7 +59,7 @@
                 <button hidden="hidden" id ="edit_button_email">edit</button>
                 <div id= "div_edit_email"style="display: none;">
                     <input id="email_value" placeholder="Enter new email">
-                    <button id ="confirm_edit_button_email">check</button>
+                    <button id ="confirm_edit_button_email">confirm</button>
                 </div>
                 
                 </div>
@@ -57,7 +68,7 @@
                 <button hidden="hidden" id ="edit_button_name">edit</button>
                 <div id= "div_edit_name"style="display: none;">
                     <input id="name_value" placeholder="Enter new name">
-                    <button id ="confirm_edit_button_name">check</button>
+                    <button id ="confirm_edit_button_name">confirm</button>
                 </div>
                 </div>
                 <div class="">
@@ -65,7 +76,7 @@
                 <button hidden="hidden" id ="edit_button_password">edit</button>
                 <div id= "div_edit_password"style="display: none;">
                     <input id="password_value" placeholder="Enter new password">
-                    <button id ="confirm_edit_button_password">check</button>
+                    <button id ="confirm_edit_button_password">confirm</button>
                 </div>
                 </div>
             </div>

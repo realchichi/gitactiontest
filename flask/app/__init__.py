@@ -14,6 +14,9 @@ app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID", None)
 app.config['GOOGLE_CLIENT_SECRET'] = os.getenv("GOOGLE_CLIENT_SECRET", None)
 app.config['GOOGLE_DISCOVERY_URL'] = os.getenv("GOOGLE_DISCOVERY_URL", None)
 
+app.config['FACEBOOK_CLIENT_ID'] = os.getenv("FACEBOOK_CLIENT_ID", None)
+app.config['FACEBOOK_CLIENT_SECRET'] = os.getenv("FACEBOOK_CLIENT_SECRET", None)
+# print("........................",os.getenv("FACEBOOK_CLIENT_ID", None),os.getenv("FACEBOOK_CLIENT_SECRET", None))
 db = SQLAlchemy(app)
 oauth = OAuth(app)
 
