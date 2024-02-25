@@ -1,7 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style >
+  .box3 {
+    display: flex;
+  }
+  #password{
+    flex: 1;
+/*    width: inherit;*/
+  }
+  #eye{
+      margin-top:-15px ;
+      margin-left: -25px;
+      border:none;
+      padding: auto;
+      outline: none;
+      background-color: none;
+      background-color: transparent;
+    }
 
+</style>
 <div class="container">
     <form id="addContactForm" method="POST">
       <h1>Signup</h1>
@@ -20,6 +38,8 @@
       </div>
       <div class=box3>
         <input type="password" id="password" name="password" placeholder="Enter password" required>
+        <button id="eye"><img id="eye_img" src="static/img/hide.png" width="20"></button>
+        
       </div>
         
       <input type="submit" name="submit" value="Signup">
@@ -44,7 +64,22 @@
 
   </div>
   <script >
-    
+    var password = document.getElementById('password');
+    var eye = document.getElementById('eye');
+    var eye_img = document.getElementById('eye_img');
+    eye.addEventListener('click', function(event) {
+      event.preventDefault();
+      if (eye_img.src == "http://localhost:56700/static/img/hide.png"){
+        eye_img.src = "static/img/view.png"
+      }else{
+        eye_img.src = "static/img/hide.png"
+      }
+      if (password.type === 'password') {
+          password.type = 'text';
+      } else {
+          password.type = 'password';
+      }
+        });
   </script>
 {% endblock %}
 

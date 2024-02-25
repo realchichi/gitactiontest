@@ -11,8 +11,13 @@ body {
     
 }
 
+/*#eye,#password{
+        display: inline;
+    }*/
 
-
+#eye{
+        border:none;
+    }
 input[type=text],
 input[type=password],
 input[type=email],
