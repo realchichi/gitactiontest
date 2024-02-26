@@ -10,9 +10,7 @@ body {
     /* align-items: center; */
     
 }
-#eye,#password{
-        display: inline;
-    }
+
 #edit_email, #edit_button_email {
         display: inline;
     }

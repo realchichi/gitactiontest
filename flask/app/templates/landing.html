@@ -2,10 +2,14 @@
 <!-- <link rel="stylesheet" href="static/css/landing.css"> -->
 {% block content %}
     
-
+    
         
             <div class="plant-text">
-                
+                <div>
+                  {% for message in get_flashed_messages() %}
+                      <div class="alert">{{ message }}</div>
+                  {% endfor %}
+              </div>
                 <h5>Nature's code decoded</h5>
                 <h4>Explore the green universe by</h4>
                 <h1>BotaniBuzz</h1>
@@ -30,7 +34,7 @@
         <!-- scrollreveal effect -->
         <!-- <script src="https://unpkg.com/scrollreveal"></script> -->
         <!-- Javascript -->
-        <!-- <script src="landing.js"></script> -->
+        <script src="landing.js"></script>
 
 {% endblock %}
 
