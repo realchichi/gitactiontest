@@ -172,29 +172,31 @@ def get_data(data):
 # and store it to history table
 @app.route("/identification", methods=["POST", "GET"])
 def identification():
+    a = "test"
     if request.method == "POST":
-        result = {}
-        print(request)
-        image_file = request.files['image']
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.jpg')
-        image_file.save(filename)
+        # result = {}
+        # print(request.files.keys())
+        # image_file = request.files['image']
+        # filename = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.jpg')
+        # image_file.save(filename)
         # print(len(result["photoDataUrl"]))
-        print(result)
-        account_id = current_user.id
-        if result.get("idendtfied_img",""):
-            idendtfied_img = result["idendtfied_img"]
-            entry = History(account_id, idendtfied_img)
-            db.session.add(entry)
-            history = History.query.filter_by(idendtfied_img=idendtfied_img).first()
-            plant_data = call_api(idendtfied_img)
-            for i in range(len(plant_data)):
-                temp = plant_data[i]
-                temp["history_id"] = history.id
-                plant_info = PlantInfo(**temp)
-                db.session.add(plant_info)
+        # print(result)
+        # account_id = current_user.id
+        # if result.get("idendtfied_img",""):
+        #     idendtfied_img = result["idendtfied_img"]
+        #     entry = History(account_id, idendtfied_img)
+        #     db.session.add(entry)
+        #     history = History.query.filter_by(idendtfied_img=idendtfied_img).first()
+            # plant_data = call_api(idendtfied_img)
+        #     for i in range(len(plant_data)):
+        #         temp = plant_data[i]
+        #         temp["history_id"] = history.id
+        #         plant_info = PlantInfo(**temp)
+        #         db.session.add(plant_info)
 
-            db.session.commit()
-            return render_template("plant_data.html", plant_data=plant_data)
+        #     db.session.commit()
+        plant_data = call_api(a)
+        return render_template("plant_data.html", plant_data=plant_data)
     return render_template("identification.html")
 
 @app.route("/signup", methods=('GET', 'POST'))
