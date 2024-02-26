@@ -6,7 +6,7 @@ import requests
 import os
 import hashlib
 from io import BytesIO
-from PIL import Image
+# from PIL import Image
 from app.forms import forms
 import secrets
 import string
@@ -51,16 +51,6 @@ def process():
     return
 
 
-@app.route('/db')
-def db_connection():
-    try:
-        with db.engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
-        return '<h1>db works.</h1>'
-    except Exception as e:
-        return '<h1>db is broken.</h1>' + str(e)
-
-
 @app.route("/")
 def home():
     return render_template("landing.html")
@@ -70,13 +60,10 @@ def home():
 def landing():
     return render_template("landing.html")
 
+
 @app.route("/profile")
 def profile():
     return render_template("profile.html")
-
-@app.route("/camera")
-def camera_access():
-    return render_template("uploadImage.html")
 
 
 @app.route("/user")
@@ -85,7 +72,7 @@ def user():
     user = list(map(lambda x: x.to_dict(), db_users))
     return jsonify(user)
 
-
+#bas
 @app.route("/user/validate", methods=["GET", "POST"])
 def validate_user():
     if request.method == "POST":
@@ -95,32 +82,24 @@ def validate_user():
         validated_dict = {}
         valid_keys = ["firstname", "lastname"]
 
-
+#bas
 @app.route("/login",methods=('GET','POST'))
 def login():
     logout_user()
     if request.method == 'POST':
-
         email = request.form.get('email').lower()
         password = request.form.get('password')
         user = Account.query.filter_by(email=email).first()
-
-
         remember = bool(request.form.get('is_active'))
-        
-
-
         print("login",email,password)
-
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
             return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('landing'))
-
     return render_template('login.html')
 
-
+#chi
 @app.route("/faqs")
 def feqs():
     return render_template("faqs.html")
@@ -232,15 +211,15 @@ def identification():
         filename = os.path.join(app.config['UPLOAD_FOLDER'], hash_img)
         # image_file.save(filename)
         # print(len(result["photoDataUrl"]))
-        result = {"idendtfied_img" : hash_img}
+        result = {"identified_img" : hash_img}
         account_id = current_user.id
-        if result.get("idendtfied_img",""):
-            idendtfied_img = result["idendtfied_img"]
-            entry = History(account_id, idendtfied_img)
+        if result.get("identified_img",""):
+            identified_img = result["identified_img"]
+            entry = History(account_id, identified_img)
             db.session.add(entry)
-            history = History.query.filter_by(idendtfied_img=idendtfied_img).first()
+            history = History.query.filter_by(identified_img=identified_img).first()
             print(history)
-            plant_data = call_api(idendtfied_img)
+            plant_data = call_api(identified_img)
             # print(plant_data)
             # print("\n" * 3)
             for i in range(len(plant_data)):
@@ -254,7 +233,7 @@ def identification():
             return render_template("plant_data.html", plant_data=plant_data)
     return render_template("identification.html")
 
-
+#bas
 def validate_email_domain(form, field):
     email = field.data
     allowed_domains = ['gmail.com', 'hotmail.com','cmu.ac.th']
@@ -262,7 +241,7 @@ def validate_email_domain(form, field):
     if domain not in allowed_domains:
         raise ValidationError(f'Invalid email domain. Allowed domains are: {", ".join(allowed_domains)}')
 
-
+#bas
 @app.route("/signup", methods=('GET', 'POST'))
 def signup():
     if request.method == 'POST' :
@@ -308,13 +287,14 @@ def signup():
         
     return render_template("signup.html")
 
-
+#bas
 @app.route("/signup/data")
 def si():
     db_accounts = Account.query.all()
     accounts = list(map(lambda x: x.to_dict(), db_accounts))
     return jsonify(accounts)
 
+#bas
 @app.route("/update",methods=('POST','GET'))
 def update():
     if request.method == 'POST':
@@ -344,15 +324,7 @@ def update():
         db.session.commit()
     return redirect(url_for('profile'))
 
-
-@app.route("/history")
-@login_required
-def history():
-    return ""
-
-
-
-
+#bas
 @app.route("/checkpassword",methods=('GET','POST'))
 def hw10_update():
     ans={"ans":False}
@@ -368,6 +340,7 @@ def hw10_update():
             flash('password not correct')
     return ans
 
+#bas
 @app.route('/logout')
 @login_required
 def logout():
@@ -391,6 +364,7 @@ def is_valid_password(password):
     return len(password) >= 8 and any(c.isdigit() for c in password) and any(c.islower() for c in password) and any(c.isupper() for c in password) and any(c in '!@#$%^&*()-_=+[]{}|;:,.<>?/~' for c in password)
 
 
+#bas
 @app.route('/google/')
 def google():
 
@@ -414,7 +388,7 @@ def google():
 
 
 
-
+#bas
 @app.route('/google/auth/')
 def google_auth():
     token = oauth.google.authorize_access_token()
@@ -435,7 +409,7 @@ def google_auth():
         user = Account.query.filter_by(email=email).first()
         login_user(user)
     return redirect('/landing')
-
+#bas
 @app.route('/facebook/')
 def facebook():
    
@@ -457,6 +431,7 @@ def facebook():
     redirect_uri = url_for('facebook_auth', _external=True)
     return oauth.facebook.authorize_redirect(redirect_uri)
  
+#bas
 @app.route('/facebook/auth/')
 def facebook_auth():
     token = oauth.facebook.authorize_access_token()
@@ -479,4 +454,34 @@ def facebook_auth():
         
         login_user(user)
     return redirect('/landing')
+
+#bas
+@app.route("/history/data")
+@login_required
+def history_data():
+    # history = History.query.get(current_user.id)
+    # plant = PlantInfo.query.get(account_id)
+    history = History.query.filter(History.account_id == current_user.id)
+    history_data = list(map(lambda x: x.to_dict(), history))
+    return jsonify(history_data)
+
+#bas
+@app.route("/history")
+@login_required
+def history():
+    return render_template("history.html")
+
+#bas
+@app.route("/delete/history",methods=('GET','POST'))
+@login_required
+def delete_history():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        account_id = result.get('account_id', '')
+        history = History.query.get(id_)
+        if history.account_id == current_user.id:
+            history = history.remove_history(account_id)
+            db.session.commit()
+    return history_data()
 
