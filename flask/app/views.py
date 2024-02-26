@@ -253,3 +253,8 @@ def history():
     return ""
 
 
+@app.route("/result")
+def result():
+    a = "test"
+    plant_data = call_api(a)
+    return render_template("plant_data.html",plant_data=plant_data)
