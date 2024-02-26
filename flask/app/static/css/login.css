@@ -10,6 +10,67 @@ body {
     /* align-items: center; */
     
 }
+#edit_email, #edit_button_email {
+        display: inline;
+    }
+#edit_name, #edit_button_name {
+        display: inline;
+    }
+#edit_password, #edit_button_password {
+        display: inline;
+    }
+#edit_profile{
+    text-align: center;
+    margin: auto;
+    background-color: gray;
+    padding-top:20% ;
+    padding-bottom:20% ;
+    color: white;
+/*    transition: background-color 1s ease;*/
+}
+#edit_emai{
+/*    text-align: right;*/
+/*    margin-left: 50%;*/
+/*    background-color: gray;*/
+/*    padding-top:20% ;*/
+/*    padding-bottom:20% ;*/
+    color: white;
+/*    transition: background-color 1s ease;*/
+}
+#go_edit,#submitt,#cancel{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
+#edit_button{
+    border-radius: 15px;
+/*    margin-top: 10%;*/
+/*    background-color: none;*/
+/*    margin-bottom: 50px;*/
+/*    margin-top:10px;*/
+    margin-left: -20px;
+    border: 1px solid black;
+}
+.text-show{
+    margin-top: 10%;
+    text-align: left;
+/*    background-color: blue;*/
+    margin-left: 20%;
+    margin-bottom: 20%;
+}
+#select_avatar{
+    background-color: whitesmoke;
+    padding: auto;
+    border-radius: 10px;
+    border: 2px solid #333;
+    margin-top: 5%;
+}
+.avatarna{
+    border:none;
+    margin-left: 4%;
+}
 
 
 input[type=text],

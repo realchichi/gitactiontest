@@ -1,6 +1,6 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
-from flask_login import UserMixin
+
 
 class PlantInfo(db.Model, SerializerMixin):
 	__tablename__ = "plant_info"

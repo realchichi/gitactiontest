@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="search-box">
 
-        <div class="row">
-            <input type="text" id="input-box" placeholder="Search anything" autocomplete="off">
-            <button><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
 
-    </div>
+    <video id="camera-preview" width="640" height="480" autoplay></video>
+    <button id="open-cam" type="button">Open Camera</button>
+    <button id="close-cam" type="button">Close Camera</button>
+    <button id="capture-btn">Capture Photo</button>
+    <canvas id="canvas" style="display: none;"></canvas>
+
+
+
+    <label>Upload Image</label>
+    <input type="file" id="tb-file-upload" accept="image/*" onchange="fileUpload(event);">
+    <button type="button" id="identify" onclick="identifyImage()">Identify</button>
         
     
-      <script src="static/js/search.js"></script>
+
 {% endblock %}
 
 

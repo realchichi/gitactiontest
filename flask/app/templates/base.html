@@ -5,7 +5,7 @@
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1,">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
   <!-- Bootstrap CSS -->
@@ -32,25 +32,38 @@
   href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
   <!-- google fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style >
+      .alert {
+      padding: 20px;
+      margin: 5px;
+      color: #970020;
+      background-color: #ffd5de;
+    }
 
+  </style>
 </head>
 
 <body>
     
         <header>
             <a href="#" class="logo">BotaniBuzz</a>
-
+                
             <ul class="navlist">
+                {% if current_user.is_authenticated %}
+                    <li><img src={{current_user.avatar_url}} width="40"><li>
+                {% endif %}
                 <li><a href="{{ url_for('landing')}}">Home</a></li>
                 <li><a href="#">Contact us</a></li>
                 <li><a href="#">Blog</a></li>
-                <li><a href="#">Profile</a></li>
+                <li><a href="{{ url_for('profile')}}">Profile</a></li>
             </ul>
             <i class="ri-menu-line" id="menu-icon"></i>
             
         </header>
-
+            
         <section class="plant">
+            
+            
             {% block content %}{% endblock %}
         </section>
     
@@ -58,8 +71,11 @@
         <!-- scrollreveal effect -->
         <script src="https://unpkg.com/scrollreveal"></script>
         <!-- Javascript -->
+
         <script src="static/js/landing.js"></script>
-        <script src="static/js/camera_action.js"></script>
+        <script src="static/js/identify.js"></script>
+        <!-- <script src="static/js/landing.js"></script> -->
+
         <footer class="footer">
             <div class="container1">
                 <div class="row">

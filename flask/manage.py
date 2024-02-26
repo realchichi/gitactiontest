@@ -5,6 +5,7 @@ from app.models.history import History
 from app.models.plantinfo import PlantInfo
 
 
+
 cli = FlaskGroup(app)
 
 @cli.command("create_db")
