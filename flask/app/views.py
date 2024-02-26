@@ -1,17 +1,15 @@
 import base64
 import json
 import http.client
+
 import requests
 import os
+import hashlib
 from io import BytesIO
 from PIL import Image
 from app.forms import forms
-from flask import (jsonify, render_template,request, url_for, flash, redirect)
-from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import login_user, login_required, logout_user,current_user
-from wtforms import (StringField, TextAreaField, IntegerField, BooleanField,
-                     RadioField,EmailField,PasswordField)
-from wtforms.validators import InputRequired, Length,Email,Regexp,EqualTo
+import secrets
+import string
 # from form.forms import RegistrationForm
 # from urllib.request import urlopen
 from app.forms.forms import RegistrationForm
@@ -22,6 +20,9 @@ from flask_login import login_user, login_required, logout_user,current_user, Lo
 import random
 import psycopg2
 from app import app
+
+from app import oauth
+
 from app import db
 from app.models.accounts import Account
 from app.models.history import History
@@ -100,12 +101,16 @@ def login():
     logout_user()
     if request.method == 'POST':
 
-        email = request.form.get('email')
+        email = request.form.get('email').lower()
         password = request.form.get('password')
         user = Account.query.filter_by(email=email).first()
 
+
         remember = bool(request.form.get('is_active'))
-        print(user.id,"lllllllllllllllllllllllllllll")
+        
+
+
+        print("login",email,password)
 
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
@@ -176,9 +181,11 @@ def call_api(img):
     raw_data = read_file("app/sandbox/data.txt")
     list_data = eval(raw_data)
     # return render_template("plant_data.html", data=list_data)
+    # list_data["taxonomy"] = str(list_data["taxonomy"])
+
     return list_data
 
-
+    
 # Written by Wachirapong
 # To get data from API that we need to put into list
 def get_data(data):
@@ -197,8 +204,8 @@ def get_data(data):
         else:
             dict_val["description"] = "N/A"
         dict_val["wiki_url"] = val["details"].get("url", "N/A")
-        dict_val["taxonomy"] = val["details"].get("taxonomy", "N/A")
-        dict_val["common_name"] = val["details"].get("common_names", "N/A")
+        dict_val["taxonomy"] = str(val["details"].get("taxonomy", "N/A"))
+        dict_val["common_name"] = val["details"].get("common_names", "N/A")[0]
         dict_val["similar_images"] = []
         count_img = 0
         for simi_img in val["similar_images"]:
@@ -218,22 +225,27 @@ def get_data(data):
 @app.route("/identification", methods=["POST", "GET"])
 def identification():
     if request.method == "POST":
-        result = {}
-        print(request.files.keys())
-        image_file = request.files['image']
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.jpg')
-        image_file.save(filename)
+        img = request.form.to_dict().get("image", "")
+        hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()
+        print(hash_img)
+        
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], hash_img)
+        # image_file.save(filename)
         # print(len(result["photoDataUrl"]))
-        print(result)
+        result = {"idendtfied_img" : hash_img}
         account_id = current_user.id
         if result.get("idendtfied_img",""):
             idendtfied_img = result["idendtfied_img"]
             entry = History(account_id, idendtfied_img)
             db.session.add(entry)
             history = History.query.filter_by(idendtfied_img=idendtfied_img).first()
+            print(history)
             plant_data = call_api(idendtfied_img)
+            # print(plant_data)
+            # print("\n" * 3)
             for i in range(len(plant_data)):
                 temp = plant_data[i]
+                print(temp)
                 temp["history_id"] = history.id
                 plant_info = PlantInfo(**temp)
                 db.session.add(plant_info)
@@ -279,13 +291,14 @@ def signup():
             flash('Password must contain at least 8 characters including at least one digit, one lowercase letter, one uppercase letter, and one special character')
             return redirect(url_for('signup'))
         elif validated:
-            email = validated_dict['email']
+            email = validated_dict['email'].lower()
             name = validated_dict['name']
             password = validated_dict['password']
             user = Account.query.filter_by(email=email).first()
             if user:
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  
+            print("signup",email,password)
             new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 8))+".png")
             db.session.add(new_user)
 
@@ -305,6 +318,7 @@ def si():
 @app.route("/update",methods=('POST','GET'))
 def update():
     if request.method == 'POST':
+        check = False
         result = request.form.to_dict()
         email = result.get('email','')
         name = result.get('name','')
@@ -313,6 +327,7 @@ def update():
         accounts = Account.query.get(current_user.id)
         if password == '':
             password = current_user.password
+            check=True
         if   len(name) < 2 or len(name)>20:
             flash('name must be between 2 and 20 characters long')
             return redirect(url_for('profile'))
@@ -322,7 +337,10 @@ def update():
         elif  not is_valid_password(password):
             flash('Password must contain at least 8 characters including at least one digit, one lowercase letter, one uppercase letter, and one special character')
             return redirect(url_for('profile'))
-        accounts.update(email=email,name=name, avatar_url=avatar,password=generate_password_hash(password, method='sha256'))
+        if check:
+            accounts.update(email=email,name=name, avatar_url=avatar,password=password)
+        else:
+            accounts.update(email=email,name=name, avatar_url=avatar,password=generate_password_hash(password, method='sha256'))
         db.session.commit()
     return redirect(url_for('profile'))
 
@@ -342,12 +360,19 @@ def hw10_update():
         result = request.form.to_dict()
         password = result.get('password','')
         contact = Account.query.get(current_user.id)
+        print("update",password)
         if check_password_hash(contact.password,password):
             ans["ans"]=True
             return ans
         else :
             flash('password not correct')
     return ans
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('landing'))
 
 # @app.route('/validate_email', methods=['POST'])
 # def validate_email():
@@ -364,4 +389,94 @@ def is_valid_email_domain(email):
 
 def is_valid_password(password):
     return len(password) >= 8 and any(c.isdigit() for c in password) and any(c.islower() for c in password) and any(c.isupper() for c in password) and any(c in '!@#$%^&*()-_=+[]{}|;:,.<>?/~' for c in password)
+
+
+@app.route('/google/')
+def google():
+
+
+    oauth.register(
+        name='google',
+        client_id=app.config['GOOGLE_CLIENT_ID'],
+        client_secret=app.config['GOOGLE_CLIENT_SECRET'],
+        server_metadata_url=app.config['GOOGLE_DISCOVERY_URL'],
+        client_kwargs={
+            'scope' : 'openid email profile',
+            # 'redirect_uri':  'postmessage'
+        }
+    )
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..",app.config['GOOGLE_CLIENT_ID'],app.config['GOOGLE_CLIENT_SECRET'],app.config['GOOGLE_DISCOVERY_URL'])
+    # app.logger.debug("str(token)")
+   # Redirect to google_auth function
+    redirect_uri = url_for('google_auth', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+
+
+
+
+@app.route('/google/auth/')
+def google_auth():
+    token = oauth.google.authorize_access_token()
+    userinfo = token['userinfo']
+    email = userinfo['email']
+    user = Account.query.filter_by(email=email).first()
+
+
+    if not user:
+        name = userinfo.get('given_name','') + " " + userinfo.get('family_name','')
+        random_pass_len = 8
+        password = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
+                          for i in range(random_pass_len))
+        picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
+        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
+        db.session.add(new_user)
+        db.session.commit()
+        user = Account.query.filter_by(email=email).first()
+        login_user(user)
+    return redirect('/landing')
+
+@app.route('/facebook/')
+def facebook():
+   
+    # Facebook Oauth Config
+    FACEBOOK_CLIENT_ID = app.config['FACEBOOK_CLIENT_ID']
+    FACEBOOK_CLIENT_SECRET = app.config['FACEBOOK_CLIENT_SECRET']
+    # print(",,,,,,,,,,,,,,",FACEBOOK_CLIENT_ID,FACEBOOK_CLIENT_SECRET)
+    oauth.register(
+        name='facebook',
+        client_id=FACEBOOK_CLIENT_ID,
+        client_secret=FACEBOOK_CLIENT_SECRET,
+        access_token_url='https://graph.facebook.com/oauth/access_token',
+        access_token_params=None,
+        authorize_url='https://www.facebook.com/dialog/oauth',
+        authorize_params=None,
+        api_base_url='https://graph.facebook.com/',
+        client_kwargs={'scope': 'email'},
+    )
+    redirect_uri = url_for('facebook_auth', _external=True)
+    return oauth.facebook.authorize_redirect(redirect_uri)
+ 
+@app.route('/facebook/auth/')
+def facebook_auth():
+    token = oauth.facebook.authorize_access_token()
+    resp = oauth.facebook.get('https://graph.facebook.com/me?fields=id,name,email,picture{url}')
+    profile = resp.json()
+    print("Facebook User ", profile)
+    email = profile['email']
+    name = profile['name']
+    random_pass_len = random_pass_len = 8
+    password = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(random_pass_len))
+    user = Account.query.filter_by(email=email).first()
+
+
+    if not user:
+        picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
+        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
+        db.session.add(new_user)
+        db.session.commit()
+        user = Account.query.filter_by(email=email).first()
+        
+        login_user(user)
+    return redirect('/landing')
 

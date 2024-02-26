@@ -3,19 +3,31 @@
 {% block content %}
 
 
-    <video id="camera-preview" width="640" height="480" autoplay></video>
-    <button id="open-cam" type="button">Open Camera</button>
-    <button id="close-cam" type="button">Close Camera</button>
-    <button id="capture-btn">Capture Photo</button>
-    <canvas id="canvas" style="display: none;"></canvas>
 
-
-
-    <label>Upload Image</label>
-    <input type="file" id="tb-file-upload" accept="image/*" onchange="fileUpload(event);">
-    <button type="button" id="identify" onclick="identifyImage()">Identify</button>
         
-    
+    <div class="modal" id="modal">
+      <div class="contentarea">
+        <video id="camera-preview" width="640" height="480" autoplay></video>
+        <br>
+        <button id="close-cam" type="button">Close Camera</button>
+        <button id="capture-btn">Capture Photo</button>  
+      </div>
+  
+    </div>
+
+  <form method="POST" enctype="multipart/form-data" id="plant-img">
+    <div class="contentCam">
+        <button id="open-cam" type="button" onclick="openPopup()" >Open Camera</button>
+        <label>Upload Image</label>
+        <input type="file" id="tb-file-upload" name="image" accept="image/*" onchange="fileUpload(event);">
+        <br>
+        <canvas id="canvas"></canvas>
+        <div class="output">
+            <img id="photo" >
+        </div>
+        <input type="submit" name="submit" value="identify">
+    </div>
+  </form>
 
 {% endblock %}
 

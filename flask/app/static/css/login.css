@@ -10,6 +10,9 @@ body {
     /* align-items: center; */
     
 }
+#eye,#password{
+        display: inline;
+    }
 #edit_email, #edit_button_email {
         display: inline;
     }
@@ -20,12 +23,14 @@ body {
         display: inline;
     }
 #edit_profile{
+    border-radius: 20px;
     text-align: center;
     margin: auto;
     background-color: gray;
     padding-top:20% ;
     padding-bottom:20% ;
     color: white;
+    width: 80%;
 /*    transition: background-color 1s ease;*/
 }
 #edit_emai{
@@ -180,6 +185,9 @@ input[type=submit]:hover {
     left: 6px;
     top: 0px; 
     position: absolute;
+}
+.profile_box{
+    border-radius: 5px;
 }
 
 .InputBg{
