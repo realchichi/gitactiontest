@@ -19,6 +19,8 @@ from app.models.user import User
 from flask_login import login_user, login_required, logout_user,current_user, LoginManager
 
 
+
+
 READY = False
 
 def read_file(filename, mode="rt"):
@@ -141,6 +143,10 @@ def feqs():
 @app.route("/contactus")
 def contactus():
     return render_template("contactus.html")
+
+@app.route("/community")
+def community():
+    return render_template("community.html")
 
 # Written by Wachirapong
 # To call API
