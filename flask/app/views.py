@@ -122,6 +122,34 @@ def feqs():
 
 
 # Written by Wachirapong
+# To call validate form and store to database
+@app.route("/contact_us", methods=["GET", "POST"])
+def contact_us():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        # print(result)
+        valid_keys = ["name", "email", "message"]
+        validated_dict = {}
+        validated = True
+
+        for key in result:
+            if key not in valid_keys:
+                continue
+
+            if not result[key] or result[key] == "undefined":
+                validated = False
+                break
+
+            validated_dict[key] = result[key].strip()
+        # if validated:
+        #     contact = Contact(**validated_dict)
+        #     db.session.add(contact)
+
+        # db.session.commit()
+    return render_template("contact_us.html")
+
+
+# Written by Wachirapong
 # To call API
 @app.route("/api")
 def call_api(img):
@@ -184,7 +212,6 @@ def get_data(data):
     return list_data
 
 
-
 # Written by Wachirapong
 # To store plant data table that user who identified plant
 # and store it to history table
@@ -214,7 +241,6 @@ def identification():
             db.session.commit()
             return render_template("plant_data.html", plant_data=plant_data)
     return render_template("identification.html")
-
 
 
 def validate_email_domain(form, field):
