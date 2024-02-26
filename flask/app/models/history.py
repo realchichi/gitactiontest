@@ -15,7 +15,8 @@ class History(db.Model, SerializerMixin):
 		self.account_id = account_id
 		self.identified_date = datetime.now(timezone.utc)
 		self.identified_img = idendtfied_img
-
+		self.removed_date = "None"
+		self.removed_by = "None"
 
 	def remove_history(self, account_id):
 		self.removed_date = datetime.now(timezone.utc)

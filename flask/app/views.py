@@ -363,7 +363,7 @@ def is_valid_password(password):
     return len(password) >= 8 and any(c.isdigit() for c in password) and any(c.islower() for c in password) and any(c.isupper() for c in password) and any(c in '!@#$%^&*()-_=+[]{}|;:,.<>?/~' for c in password)
 
 @app.route("/history/data")
-# @login_required
+@login_required
 def history_data():
     # history = History.query.get(current_user.id)
     # plant = PlantInfo.query.get(account_id)
@@ -372,7 +372,7 @@ def history_data():
     return jsonify(history_data)
 
 @app.route("/history")
-# @login_required
+@login_required
 def history():
     return render_template("history.html")
 
