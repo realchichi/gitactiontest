@@ -4,7 +4,7 @@ import http.client
 import requests
 import os
 from io import BytesIO
-from PIL import Image
+# from PIL import Image
 from app.forms import forms
 from flask import (jsonify, render_template,request, url_for, flash, redirect)
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -327,10 +327,7 @@ def update():
     return redirect(url_for('profile'))
 
 
-@app.route("/history")
-@login_required
-def history():
-    return ""
+
 
 
 
@@ -365,3 +362,29 @@ def is_valid_email_domain(email):
 def is_valid_password(password):
     return len(password) >= 8 and any(c.isdigit() for c in password) and any(c.islower() for c in password) and any(c.isupper() for c in password) and any(c in '!@#$%^&*()-_=+[]{}|;:,.<>?/~' for c in password)
 
+@app.route("/history/data")
+# @login_required
+def history_data():
+    # history = History.query.get(current_user.id)
+    # plant = PlantInfo.query.get(account_id)
+    history = History.query.filter(History.account_id == current_user.id)
+    history_data = list(map(lambda x: x.to_dict(), history))
+    return jsonify(history_data)
+
+@app.route("/history")
+# @login_required
+def history():
+    return render_template("history.html")
+
+@app.route("/delete/history",methods=('GET','POST'))
+@login_required
+def delete_history():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        account_id = result.get('account_id', '')
+        history = History.query.get(id_)
+        if history.account_id == current_user.id:
+            history = history.remove_history(account_id)
+            db.session.commit()
+    return history_data()

@@ -13,8 +13,8 @@ class History(db.Model, SerializerMixin):
 	removed_by = db.Column(db.String(100))
 	def __init__(self, account_id, idendtfied_img):
 		self.account_id = account_id
-		self.idendtfied_date = datetime.now(timezone.utc)
-		self.idendtfied_img = idendtfied_img
+		self.identified_date = datetime.now(timezone.utc)
+		self.identified_img = idendtfied_img
 
 
 	def remove_history(self, account_id):
