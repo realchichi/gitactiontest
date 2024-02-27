@@ -27,6 +27,7 @@ from app import db
 from app.models.accounts import Account
 from app.models.history import History
 from app.models.plantinfo import PlantInfo
+from app.models.plantinfo import Commu
 # from sqlalchemy.sql import text
 from app import login_manager
 
@@ -312,7 +313,7 @@ def signup():
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  
             print("signup",email,password)
-            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 8))+".png",login_with="server")
+            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 16))+".png",login_with="server")
             db.session.add(new_user)
 
             db.session.commit()
@@ -425,10 +426,8 @@ def google_auth():
 
     if not user:
         name = userinfo.get('given_name','') + " " + userinfo.get('family_name','')
-        random_pass_len = 8
-        # password = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(random_pass_len))
         password = "12345678"
-        picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
+        picture = "static/img/avatar/"+str(random.randint(1, 16))+".png"
         new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture,login_with="google")
         db.session.add(new_user)
         db.session.commit()
@@ -474,7 +473,8 @@ def facebook_auth():
 
 
     if not user:
-        picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
+
+        picture = "static/img/avatar/"+str(random.randint(1, 16))+".png"
         new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture,login_with ="facebook")
         db.session.add(new_user)
         db.session.commit()
@@ -494,6 +494,53 @@ def history_data():
     return jsonify(history_data)
 
 #bas
+@app.route("/commu/data")
+# @login_required
+def commu_data():
+    commu = Commu.query.all()
+    commu_data = list(map(lambda x: x.to_dict(), commu))
+    for i in range(len(commu_data)):
+        id_ = commu_data["history_id"]
+        x = History.query.get(id_)
+        commu_data[i]["img"] = x.get('identified_img', '')
+        commu_data[i]["account_id"] = x.get('account_id', '')
+    return jsonify(commu_data)
+
+#bas
+@app.route("/commu")
+# @login_required
+def commu():
+    return render_template("commu.html")
+
+#bas
+@app.route("/delete/commu",methods=('GET','POST'))
+# @login_required
+def delete_commu():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        commu = History.query.get(id_)
+        if history.account_id == current_user.id:
+            commu = commu.share()
+            db.session.commit()
+        return commu_data()
+
+#bas
+@app.route("/edit/commu",methods=('GET','POST'))
+@login_required
+def edit_commu():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        account_id = result.get('account_id', '')
+        message = result.get('message', '')
+        commu = Commu.query.get(id_)
+        if account_id == current_user.id:
+            Commu.edit(message)
+            db.session.commit()
+        return history_data()
+
+#bas
 @app.route("/history")
 @login_required
 def history():
@@ -509,12 +556,10 @@ def delete_history():
         account_id = result.get('account_id', '')
         history = History.query.get(id_)
         if history.account_id == current_user.id:
-            history = history.remove_history(account_id)
+            history.remove_history(account_id)
             db.session.commit()
         return history_data()
 
 
-        flash("your password is 12345678, you can change it in the profile.")
-    return redirect('/landing')
 
 
