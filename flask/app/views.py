@@ -206,13 +206,16 @@ def get_data(data):
 def identification():
     if request.method == "POST":
         img = request.form.to_dict().get("image", "")
-        hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], hash_img)
-        write_file(filename + ".jpeg",hash_img + ".jpeg")
-        result = {"identified_img" : hash_img}
-        account_id = current_user.id
-        if result.get("identified_img",""):
-            identified_img = result["identified_img"]
+        if img:
+            img_data = base64.b64decode(img.split(',')[1])
+            hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()[:16]
+            filename = os.path.join(app.config['UPLOAD_FOLDER'], hash_img + ".jpg")
+            with open(filename, "wb") as image_file:
+                image_file.write(img_data)
+
+            account_id = current_user.id
+        
+            identified_img = filename
             entry = History(account_id, identified_img)
             db.session.add(entry)
             iden_plant = History.query.filter_by(identified_img=identified_img).all()
@@ -236,7 +239,8 @@ def identification():
 # To show data form API call
 @app.route("/result")
 def result():
-    plant = request.args.get('plant_data')
+    plant = os.path.join(app.config['UPLOAD_FOLDER'], request.args.get('plant_data') + ".jpg")
+    print(plant)
     history = History.query.filter_by(identified_img=plant, removed_by=None).first()
     id = history.id
     plant_info = PlantInfo.query.filter_by(history_id=id).all()

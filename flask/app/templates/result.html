@@ -4,7 +4,7 @@
     <!-- <div class="containerR"> -->
       
       <div class="plantData">
-        identified_image  : {{ identified_img }}
+        <img src="{{ identified_img[4:] }}" alt="identified_img">
         <h1>Result</h1>
           {% for plant in plant_data %}
             <div class="datacard">
