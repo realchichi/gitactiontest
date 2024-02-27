@@ -203,7 +203,9 @@ def get_data(data):
 # and store it to history table
 @app.route("/identification", methods=["POST", "GET"])
 def identification():
+    a = "test"
     if request.method == "POST":
+
         img = request.form.to_dict().get("image", "")
         hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()
         print(hash_img)
@@ -287,12 +289,14 @@ def signup():
         
     return render_template("signup.html")
 
+
 #bas
 @app.route("/signup/data")
 def si():
     db_accounts = Account.query.all()
     accounts = list(map(lambda x: x.to_dict(), db_accounts))
     return jsonify(accounts)
+
 
 #bas
 @app.route("/update",methods=('POST','GET'))
@@ -325,6 +329,7 @@ def update():
         db.session.commit()
     return redirect(url_for('landing'))
 
+
 #bas
 @app.route("/checkpassword",methods=('GET','POST'))
 def hw10_update():
@@ -341,6 +346,7 @@ def hw10_update():
             flash('password not correct')
     return ans
 
+
 #bas
 @app.route('/logout')
 @login_required
@@ -348,18 +354,11 @@ def logout():
     logout_user()
     return redirect(url_for('landing'))
 
-# @app.route('/validate_email', methods=['POST'])
-# def validate_email():
-#     ans={"ans":False}
-#     form = RegistrationForm(request.form.to_dict().get('email',''))
-#     if form.validate():
-#         ans["ans":True]
-#         return ans
 
-#     return ans
 def is_valid_email_domain(email):
     domain = email.split('@')[-1]
     return domain in ['gmail.com', 'hotmail.com', 'cmu.ac.th']
+
 
 def is_valid_password(password):
     return len(password) >= 8 and any(c.isdigit() for c in password) and any(c.islower() for c in password) and any(c.isupper() for c in password) and any(c in '!@#$%^&*()-_=+[]{}|;:,.<>?/~' for c in password)
@@ -368,8 +367,6 @@ def is_valid_password(password):
 #bas
 @app.route('/google/')
 def google():
-
-
     oauth.register(
         name='google',
         client_id=app.config['GOOGLE_CLIENT_ID'],
@@ -377,12 +374,8 @@ def google():
         server_metadata_url=app.config['GOOGLE_DISCOVERY_URL'],
         client_kwargs={
             'scope' : 'openid email profile',
-            # 'redirect_uri':  'postmessage'
         }
     )
-    # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..",app.config['GOOGLE_CLIENT_ID'],app.config['GOOGLE_CLIENT_SECRET'],app.config['GOOGLE_DISCOVERY_URL'])
-    # app.logger.debug("str(token)")
-   # Redirect to google_auth function
     redirect_uri = url_for('google_auth', _external=True)
     return oauth.google.authorize_redirect(redirect_uri)
 
@@ -492,3 +485,8 @@ def delete_history():
         flash("your password is 12345678, you can change it in the profile.")
     return redirect('/landing')
 
+@app.route("/result")
+def result():
+    a = "test"
+    plant_data = call_api(a)
+    return render_template("plant_data.html",plant_data=plant_data)

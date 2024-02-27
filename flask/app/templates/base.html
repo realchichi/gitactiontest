@@ -21,16 +21,14 @@
   <link rel="stylesheet" href="../static/css/camera.css">
   <link rel="stylesheet" href="../static/css/contactus.css">
   <link rel="stylesheet" href="../static/css/history.css">
-
-
-
   <link rel="stylesheet" href="static/css/login.css">
+  <link rel="stylesheet" href="../static/css/result.css">
+
 
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <!-- Bootstrap Table -->
   <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
   <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
-<!-- <script src="landing.js"></script> -->
 
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" /> -->
 
@@ -61,8 +59,9 @@
 <body>
     
         <header>
+
             <a href="{{ url_for('landing')}}" class="logo">BotaniBuzz</a>
-                
+
             <ul class="navlist">
                 {% if current_user.is_authenticated %}
                     <li><a><img src={{current_user.avatar_url}} width="40"><li></a>
@@ -74,7 +73,6 @@
 
             </ul>
             <i class="ri-menu-line" id="menu-icon"></i>
-            
         </header>
             
         <section class="plant">
@@ -88,7 +86,6 @@
 
         <script src="static/js/landing.js"></script>
         <script src="static/js/identify.js"></script>
-        <!-- <script src="static/js/landing.js"></script> -->
 
         <footer class="footer">
             <div class="container1">
