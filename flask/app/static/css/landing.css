@@ -56,6 +56,17 @@ header{
     padding: 12px 30px;
 
 }
+#profile_button{
+    position: relative;
+    top: -10px;
+    /* padding-top: 0px; */
+    padding-bottom: 2px;
+}
+#profile_button :hover{
+    /* display: inline-block; */
+    border-bottom: none;
+    /* cursor: pointer; */
+}
 #menu-icon{
     color:black;
     font-size: 30px;
@@ -87,6 +98,7 @@ section{
 .plant-text h1{
     font-family: 'Poppins',sans-serif;
     font-size: 72px;
+    font-weight: 500;
     line-height: 1;
     color: #accaac;
     margin: 0 0 45px;

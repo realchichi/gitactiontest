@@ -1,12 +1,12 @@
 from flask.cli import FlaskGroup
-
-
 from app import app, db
-from app.models.user import User
+from app.models.accounts import Account
+from app.models.history import History
+from app.models.plantinfo import PlantInfo
+
 
 
 cli = FlaskGroup(app)
-
 
 @cli.command("create_db")
 def create_db():

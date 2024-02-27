@@ -1,177 +1,30 @@
-<!doctype html>
-<html lang="en">
+{% extends "base.html" %}
 
+{% block content %}
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1,">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- <div class="card5 bg-light-subtle mt-4">
+  <div class="card5-body">
+    <img src="static/img/pla.jpg" class="card5-img-left" alt="...">
+    <div class="text-section">
+      <h5 class="card5-title fw-bold">Card title</h5>
+      <p class="card5-text">Some quick example text to build on the card's content.</p>
+    </div>
+  
+  </div>
+  <div class="card-footer bg-transparent border-success">Footer</div>
+</div> -->
 
-  <link rel="stylesheet" href="static/css/community.css">
-  <script src="https://kit.fontawesome.com/3d40f8c3a3.js" crossorigin="anonymous"></script>
+<div class="card5 bg-light-subtle mt-4">
+    <div class="card5-body">
+      <div class="image-section">
+        <img src="static/img/pla.jpg" class="card5-img" alt="...">
+      </div>
+      <div class="text-section">
+        <h5 class="card5-title fw-bold">Card title</h5>
+        <p class="card5-text">Some quick example text to build on the card's content.888</p>
+      </div>
+    </div>
+    <div class="card5-footer bg-transparent border-success">Footer</div>
+  </div>
 
-
-
-</head>
-    <body>
-        <nav>
-            <div class="nav-left">
-                <img src="static/img/faqs.png" class="logo">
-                <ul>
-                    <li><img src="static/img/notification.png" alt=""></li>
-                    <li><img src="static/img/inbox.png" alt=""></li>
-                    <li><img src="static/img/video.png" alt=""></li>
-                </ul>
-            </div>
-            <div class="nav-right">
-               <div class="search-box">
-                    <img src="static/img/loupe.png" alt="">
-                    <input type="text" placeholder="Search">
-               </div>
-               <div class="nav-user-icon online">
-                    <img src="static/img/user.png" alt="">
-               </div>
-
-            </div>
-        </nav>
-        <div class="container">
-            <!-- left sidebar -->
-            <div class="left-sidebar">
-                <div class="imp-links">
-                    <a href="#"><img src="static/img/newspaper-folded.png" >Latest News</a>
-                    <a href="#"><img src="static/img/friends.png" >Friends</a>
-                    <a href="#"><img src="static/img/group.png" >Group</a>
-                    <a href="#"><img src="static/img/market.png" >Marketplace</a>
-                    <a href="#"><img src="static/img/watch.png" >Watch</a>
-                    <a href="#">See more</a>
-                </div>
-                <div class="shortcut-links">
-                    <p>Your Shoutcuts</p>
-                    <a href="#"><img src="static/img/shortcut.png" alt="">Web Developers</a>
-                    <a href="#"><img src="static/img/shortcut.png" alt="">Web Design course</a>
-                    <a href="#"><img src="static/img/shortcut.png" alt="">Full Stack Development</a>
-                    <a href="#"><img src="static/img/shortcut.png" alt="">Website Expert</a>
-                </div>
-            </div>
-                <!-- main content -->
-            <div class="main-content">
-
-                <div class="story-gallery">
-                    <div class="story">
-                       <img src="static/img/upload.png">
-                       <p>Post Story</p>
-                    </div>
-                </div>
-
-                <div class="write-post-container">
-                    <div class="user-profile">
-                        <img src="static/img/user.png" alt="">
-                        <div>
-                            <p> Realchi nongPhai</p>
-                            <small><i class="fa-solid fa-chevron-down"></i>Public</small>
-                        </div>
-                    </div>
-                    <div class="post-input-contianer">
-                        <textarea rows="3" placeholder="What's on your mind, Realchi?"></textarea>
-                        <div class="add-post-links">
-                            <a href="#"><img src="static/img/video.png">Live Video</a>
-                            <a href="#"><img src="static/img/video.png">Photo/Video</a>
-                            <a href="#"><img src="static/img/video.png">Feeling/Activity</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="post-container">
-                    <div class="user-profile">
-                        <img src="static/img/user.png" alt="">
-                        <div>
-                            <p> Realchi nongPhai</p>
-                            <span>Aug 16 2023, 16:30 pm</span>
-                        </div>
-                    </div>
-                    <p class="post-text"><span>Subscribe @Easy Tutorials</span> 
-                        <a href="#">#Easy Way To Love</a>
-                        <a href="#">#Easy Way To Cry</a>
-                    </p>
-                    <img src="static/img/dokchaba.png" class="post-img">
-
-                    <div class="post-row">
-                        <div class="activity-icons">
-                            <div><img src="static/img/like.png">120 like</div>
-                            <div><img src="static/img/like.png">120 comment</div>
-                            <div><img src="static/img/like.png">120 share</div>
-                        </div>
-                        <div class="post-profile-icon">
-                            <img src="static/img/user.png">
-                        </div>
-                    </div>
-                </div>
-                
-                
-            </div>
-
-            <!-- right sidebar -->
-            <div class="right-sidebar">
-                <div class="sidebar-title">
-                    <h4>Events</h4>
-                    <a href="#">See All</a>
-                </div>
-                <div class="event">
-                    <div class="left-event">
-                        <h3>18</h3>
-                        <span>March</span>
-                    </div>
-                    <div class="right-event">
-                        <h4>Social Media</h4>
-                        <p><i class="fa-solid fa-location-dot"></i>Willson Tech Park</p>
-                        <a href="#">More Info</a>
-                    </div>
-                </div>
-                <div class="event">
-                    <div class="left-event">
-                        <h3>22</h3>
-                        <span>June</span>
-                    </div>
-                    <div class="right-event">
-                        <h4>Mobile Marketing</h4>
-                        <p><i class="fa-solid fa-location-dot"></i>Willson Tech Park</p>
-                        <a href="#">More Info</a>
-                    </div>
-                </div>
-                <div class="sidebar-title">
-                    <h4>Adversitement</h4>
-                    <a href="#">Close</a>
-                </div>
-                    <img src="static/img/megaphone.png" class="sidebar-ads">
-
-                <div class="sidebar-title">
-                    <h4>Conversation</h4>
-                    <a href="#">Hide Chat</a>
-                </div>
-                <div class="online-list">
-                    <div class="online">
-                    <img src="static/img/megaphone.png" class="sidebar-ads">
-
-                    </div>
-                    <p>Alison Mina</p>
-                </div>
-                <div class="online-list">
-                    <div class="online">
-                    <img src="static/img/megaphone.png" class="sidebar-ads">
-
-                    </div>
-                    <p>Jackson Aston</p>
-                </div>
-                <div class="online-list">
-                    <div class="online">
-                    <img src="static/img/megaphone.png" class="sidebar-ads">
-
-                    </div>
-                    <p>Samona Rose/p>
-                </div>
-
-            </div>
-        </div>
-
-    </body>
-</html>
+{% endblock %}

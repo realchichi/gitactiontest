@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style >
+        #edit_profile{
+            width: 500px;
+/*            height: 560px;*/
+            border-radius: 40px;
+            background-color: #f2f2f2;
+            padding: 50px;
+            margin-top: 80px; 
+            margin-left: 200px;
+            color: black;
+        }
+    </style>
+    <div class="profile_box">
+        <div>
+          {% for message in get_flashed_messages() %}
+              <div class="alert">{{ message }}</div>
+          {% endfor %}
+      </div>
+        <div id="edit_profile">
+            <div>
+                <img id ="current_avatar"src={{current_user.avatar_url}} width="200">
+                <button hidden="hidden" id ="edit_button"><img  src="static/img/pen.png" width="18" ></button>
+            </div>
+            
+            <div class="row" id="select_avatar" style="display:none;">
+                <div class ="col" id="avatar_to_select">
+                    <button class="avatarna" id="avatar" value="1">
+                        <img src="static/img/avatar/1.png" width="50">
+                    </button >
+                    <button class="avatarna" id="avatar" value="2">
+                        <img src="static/img/avatar/2.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="3">
+                        <img src="static/img/avatar/3.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="4">
+                        <img src="static/img/avatar/4.png" width="50">
+                    </button><br>
+                    <button class="avatarna" id="avatar" value="5">
+                        <img src="static/img/avatar/5.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="6">
+                        <img src="static/img/avatar/6.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="7">
+                        <img src="static/img/avatar/7.png" width="50">
+                    </button>
+                    <button class="avatarna" id="avatar" value="8">
+                        <img src="static/img/avatar/8.png" width="50">
+                    </button>
+                </div>
+            </div>
+            <div class="text-show">
+                <div class="">
+                    <p id ="edit_email">Email : {{current_user.email}}</p>
+                <button hidden="hidden" id ="edit_button_email"><img  src="static/img/pen.png" width="18" ></button>
+                <div id= "div_edit_email"style="display: none;">
+                    <input id="email_value" placeholder="Enter new email">
+                    <button id ="confirm_edit_button_email">Confirm</button>
+                </div>
+                
+                </div>
+                <div class="">
+                <p id ="edit_name">Name : {{current_user.name}}</p>
+                <button hidden="hidden" id ="edit_button_name"><img  src="static/img/pen.png" width="18" ></button>
+                <div id= "div_edit_name"style="display: none;">
+                    <input id="name_value" placeholder="Enter new name">
+                    <button id ="confirm_edit_button_name">Confirm</button>
+                </div>
+                </div>
+                <div class="">
+                <p id ="edit_password">Password</p>
+                <button hidden="hidden" id ="edit_button_password"><img  src="static/img/pen.png" width="18" ></button>
+                <div id= "div_edit_password"style="display: none;">
+                    <input id="password_value" placeholder="Enter new password">
+                    <button id ="confirm_edit_button_password">Confirm</button>
+                </div>
+                </div>
+            </div>
+            <div id="to_edit">
+                <button id="go_edit">Edit</button>
+                <div id="div_check_password" style="display:none;">
+                    <input id="Enter_password" type="password" placeholder="Enter password">
+                    <button id="check_password">Submit</button>
+                </div>
+                
+            </div>
+            <div id="form" hidden="hidden">
+                <button id="submitt">Confirm</button>
+                <button id="cancel">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+    <p id="get" avatar={{current_user.avatar_url}} name={{current_user.name}} email={{current_user.email}}></p>
+    <script>
+        var divElement = document.getElementById('get');
+        var email = divElement.getAttribute('email');
+        var avatar = divElement.getAttribute('avatar');
+        var name = divElement.getAttribute('name');
+        var password = "";
+        $("#edit_button").click(function(){
+            $("#select_avatar").toggle("fast")
+        })
+        var buttons = document.querySelectorAll(".avatarna");
+        buttons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var buttonValue = this.value.toString();
+                // console.log("Button value:", buttonValue);
+                $("#current_avatar").attr("src","static/img/avatar/"+buttonValue+".png")
+                avatar = "static/img/avatar/"+buttonValue+".png"
+            });
+        });
+        $("#edit_button_email").click(function(){
+            $("#div_edit_email").toggle("fast")
+        })
+        $("#edit_button_name").click(function(){
+            $("#div_edit_name").toggle("fast")
+        })
+        $("#edit_button_password").click(function(){
+            $("#div_edit_password").toggle("fast")
+        })
+        $("#confirm_edit_button_email").click(function(){
+            // console.log("11")
+            var email_value = document.getElementById("email_value")
+            var confirmButton = document.getElementById("confirm_edit_button_email");
+            confirmButton.innerHTML = '<img id="check_email"  src="static/img/check.png" width="30">';
+            email = email_value.value
+            // console.log(email)
+        })
+        $("#confirm_edit_button_name").click(function(){
+            // console.log("11")
+            var name_value = document.getElementById("name_value")
+            var confirmButton = document.getElementById("confirm_edit_button_name");
+            confirmButton.innerHTML = '<img id="check_name"  src="static/img/check.png" width="30">';
+            name = name_value.value
+            // console.log(email)
+        })
+        $("#confirm_edit_button_password").click(function(){
+            // console.log("11")
+            var name_value = document.getElementById("password_value")
+            var confirmButton = document.getElementById("confirm_edit_button_password");
+            confirmButton.innerHTML = '<img id="check_password"  src="static/img/check.png" width="30">';
+            password = password_value.value
+            // console.log(email)
+        })
+        $("#go_edit").click(function(){
+            $('#div_check_password').toggle('fast')
+
+            
+        })
+        $("#check_password").click(function(){
+            var values = document.getElementById("Enter_password").value
+            
+            var formData = {"password":values}  
+            console.log(formData,"1111")
+            $.post("/checkpassword", formData, function (response) {
+            if (response.ans) {
+                $('#form').removeAttr('hidden');
+                $('#to_edit').attr('hidden', 'hidden');
+                $('#edit_button_name').removeAttr('hidden');
+                $('#edit_button_email').removeAttr('hidden');
+                $('#edit_button_password').removeAttr('hidden');
+                $('#edit_button').removeAttr('hidden');
+            } else {
+                alert("Password not correct!");
+            }
+        })
+        })
+        $("#cancel").click(function(){
+            location.reload()
+        })
+        $("#submitt").click(function(){
+
+            var formData={"email":email,"name":name,"avatar_url":avatar,"password":password}
+            $.post("/update", formData, function () {
+                location.reload()
+            });
+        })
+    </script>    
+    
+{% endblock %}
+

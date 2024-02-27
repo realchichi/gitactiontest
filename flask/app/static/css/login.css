@@ -7,8 +7,107 @@ body {
 
 * {
     box-sizing: border-box;
-    /* align-items: center; */
     
+}
+#eye,#password{
+        display: inline;
+    }
+#edit_email{
+        display: inline;
+        /* color: white; */
+
+    }
+#edit_name{
+        display: inline;
+        
+    }
+#edit_password{
+        display: inline;
+    } 
+
+#edit_button_email, #edit_button_name, #edit_button_password{
+    border: none;
+}
+
+#edit_profile{
+    border-radius: 20%;
+    text-align: center;
+    margin: auto;
+    /* background-color: gray; */
+    /* background-color: red; */
+    padding-top:20% ;
+    padding-bottom:20% ;
+    color: white;
+    width: 100%;
+    
+/*    transition: background-color 1s ease;*/
+}
+
+#check_password{
+    display: inline-block;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-radius: 5px;
+}
+#go_edit,#submitt,#cancel{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
+#submitt{
+    border: 2px solid #00ab41;
+}
+/* #cancel{
+    border: 2px solid red;
+} */
+
+#edit_button{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+/*    margin-top: 10%;*/
+/*    background-color: none;*/
+/*    margin-bottom: 50px;*/
+/*    margin-top:10px;*/
+    margin-top: 50px !important;
+    margin-left: -24px;
+    border: 1px solid black;
+    /* color: red; */
+}
+.text-show{
+    margin-top: 10%;
+    text-align: left;
+/*    background-color: blue;*/
+    margin-left: 20%;
+    margin-bottom: 20%;
+    /* border-radius: 8px; */
+}
+#email_value, #name_value, #password_value{
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+#confirm_edit_button_email,#confirm_edit_button_name,#confirm_edit_button_password{
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 5px;
+    border: 2px solid #00ab41;
+}
+#select_avatar{
+    background-color: whitesmoke;
+    padding: auto;
+    border-radius: 10px;
+    border: 2px solid #333;
+    margin-top: 5%;
+}
+.avatarna{
+    border:none;
+    margin-left: 4%;
 }
 
 
@@ -119,6 +218,9 @@ input[type=submit]:hover {
     left: 6px;
     top: 0px; 
     position: absolute;
+}
+.profile_box{
+    border-radius: 5px;
 }
 
 .InputBg{
