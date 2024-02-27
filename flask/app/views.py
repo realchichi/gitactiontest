@@ -27,7 +27,7 @@ from app import db
 from app.models.accounts import Account
 from app.models.history import History
 from app.models.plantinfo import PlantInfo
-from app.models.plantinfo import Commu
+from app.models.community import Commu
 # from sqlalchemy.sql import text
 from app import login_manager
 
@@ -142,28 +142,29 @@ def call_api(img):
     # with open('app/static/img/longan1.jpg', 'rb') as file:
     #     images = [base64.b64encode(file.read()).decode('ascii')]
 
-    # url = "https://plant.id/api/v3/identification"
-    # DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
-    # query = "?details=" + DETAILS +"&language=th"
-    # url += query
+    url = "https://plant.id/api/v3/identification"
+    DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
+    query = "?details=" + DETAILS +"&language=th"
+    url += query
 
-    # payload = json.dumps({
-    #     "images": ["data:image/jpg;base64," + images[0]],
-    #     "similar_images": True
-    # })
-    # headers = {
-    #     'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
-    #     'Content-Type': 'application/json'
-    # }
+    payload = json.dumps({
+        "images": ["data:image/jpg;base64," + img],
+        "similar_images": True
+    })
+    headers = {
+        'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
+        'Content-Type': 'application/json'
+    }
+
     # if u need to call API use these 2 lines
-    # response = requests.request("POST", url, headers=headers, data=payload)
-    # list_data = get_data(json.loads(response.text))
+    response = requests.request("POST", url, headers=headers, data=payload)
+    list_data = get_data(json.loads(response.text))
     # these 2 lines for temp data
-    raw_data = read_file("app/sandbox/data.txt")
-    list_data = eval(raw_data)
-    # return render_template("plant_data.html", data=list_data)
-    # list_data["taxonomy"] = str(list_data["taxonomy"])
+    # raw_data = read_file("app/sandbox/data.txt")
+    # list_data = eval(raw_data)
 
+
+    print(list_data)
     return list_data
 
     
@@ -185,8 +186,8 @@ def get_data(data):
         else:
             dict_val["description"] = "N/A"
         dict_val["wiki_url"] = val["details"].get("url", "N/A")
-        dict_val["taxonomy"] = str(val["details"].get("taxonomy", "N/A"))
-        dict_val["common_name"] = val["details"].get("common_names", "N/A")[0]
+        dict_val["taxonomy"] = str(val["details"].get("taxonomy", "N/A")).replace(":", ",")
+        dict_val["common_name"] = val["details"].get("common_names", "N/A")
         dict_val["similar_images"] = []
         count_img = 0
         for simi_img in val["similar_images"]:
@@ -215,7 +216,6 @@ def identification():
                 image_file.write(img_data)
 
             account_id = current_user.id
-        
             identified_img = filename
             entry = History(account_id, identified_img)
             db.session.add(entry)
@@ -224,7 +224,7 @@ def identification():
             history = History.query.filter_by(identified_img=identified_img).first()
             if identified_img in list_iden_plant:
                 history = History.query.order_by(desc(History.identified_date)).first()
-            plant_data = call_api(identified_img)
+            plant_data = call_api(img.split(',')[1])
             for i in range(len(plant_data)):
                 temp = plant_data[i]
                 temp["history_id"] = history.id
@@ -241,8 +241,12 @@ def identification():
 @app.route("/result")
 def result():
     plant = os.path.join(app.config['UPLOAD_FOLDER'], request.args.get('plant_data') + ".jpg")
-    print(plant)
     history = History.query.filter_by(identified_img=plant, removed_by=None).first()
+    iden_plant = History.query.filter_by(identified_img=plant).all()
+    list_iden_plant = list(map(lambda x: x.identified_img, iden_plant))
+    history = History.query.filter_by(identified_img=plant).first()
+    if plant in list_iden_plant:
+        history = History.query.order_by(desc(History.identified_date)).first()
     id = history.id
     plant_info = PlantInfo.query.filter_by(history_id=id).all()
     list_plant = list(map(lambda x: convert_to_list(x.to_dict()), plant_info))
@@ -256,7 +260,7 @@ def convert_to_list(dict_):
     for key in dict_:
         if key == "taxonomy":
             temp = dict_[key].split(",")
-            list_temp = list(map(lambda x: x.strip("{}'"), temp))
+            list_temp = list(map(lambda x: x.strip(''' { } " ' '''), temp))
             dict_[key] = list_temp
             continue
         if isinstance(dict_[key], str):

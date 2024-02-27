@@ -6,6 +6,7 @@
       <div class="plantData">
         <img src="{{ identified_img[4:] }}" alt="identified_img">
         <h1>Result</h1>
+        
           {% for plant in plant_data %}
             <div class="datacard">
               <div class="cardheader">
@@ -19,7 +20,7 @@
                         {% else %}
                           {% for name in plant.common_name %}
 
-                          <span style="font-size: 17px;">Common Name : {{ plant.common_name[0] }}</span>
+                          <span style="font-size: 17px;">Common Name : {{ name }}</span>
                           {% endfor %}
                         {% endif %}
                       </div>
