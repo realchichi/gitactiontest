@@ -278,7 +278,7 @@ def signup():
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  
             print("signup",email,password)
-            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 8))+".png")
+            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 16))+".png")
             db.session.add(new_user)
 
             db.session.commit()
@@ -402,7 +402,7 @@ def google_auth():
         random_pass_len = 8
         password = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
                           for i in range(random_pass_len))
-        picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
+        picture = "static/img/avatar/"+str(random.randint(1, 16))+".png"
         new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
         db.session.add(new_user)
         db.session.commit()
@@ -446,7 +446,7 @@ def facebook_auth():
 
 
     if not user:
-        picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
+        picture = "static/img/avatar/"+str(random.randint(1, 16))+".png"
         new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
         db.session.add(new_user)
         db.session.commit()
