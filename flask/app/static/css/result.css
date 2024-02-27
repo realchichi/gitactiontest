@@ -21,6 +21,9 @@
     margin: 0 auto; /* Center the image within the container */
 }
 .datacard{
+    position: relative;
+/*    width: 200px; */
+/*    height: 100px; */
 	background-color: #f2f2f2;
     border-radius: 15px;
     border: 1px solid gray;
@@ -39,7 +42,8 @@
 /*	background-color: lightpink;*/
 }
 .plantData{
-	margin-top: 25%;
+	display: none;
+/*	margin-top: 25%;*/
 	width: 250%; /* Set the fixed width for the container */
     height: auto; /* Set the fixed height for the container */
 }
@@ -52,7 +56,38 @@
 .containerR{
 	background-color: white;
 }
+#toggleButton{
+	margin-top: 25%;
+}
+.containerData {
+    position: relative;
+}
+#forsend{
+	width: 250%;
+	text-align: center;
+	background-color: white;
+	border-radius: 15px;
+    border: 1px solid gray;
+	padding-top: 5%;
+	padding-bottom: 5%;
 
+}
+.forum{
+	text-align: center;
+/*	background-color: lightsalmon;*/
+}
+#myTextarea{
+	width: 50%;
+}
+#message{
+	width: 50%;
+}
+.forcenter{
+	padding-bottom: 10%;
+}
+.yourimg{
+/*	background-color: greenyellow;*/
+}
 /*.center-container button {
      
 }*/

@@ -2,35 +2,43 @@
 
 {% block content %}
     <!-- <div class="containerR"> -->
-      
-      <div class="plantData">
-        <h1>Result</h1>
+      <div class="containerData">
+      <button id="toggleButton">Toggle Result</button>
+      <br>
+      <div class="plantData" id="toggledDiv">
+      {% set count = 0 %}
+      {% set forcount = 1 %}
           {% for plant in plant_data %}
+          
             <div class="datacard">
               <div class="cardheader">
-                <div class="row">
-                  <div class="col-md-9">
-                    <span style="font-size: 20px; font-style: italic; font-weight: bold;">{{ plant.name }} </span>
-                    <div class="row">
-                      <div class="col-9 text-truncate">
+                <!-- <div class="row"> -->
+                  <!-- <div class="col-md-9"> -->
+                    <div class ="myData">
+                       <span style="font-size: 20px; font-style: italic; font-weight: bold;">{{ plant.name }} </span>
+                    </div>
+                    <br>
+                    <!-- <div class="row"> -->
+                      <!-- <div class="col-9 text-truncate"> -->
                         {% if plant.common_name is none %}
                           <span style="font-size: 17px;">Common Name:</span> <span style="font-size: 17px; font-style: italic;">N/A </span>
                         {% else %}
                           {% for name in plant.common_name %}
-                                  
+                            
                           <span style="font-size: 17px;">Common Name : {{ plant.common_name[0] }}</span>
                           
                           {% endfor %}
                         {% endif %}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 text-center forpad">
+                        <br>
+                      <!-- </div> -->
+                    <!-- </div> -->
+                  <!-- </div> -->
+                  <!-- <div class="col-md-3 text-center forpad"> -->
                     {% set num1 = plant.probability %}
                     {% set num2 = 100 %}
-                        <p>{{ (num1 * num2)|round(2) }} %</p>
-                  </div>
-                </div>
+                    <p>ความเป็นไปได้ :  {{ (num1 * num2)|round(2) }} %</p>
+                  <!-- </div> -->
+                <!-- </div> -->
               </div>
               <div class="cardbody">
                 <div class="row">
@@ -68,7 +76,7 @@
               <div class="cardfooter">
                 <!-- <div class="row"> -->
                   <div class="center-container">
-                    <button> ถูกต้อง? </button>
+                    <button onclick="sendData({{ count + forcount }})" > ถูกต้อง? </button>
                   </div>
                 <!-- </div> -->
               </div>
@@ -77,9 +85,55 @@
           {% endfor %}
       </div>
     </div>
-  <!-- </div> -->
+  </div>
     
+  <br>
+  <div class="forcenter">
+    <form action="/submit" method="post" id="forsend">
+    <h2>Share To Community</h2>
+    <div class="yourimg">
+      <img src="/static/img/longan1.jpg">
+    </div>
+    <div class="forum">
+      <br>
+      <p>Suggest Name</p>
+      <label for="message"></label>
+      <textarea id="myTextarea" rows="1" required ></textarea>
+      <br>
+      <p>Message</p>
+      <label for="message"></label>
+      <textarea id="message" name="message" rows="2" required ></textarea>
+      <br>
+      <label for="datetimeInput"> วันที่ค้น :</label>
 
+      <!-- Datetime Input -->
+      <input  id="datetimeInput" name="datetimeInput" readonly>
+      <br>
+      <input type="submit" value="Share">
+    </div>
+  </form>
+  </div>
+  
+<script>
+  var now = new Date();
+  var formattedNow = now.toLocaleDateString('en-GB');
+  // var formattedNow = now.toISOString().slice(0, 16); //withtime
+  document.getElementById('datetimeInput').value = formattedNow;
+  // console.log(formattedNow)
+
+  document.getElementById('toggleButton').addEventListener('click', function() {
+    var div = document.getElementById('toggledDiv');
+    div.style.display = (div.style.display === 'none' || div.style.display === '') ? 'block' : 'none';
+  });
+
+  function sendData(divNumber) {
+    console.log(divNumber)
+    var textarea = document.getElementById('myTextarea');
+    var data = document.querySelector('.myData:nth-child(' + divNumber + ') p').innerText;
+    textarea.value = data;
+    document.getElementById('forsend').scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
 {% endblock %}
 
 
