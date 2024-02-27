@@ -9,8 +9,8 @@ class History(db.Model, SerializerMixin):
 	account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
 	identified_date = db.Column(db.DateTime)
 	identified_img = db.Column(db.String(100))
-	removed_date = db.Column(db.DateTime)
-	removed_by = db.Column(db.String(100))
+	removed_date = db.Column(db.DateTime, default=None)
+	removed_by = db.Column(db.String(100), default=None)
 	has_been_shared = db.Column(db.Boolean(), default=False)
 	def __init__(self, account_id, identified_img):
 		self.account_id = account_id
@@ -23,5 +23,5 @@ class History(db.Model, SerializerMixin):
 		self.removed_by = account_id
 
 
-	def share(self, shared):
-		self.has_been_shared = shared
+	def share(self):
+		self.has_been_shared = True

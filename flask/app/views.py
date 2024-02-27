@@ -22,13 +22,14 @@ import psycopg2
 from app import app
 
 from app import oauth
-
+from sqlalchemy import desc
 from app import db
 from app.models.accounts import Account
 from app.models.history import History
 from app.models.plantinfo import PlantInfo
 # from sqlalchemy.sql import text
 from app import login_manager
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -203,38 +204,65 @@ def get_data(data):
 # and store it to history table
 @app.route("/identification", methods=["POST", "GET"])
 def identification():
-    a = "test"
     if request.method == "POST":
-
         img = request.form.to_dict().get("image", "")
         hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()
-        print(hash_img)
-        
         filename = os.path.join(app.config['UPLOAD_FOLDER'], hash_img)
-        # image_file.save(filename)
-        # print(len(result["photoDataUrl"]))
+        write_file(filename + ".jpeg",hash_img + ".jpeg")
         result = {"identified_img" : hash_img}
         account_id = current_user.id
         if result.get("identified_img",""):
             identified_img = result["identified_img"]
             entry = History(account_id, identified_img)
             db.session.add(entry)
+            iden_plant = History.query.filter_by(identified_img=identified_img).all()
+            list_iden_plant = list(map(lambda x: x.identified_img, iden_plant))
             history = History.query.filter_by(identified_img=identified_img).first()
-            print(history)
+            if identified_img in list_iden_plant:
+                history = History.query.order_by(desc(History.identified_date)).first()
             plant_data = call_api(identified_img)
-            # print(plant_data)
-            # print("\n" * 3)
             for i in range(len(plant_data)):
                 temp = plant_data[i]
-                print(temp)
                 temp["history_id"] = history.id
                 plant_info = PlantInfo(**temp)
                 db.session.add(plant_info)
 
             db.session.commit()
-            return render_template("plant_data.html", plant_data=plant_data)
+            return jsonify({"identified_plant" : hash_img})
     return render_template("identification.html")
 
+
+# Written by Wachirapong
+# To show data form API call
+@app.route("/result")
+def result():
+    plant = request.args.get('plant_data')
+    history = History.query.filter_by(identified_img=plant, removed_by=None).first()
+    id = history.id
+    plant_info = PlantInfo.query.filter_by(history_id=id).all()
+    list_plant = list(map(lambda x: convert_to_list(x.to_dict()), plant_info))
+    return render_template("result.html", plant_data=list_plant, identified_img=plant)
+
+
+# Written by Wachirapong
+# some value in dict there is {} in it
+# To to strip {} and convert it to list
+def convert_to_list(dict_):
+    for key in dict_:
+        if key == "taxonomy":
+            temp = dict_[key].split(",")
+            list_temp = list(map(lambda x: x.strip("{}'"), temp))
+            dict_[key] = list_temp
+            continue
+        if isinstance(dict_[key], str):
+            if "{" in dict_[key]:
+                temp = dict_[key].strip("{}")
+                list_temp = temp.split(",")
+                result = []
+                for item in list_temp:
+                    result.append(item)
+                dict_[key] = result
+    return dict_
 #bas
 def validate_email_domain(form, field):
     email = field.data
@@ -485,8 +513,4 @@ def delete_history():
         flash("your password is 12345678, you can change it in the profile.")
     return redirect('/landing')
 
-@app.route("/result")
-def result():
-    a = "test"
-    plant_data = call_api(a)
-    return render_template("plant_data.html",plant_data=plant_data)
+

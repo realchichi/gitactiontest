@@ -4,6 +4,7 @@
     <!-- <div class="containerR"> -->
       
       <div class="plantData">
+        identified_image  : {{ identified_img }}
         <h1>Result</h1>
           {% for plant in plant_data %}
             <div class="datacard">
@@ -17,18 +18,15 @@
                           <span style="font-size: 17px;">Common Name:</span> <span style="font-size: 17px; font-style: italic;">N/A </span>
                         {% else %}
                           {% for name in plant.common_name %}
-                                  
+
                           <span style="font-size: 17px;">Common Name : {{ plant.common_name[0] }}</span>
-                          
                           {% endfor %}
                         {% endif %}
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3 text-center forpad">
-                    {% set num1 = plant.probability %}
-                    {% set num2 = 100 %}
-                        <p>{{ (num1 * num2)|round(2) }} %</p>
+                        <p>{{ (plant.probability * 100)|round(2) }} %</p>
                   </div>
                 </div>
               </div>
@@ -57,9 +55,9 @@
                 <span style="font-size: 20px;">Taxonomy</span>
                 <br>
 
-                {% for name in plant.taxonomy %}
+                {% for i in range(0, (plant.taxonomy|length), 2) %}
                 
-                <span style="padding-left: 3%; font-style: italic;">  {{ name[0] }} : {{ name[1] }}</span>
+                <span style="padding-left: 3%; font-style: italic;">  {{ plant.taxonomy[i] }} : {{ plant.taxonomy[i+1] }}</span>
                 <br>
                 
                 {% endfor %}

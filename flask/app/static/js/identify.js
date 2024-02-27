@@ -98,8 +98,12 @@ $("#plant-img").submit(function(event) {
 
   
   var url = "/identification"
-  $.post(url, formData, function(){
+  $.post(url, formData, function(data){
+    console.log(data)
+    // var additionalData = data.additionalData;
+    window.location.href = "/result?plant_data=" + data["identified_plant"];
 
+    
   });
 });
 
