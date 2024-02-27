@@ -17,7 +17,7 @@
                 console.log(data[i])
                 var x =`<div id="box_add_history">
                           <button id="plant_ifo">
-                            <img id ="`+data[i]["identified_img"]+`" width=100 >
+                            <img src="`+data[i]["identified_img"].slice(4)+`" width=100 >
                           </button>
                           <div id="data">
                             <p id="identified_date">identified_date :`+ data[i]["identified_date"]+`</p>

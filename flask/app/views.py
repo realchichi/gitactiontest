@@ -487,15 +487,7 @@ def facebook_auth():
 
     return redirect('/landing')
 
-#bas
-@app.route("/history/data")
-@login_required
-def history_data():
-    # history = History.query.get(current_user.id)
-    # plant = PlantInfo.query.get(account_id)
-    history = History.query.filter(History.account_id == current_user.id)
-    history_data = list(map(lambda x: x.to_dict(), history))
-    return jsonify(history_data)
+
 
 #bas
 @app.route("/commu/data")
@@ -565,5 +557,13 @@ def delete_history():
         return history_data()
 
 
-
+#bas
+@app.route("/history/data")
+@login_required
+def history_data():
+    # history = History.query.get(current_user.id)
+    # plant = PlantInfo.query.get(account_id)
+    history = History.query.filter(History.account_id == current_user.id)
+    history_data = list(map(lambda x: x.to_dict(), history))
+    return jsonify(history_data)
 
