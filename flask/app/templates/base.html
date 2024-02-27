@@ -14,6 +14,7 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- our own css -->
+
   <link rel="stylesheet" href="../static/css/login.css">
   <link rel="stylesheet" href="static/css/landing.css">
   <link rel="stylesheet" href="../static/css/signup.css">
@@ -22,11 +23,21 @@
   <link rel="stylesheet" href="../static/css/history.css">
 
 
+
+  <link rel="stylesheet" href="static/css/login.css">
+
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <!-- Bootstrap Table -->
   <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
   <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+<!-- <script src="landing.js"></script> -->
+
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" /> -->
+
+
+
+
+  <!-- <link rel="stylesheet" href="static/css/se.css"> -->
 
 
   <!-- boxicons link -->
@@ -37,7 +48,7 @@
   <!-- google fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style >
-      .alert {
+    .alert {
       padding: 20px;
       margin: 5px;
       color: #970020;
@@ -54,10 +65,9 @@
                 
             <ul class="navlist">
                 {% if current_user.is_authenticated %}
-                    <li><img src={{current_user.avatar_url}} width="40"><li>
+                    <li><a><img src={{current_user.avatar_url}} width="40"><li></a>
                     <li><a href="{{ url_for('profile')}}">Profile</a></li>
-                    <li><a href="{{ url_for('logout')}}">Logout</a></li>
-                    
+                    <li><a href="{{ url_for('logout')}}">Logout</a></li>    
                 {% endif %}
                 <li><a href="{{ url_for('landing')}}">Home</a></li>
                 <li><a href="{{ url_for('contact_us')}}">Contact us</a></li>
@@ -68,8 +78,6 @@
         </header>
             
         <section class="plant">
-            
-            
             {% block content %}{% endblock %}
         </section>
     
@@ -112,7 +120,8 @@
                 </div>
             </div>
         </footer>
-        
+        <script>
+        </script>
 </body>
 
 

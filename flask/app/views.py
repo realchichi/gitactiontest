@@ -278,7 +278,7 @@ def signup():
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  
             print("signup",email,password)
-            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 8))+".png")
+            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 8))+".png",login_with="server")
             db.session.add(new_user)
 
             db.session.commit()
@@ -310,19 +310,20 @@ def update():
             check=True
         if   len(name) < 2 or len(name)>20:
             flash('name must be between 2 and 20 characters long')
-            return redirect(url_for('profile'))
+            return "name"
         elif   not is_valid_email_domain(email) :
             flash('Email is required mush be *@gmail.com or *@hotmail.com or *@cmu.ac.th')
-            return redirect(url_for('profile'))
+            return "email"
         elif  not is_valid_password(password):
+            # flash('check')
             flash('Password must contain at least 8 characters including at least one digit, one lowercase letter, one uppercase letter, and one special character')
-            return redirect(url_for('profile'))
+            return "password"
         if check:
             accounts.update(email=email,name=name, avatar_url=avatar,password=password)
         else:
             accounts.update(email=email,name=name, avatar_url=avatar,password=generate_password_hash(password, method='sha256'))
         db.session.commit()
-    return redirect(url_for('profile'))
+    return redirect(url_for('landing'))
 
 #bas
 @app.route("/checkpassword",methods=('GET','POST'))
@@ -395,19 +396,20 @@ def google_auth():
     userinfo = token['userinfo']
     email = userinfo['email']
     user = Account.query.filter_by(email=email).first()
-
+    # print(userinfo['password'])
 
     if not user:
         name = userinfo.get('given_name','') + " " + userinfo.get('family_name','')
         random_pass_len = 8
-        password = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
-                          for i in range(random_pass_len))
+        # password = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(random_pass_len))
+        password = "12345678"
         picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
-        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
+        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture,login_with="google")
         db.session.add(new_user)
         db.session.commit()
         user = Account.query.filter_by(email=email).first()
         login_user(user)
+        flash("your password is 12345678, you can change it in the profile.")
     return redirect('/landing')
 #bas
 @app.route('/facebook/')
@@ -441,18 +443,19 @@ def facebook_auth():
     email = profile['email']
     name = profile['name']
     random_pass_len = random_pass_len = 8
-    password = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(random_pass_len))
+    # password = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(random_pass_len))
+    password = "12345678"
     user = Account.query.filter_by(email=email).first()
 
 
     if not user:
         picture = "static/img/avatar/"+str(random.randint(1, 8))+".png"
-        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
+        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture,login_with ="facebook")
         db.session.add(new_user)
         db.session.commit()
         user = Account.query.filter_by(email=email).first()
-        
         login_user(user)
+
     return redirect('/landing')
 
 #bas
@@ -483,5 +486,9 @@ def delete_history():
         if history.account_id == current_user.id:
             history = history.remove_history(account_id)
             db.session.commit()
-    return history_data()
+        return history_data()
+
+
+        flash("your password is 12345678, you can change it in the profile.")
+    return redirect('/landing')
 
