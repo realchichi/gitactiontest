@@ -9,10 +9,15 @@ body {
     box-sizing: border-box;
     
 }
+<<<<<<< HEAD
 #eye,#password{
         display: inline;
     }
 #edit_email{
+=======
+
+#edit_email, #edit_button_email {
+>>>>>>> bf553bcfda631bf908d633e094da4ca4584f0145
         display: inline;
         /* color: white; */
 

@@ -1,3 +1,4 @@
+
 var imageData = {};
 
 
@@ -10,7 +11,7 @@ function fileUpload(event) {
 
         var photo = document.getElementById('photo');
         photo.src = dataURL;
-        // You might need additional logic to handle the canvas or other elements
+
     };
 
     reader.readAsDataURL(input.files[0]);
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
             imageData = {"result" : canvas.toDataURL('image/jpeg')};
             const imagePreviewElement = document.querySelector("#photo");
             imagePreviewElement.src = imageData["result"];
@@ -58,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 closePopup()
             }
             closePopup()
+
         });
         closeCam.addEventListener('click', () => {
             if (stream) {
@@ -71,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
-
 
 
 function openPopup() {
@@ -96,7 +98,12 @@ $("#plant-img").submit(function(event) {
 
   
   var url = "/identification"
-  $.post(url, formData, function(){
+  $.post(url, formData, function(data){
+    console.log(data)
+    // var additionalData = data.additionalData;
+    window.location.href = "/result?plant_data=" + data["identified_plant"];
 
+    
   });
 });
+

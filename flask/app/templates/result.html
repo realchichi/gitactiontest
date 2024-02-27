@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- <div class="containerR"> -->
+      
+      <div class="plantData">
+        <img src="{{ identified_img[4:] }}" alt="identified_img">
+        <h1>Result</h1>
+          {% for plant in plant_data %}
+            <div class="datacard">
+              <div class="cardheader">
+                <div class="row">
+                  <div class="col-md-9">
+                    <span style="font-size: 20px; font-style: italic; font-weight: bold;">{{ plant.name }} </span>
+                    <div class="row">
+                      <div class="col-9 text-truncate">
+                        {% if plant.common_name is none %}
+                          <span style="font-size: 17px;">Common Name:</span> <span style="font-size: 17px; font-style: italic;">N/A </span>
+                        {% else %}
+                          {% for name in plant.common_name %}
+
+                          <span style="font-size: 17px;">Common Name : {{ plant.common_name[0] }}</span>
+                          {% endfor %}
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 text-center forpad">
+                        <p>{{ (plant.probability * 100)|round(2) }} %</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cardbody">
+                <div class="row">
+                  <div class="image-container ">
+                    <img src="{{ plant.url_image }}" alt="{{ plant.name }} Image">
+                  </div>
+                  {% for image in plant.similar_images %}
+                    <div class="image-container ">
+                      <img src="{{ image }}" alt="Similar Image">
+                    </div>
+                  {% endfor %}
+                </div> 
+                <br>
+                <p>
+                  {% if plant.description == "N/A" %}
+                    <span style="font-size: 20px;">Common Name:</span> <span style="font-style: italic;">N/A </span>
+                  {% else %}
+                    <span style="font-size: 20px;"> คำอธิบาย : </span> {{ plant.description }}
+                  {% endif %}
+                </p>
+                <p><span style="padding-top:-2%"><a href="{{ plant.wiki_url }}" target="_blank">อ่านเพิ่มบน Wikipedia</a></span></p>
+                <hr>
+
+                <span style="font-size: 20px;">Taxonomy</span>
+                <br>
+
+                {% for i in range(0, (plant.taxonomy|length), 2) %}
+                
+                <span style="padding-left: 3%; font-style: italic;">  {{ plant.taxonomy[i] }} : {{ plant.taxonomy[i+1] }}</span>
+                <br>
+                
+                {% endfor %}
+                <hr>
+              </div>
+              <div class="cardfooter">
+                <!-- <div class="row"> -->
+                  <div class="center-container">
+                    <button> ถูกต้อง? </button>
+                  </div>
+                <!-- </div> -->
+              </div>
+            </div>
+            <br>
+          {% endfor %}
+      </div>
+    </div>
+  <!-- </div> -->
+    
+
+{% endblock %}
+
+
+                  

@@ -15,21 +15,33 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
   <!-- our own css -->
+
   <link rel="stylesheet" href="../static/css/login.css">
   <link rel="stylesheet" href="static/css/landing.css">
   <link rel="stylesheet" href="../static/css/signup.css">
   <link rel="stylesheet" href="../static/css/camera.css">
   <link rel="stylesheet" href="../static/css/contact_us.css">
   <link rel="stylesheet" href="../static/css/history.css">
+<<<<<<< HEAD
   <link rel="stylesheet" href="../static/css/community.css">
 
+=======
+  <link rel="stylesheet" href="static/css/login.css">
+  <link rel="stylesheet" href="../static/css/result.css">
+>>>>>>> bf553bcfda631bf908d633e094da4ca4584f0145
 
 
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <!-- Bootstrap Table -->
   <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
   <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" /> -->
+
+
+
+
+  <!-- <link rel="stylesheet" href="static/css/se.css"> -->
 
 
   <!-- boxicons link -->
@@ -40,7 +52,7 @@
   <!-- google fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style >
-      .alert {
+    .alert {
       padding: 20px;
       margin: 5px;
       color: #970020;
@@ -53,9 +65,11 @@
 <body>
     
         <header>
+
             <a href="{{ url_for('landing')}}" class="logo">BotaniBuzz</a>
-                
+
             <ul class="navlist">
+<<<<<<< HEAD
                 <li><a href="{{ url_for('landing')}}">Home</a></li>
                 <li><a href="{{ url_for('contact_us')}}">Contact us</a></li>
                 {% if  current_user.is_authenticated %}
@@ -67,14 +81,22 @@
                 {% endif %}
                 
 
+=======
+                {% if current_user.is_authenticated %}
+                    <li><a><img src={{current_user.avatar_url}} width="40"><li></a>
+                    <li><a href="{{ url_for('profile')}}">Profile</a></li>
+                    <li><a href="{{ url_for('logout')}}">Logout</a></li>    
+                {% endif %}
+                <li><a href="{{ url_for('landing')}}">Home</a></li>
+                <li><a href="{{ url_for('contact_us')}}">Contact us</a></li>
+                <li><a href="{{ url_for('history')}}">History</a></li>
+                <li><a href="{{ url_for('identification')}}">Identify</a></li>
+>>>>>>> bf553bcfda631bf908d633e094da4ca4584f0145
             </ul>
             <i class="ri-menu-line" id="menu-icon"></i>
-            
         </header>
             
         <section class="plant">
-            
-            
             {% block content %}{% endblock %}
         </section>
     
@@ -85,7 +107,6 @@
 
         <script src="static/js/landing.js"></script>
         <script src="static/js/identify.js"></script>
-        <!-- <script src="static/js/landing.js"></script> -->
 
         <footer class="footer">
             <div class="container1">
@@ -117,7 +138,8 @@
                 </div>
             </div>
         </footer>
-        
+        <script>
+        </script>
 </body>
 
 
