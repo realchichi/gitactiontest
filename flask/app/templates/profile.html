@@ -9,17 +9,19 @@
             background-color: #f2f2f2;
             padding: 50px;
             margin-top: 80px; 
-            margin-left: 200px;
+            margin-left: 100px;
             color: black;
         }
     </style>
+    
     <div class="profile_box">
-        <div>
-          {% for message in get_flashed_messages() %}
-              <div class="alert">{{ message }}</div>
-          {% endfor %}
-      </div>
+        
         <div id="edit_profile">
+            <div>
+              {% for message in get_flashed_messages() %}
+                  <div class="alert">{{ message }}</div>
+              {% endfor %}
+          </div>
             <div>
                 <img id ="current_avatar"src={{current_user.avatar_url}} width="200">
                 <button hidden="hidden" id ="edit_button"><img  src="static/img/pen.png" width="20" ></button>
@@ -78,13 +80,16 @@
         </div>
 
     </div>
-    <p id="get" avatar={{current_user.avatar_url}} name={{current_user.name}} email={{current_user.email}}></p>
+    <p id="get" avatar={{current_user.avatar_url}} name={{current_user.name}} email={{current_user.email}} login_with={{current_user.login_with}}></p>
     <script>
         var divElement = document.getElementById('get');
         var email = divElement.getAttribute('email');
         var avatar = divElement.getAttribute('avatar');
         var name = divElement.getAttribute('name');
+        var login_with = divElement.getAttribute('login_with');
+        
         var password = "";
+
         $("#edit_button").click(function(){
             $("#select_avatar").toggle("fast")
         })
@@ -132,14 +137,11 @@
         })
         $("#go_edit").click(function(){
             $('#div_check_password').toggle('fast')
-
             
         })
         $("#check_password").click(function(){
             var values = document.getElementById("Enter_password").value
-            
             var formData = {"password":values}  
-            console.log(formData,"1111")
             $.post("/checkpassword", formData, function (response) {
             if (response.ans) {
                 $('#form').removeAttr('hidden');
@@ -149,7 +151,7 @@
                 $('#edit_button_password').removeAttr('hidden');
                 $('#edit_button').removeAttr('hidden');
             } else {
-                alert("Password not correct!");
+                location.reload()
             }
         })
         })
@@ -160,6 +162,7 @@
 
             var formData={"email":email,"name":name,"avatar_url":avatar,"password":password}
             $.post("/update", formData, function () {
+                // console.log(x)
                 location.reload()
             });
         })

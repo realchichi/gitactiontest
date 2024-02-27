@@ -11,6 +11,7 @@ class History(db.Model, SerializerMixin):
 	identified_img = db.Column(db.String(100))
 	removed_date = db.Column(db.DateTime)
 	removed_by = db.Column(db.String(100))
+	
 	def __init__(self, account_id, identified_img):
 		self.account_id = account_id
 		self.identified_date = datetime.now(timezone.utc)
@@ -20,3 +21,5 @@ class History(db.Model, SerializerMixin):
 	def remove_history(self, account_id):
 		self.removed_date = datetime.now(timezone.utc)
 		self.removed_by = account_id
+
+

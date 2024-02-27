@@ -27,6 +27,7 @@ from app import db
 from app.models.accounts import Account
 from app.models.history import History
 from app.models.plantinfo import PlantInfo
+from app.models.plantinfo import Commu
 # from sqlalchemy.sql import text
 from app import login_manager
 
@@ -203,7 +204,9 @@ def get_data(data):
 # and store it to history table
 @app.route("/identification", methods=["POST", "GET"])
 def identification():
+    a = "test"
     if request.method == "POST":
+
         img = request.form.to_dict().get("image", "")
         hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()
         print(hash_img)
@@ -278,7 +281,7 @@ def signup():
                 flash('Email address already exists')
                 return redirect(url_for('signup'))  
             print("signup",email,password)
-            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 16))+".png")
+            new_user = Account(email=email, name=name, password=generate_password_hash(password, method='sha256'),avatar_url="static/img/avatar/"+str(random.randint(1, 16))+".png",login_with="server")
             db.session.add(new_user)
 
             db.session.commit()
@@ -287,12 +290,14 @@ def signup():
         
     return render_template("signup.html")
 
+
 #bas
 @app.route("/signup/data")
 def si():
     db_accounts = Account.query.all()
     accounts = list(map(lambda x: x.to_dict(), db_accounts))
     return jsonify(accounts)
+
 
 #bas
 @app.route("/update",methods=('POST','GET'))
@@ -310,19 +315,21 @@ def update():
             check=True
         if   len(name) < 2 or len(name)>20:
             flash('name must be between 2 and 20 characters long')
-            return redirect(url_for('profile'))
+            return "name"
         elif   not is_valid_email_domain(email) :
             flash('Email is required mush be *@gmail.com or *@hotmail.com or *@cmu.ac.th')
-            return redirect(url_for('profile'))
+            return "email"
         elif  not is_valid_password(password):
+            # flash('check')
             flash('Password must contain at least 8 characters including at least one digit, one lowercase letter, one uppercase letter, and one special character')
-            return redirect(url_for('profile'))
+            return "password"
         if check:
             accounts.update(email=email,name=name, avatar_url=avatar,password=password)
         else:
             accounts.update(email=email,name=name, avatar_url=avatar,password=generate_password_hash(password, method='sha256'))
         db.session.commit()
-    return redirect(url_for('profile'))
+    return redirect(url_for('landing'))
+
 
 #bas
 @app.route("/checkpassword",methods=('GET','POST'))
@@ -340,6 +347,7 @@ def hw10_update():
             flash('password not correct')
     return ans
 
+
 #bas
 @app.route('/logout')
 @login_required
@@ -347,18 +355,11 @@ def logout():
     logout_user()
     return redirect(url_for('landing'))
 
-# @app.route('/validate_email', methods=['POST'])
-# def validate_email():
-#     ans={"ans":False}
-#     form = RegistrationForm(request.form.to_dict().get('email',''))
-#     if form.validate():
-#         ans["ans":True]
-#         return ans
 
-#     return ans
 def is_valid_email_domain(email):
     domain = email.split('@')[-1]
     return domain in ['gmail.com', 'hotmail.com', 'cmu.ac.th']
+
 
 def is_valid_password(password):
     return len(password) >= 8 and any(c.isdigit() for c in password) and any(c.islower() for c in password) and any(c.isupper() for c in password) and any(c in '!@#$%^&*()-_=+[]{}|;:,.<>?/~' for c in password)
@@ -367,8 +368,6 @@ def is_valid_password(password):
 #bas
 @app.route('/google/')
 def google():
-
-
     oauth.register(
         name='google',
         client_id=app.config['GOOGLE_CLIENT_ID'],
@@ -376,12 +375,8 @@ def google():
         server_metadata_url=app.config['GOOGLE_DISCOVERY_URL'],
         client_kwargs={
             'scope' : 'openid email profile',
-            # 'redirect_uri':  'postmessage'
         }
     )
-    # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..",app.config['GOOGLE_CLIENT_ID'],app.config['GOOGLE_CLIENT_SECRET'],app.config['GOOGLE_DISCOVERY_URL'])
-    # app.logger.debug("str(token)")
-   # Redirect to google_auth function
     redirect_uri = url_for('google_auth', _external=True)
     return oauth.google.authorize_redirect(redirect_uri)
 
@@ -395,19 +390,18 @@ def google_auth():
     userinfo = token['userinfo']
     email = userinfo['email']
     user = Account.query.filter_by(email=email).first()
-
+    # print(userinfo['password'])
 
     if not user:
         name = userinfo.get('given_name','') + " " + userinfo.get('family_name','')
-        random_pass_len = 8
-        password = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
-                          for i in range(random_pass_len))
+        password = "12345678"
         picture = "static/img/avatar/"+str(random.randint(1, 16))+".png"
-        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
+        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture,login_with="google")
         db.session.add(new_user)
         db.session.commit()
         user = Account.query.filter_by(email=email).first()
         login_user(user)
+        flash("your password is 12345678, you can change it in the profile.")
     return redirect('/landing')
 #bas
 @app.route('/facebook/')
@@ -441,18 +435,20 @@ def facebook_auth():
     email = profile['email']
     name = profile['name']
     random_pass_len = random_pass_len = 8
-    password = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(random_pass_len))
+    # password = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(random_pass_len))
+    password = "12345678"
     user = Account.query.filter_by(email=email).first()
 
 
     if not user:
+
         picture = "static/img/avatar/"+str(random.randint(1, 16))+".png"
-        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture)
+        new_user = Account(email=email, name=name,password=generate_password_hash(password, method='sha256'),avatar_url=picture,login_with ="facebook")
         db.session.add(new_user)
         db.session.commit()
         user = Account.query.filter_by(email=email).first()
-        
         login_user(user)
+
     return redirect('/landing')
 
 #bas
@@ -464,6 +460,53 @@ def history_data():
     history = History.query.filter(History.account_id == current_user.id)
     history_data = list(map(lambda x: x.to_dict(), history))
     return jsonify(history_data)
+
+#bas
+@app.route("/commu/data")
+# @login_required
+def commu_data():
+    commu = Commu.query.all()
+    commu_data = list(map(lambda x: x.to_dict(), commu))
+    for i in range(len(commu_data)):
+        id_ = commu_data["history_id"]
+        x = History.query.get(id_)
+        commu_data[i]["img"] = x.get('identified_img', '')
+        commu_data[i]["account_id"] = x.get('account_id', '')
+    return jsonify(commu_data)
+
+#bas
+@app.route("/commu")
+# @login_required
+def commu():
+    return render_template("commu.html")
+
+#bas
+@app.route("/delete/commu",methods=('GET','POST'))
+# @login_required
+def delete_commu():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        commu = History.query.get(id_)
+        if history.account_id == current_user.id:
+            commu = commu.share()
+            db.session.commit()
+        return commu_data()
+
+#bas
+@app.route("/edit/commu",methods=('GET','POST'))
+@login_required
+def edit_commu():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        account_id = result.get('account_id', '')
+        message = result.get('message', '')
+        commu = Commu.query.get(id_)
+        if account_id == current_user.id:
+            Commu.edit(message)
+            db.session.commit()
+        return history_data()
 
 #bas
 @app.route("/history")
@@ -481,7 +524,14 @@ def delete_history():
         account_id = result.get('account_id', '')
         history = History.query.get(id_)
         if history.account_id == current_user.id:
-            history = history.remove_history(account_id)
+            history.remove_history(account_id)
             db.session.commit()
-    return history_data()
+        return history_data()
 
+
+
+@app.route("/result")
+def result():
+    a = "test"
+    plant_data = call_api(a)
+    return render_template("plant_data.html",plant_data=plant_data)
