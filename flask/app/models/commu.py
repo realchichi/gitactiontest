@@ -14,7 +14,7 @@ class Commu(db.Model, SerializerMixin):
 	message = db.Column(db.String(280))
 	def __init__(self, history_id):
 		self.history_id = history_id
-		self.identified_date = datetime.now(timezone.utc)
+		self.shared_date = datetime.now(timezone.utc)
 		self.edit_date = datetime.now(timezone.utc)
 	def edit(self,message):
 		self.message = message
@@ -24,3 +24,25 @@ class Commu(db.Model, SerializerMixin):
 		self.removed_date = datetime.now(timezone.utc)
 		self.removed_by = account_id
 
+
+class Comment(db.Model, SerializerMixin):
+	__tablename__ = "comment"
+
+	id = db.Column(db.Integer, primary_key=True)
+	_id = db.Column(db.Integer, db.ForeignKey('histories.id'))
+	comment_date = db.Column(db.DateTime)
+	edited_date = db.Column(db.DateTime)
+	removed_date = db.Column(db.DateTime)
+	removed_by = db.Column(db.String(100))
+	message = db.Column(db.String(280))
+	def __init__(self, history_id):
+		self.history_id = history_id
+		self.comment_date = datetime.now(timezone.utc)
+		self.edit_date = datetime.now(timezone.utc)
+	def edit_comment(self,message):
+		self.message = message
+		self.edit_date = datetime.now(timezone.utc)
+
+	def remove_comment(self, account_id):
+		self.removed_date = datetime.now(timezone.utc)
+		self.removed_by = account_id

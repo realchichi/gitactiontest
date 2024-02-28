@@ -9,6 +9,7 @@
 <div id="commu_container">
     
 </div>
+
 <script >
 	function handleClickEdit(element) {
 		var input = document.getElementById("edit")
@@ -54,7 +55,14 @@
                             <a id="delete_button" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick="handleClickDelete(this)">🗑️</a>
                             <a id="edit_button" value="`+[data[i]["id"],data[i]["account_id"],data[i]["message"]]+`" onclick="handleClickEdit(this)">✏️</a>
                           </div>
+                        </div>
+                        <div id="comment_zone">
+                          <input id="input`+data[i]["id"]+`" x=`+data[i]["id"]+`>
+                            <div id="coment_container`+data[i]["id"]+`">
+    
+                            </div>
                         </div>`
+
               $("#commu_container").prepend(x);
             }
             
@@ -65,6 +73,11 @@
 
             createbox(data);
       })
+        $.getJSON("/commu/data", function (data) {
+
+            createbox(data);
+      })
     });
+
 </script>
 {% endblock %}
