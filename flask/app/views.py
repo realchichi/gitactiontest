@@ -1,34 +1,22 @@
 import base64
 import json
 import http.client
-
 import requests
 import os
 import hashlib
-from io import BytesIO
-# from PIL import Image
-from app.forms import forms
-import secrets
-import string
-# from form.forms import RegistrationForm
-# from urllib.request import urlopen
-from app.forms.forms import RegistrationForm
-# from flask_wtf import FlaskForm
+import random
 from flask import (jsonify, render_template,request, url_for, flash, redirect,Flask)
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user, login_required, logout_user,current_user, LoginManager
-import random
-import psycopg2
+from app.forms.forms import RegistrationForm
 from app import app
-
 from app import oauth
 from sqlalchemy import desc
 from app import db
 from app.models.accounts import Account
 from app.models.history import History
 from app.models.plantinfo import PlantInfo
-from app.models.community import Commu
-# from sqlalchemy.sql import text
+from app.models.community import Community
 from app import login_manager
 
 
@@ -47,11 +35,6 @@ def write_file(filename, contents, mode="wt"):
         fout.write(contents)
 
 
-@app.route('/process', methods=['POST']) 
-def process():
-    data = request.form.get('data')
-    return
-
 
 @app.route("/")
 def home():
@@ -64,6 +47,7 @@ def landing():
 
 
 @app.route("/profile")
+@login_required
 def profile():
     return render_template("profile.html")
 
@@ -74,6 +58,7 @@ def user():
     user = list(map(lambda x: x.to_dict(), db_users))
     return jsonify(user)
 
+
 #bas
 @app.route("/user/validate", methods=["GET", "POST"])
 def validate_user():
@@ -83,6 +68,7 @@ def validate_user():
         validated = True
         validated_dict = {}
         valid_keys = ["firstname", "lastname"]
+
 
 #bas
 @app.route("/login",methods=('GET','POST'))
@@ -100,6 +86,7 @@ def login():
         login_user(user)
         return redirect(url_for('landing'))
     return render_template('login.html')
+
 
 #chi
 @app.route("/faqs")
@@ -138,6 +125,7 @@ def contact_us():
 # Written by Wachirapong
 # To call API
 @app.route("/api")
+@login_required
 def call_api(img):
     # with open('app/static/img/longan1.jpg', 'rb') as file:
     #     images = [base64.b64encode(file.read()).decode('ascii')]
@@ -163,8 +151,6 @@ def call_api(img):
     # raw_data = read_file("app/sandbox/data.txt")
     # list_data = eval(raw_data)
 
-
-    print(list_data)
     return list_data
 
     
@@ -205,6 +191,7 @@ def get_data(data):
 # To store plant data table that user who identified plant
 # and store it to history table
 @app.route("/identification", methods=["POST", "GET"])
+@login_required
 def identification():
     if request.method == "POST":
         img = request.form.to_dict().get("image", "")
@@ -239,6 +226,7 @@ def identification():
 # Written by Wachirapong
 # To show data form API call
 @app.route("/result")
+@login_required
 def result():
     plant = os.path.join(app.config['UPLOAD_FOLDER'], request.args.get('plant_data') + ".jpg")
     history = History.query.filter_by(identified_img=plant, removed_by=None).first()
@@ -255,7 +243,7 @@ def result():
 
 # Written by Wachirapong
 # some value in dict there is {} in it
-# To to strip {} and convert it to list
+# To strip {} and convert it to list
 def convert_to_list(dict_):
     for key in dict_:
         if key == "taxonomy":
@@ -272,6 +260,7 @@ def convert_to_list(dict_):
                     result.append(item)
                 dict_[key] = result
     return dict_
+
 #bas
 def validate_email_domain(form, field):
     email = field.data
@@ -337,6 +326,7 @@ def si():
 
 #bas
 @app.route("/update",methods=('POST','GET'))
+@login_required
 def update():
     if request.method == 'POST':
         check = False
@@ -493,7 +483,7 @@ def facebook_auth():
 @app.route("/commu/data")
 # @login_required
 def commu_data():
-    commu = Commu.query.all()
+    commu = Community.query.all()
     commu_data = list(map(lambda x: x.to_dict(), commu))
     for i in range(len(commu_data)):
         id_ = commu_data["history_id"]
@@ -510,7 +500,7 @@ def commu():
 
 #bas
 @app.route("/delete/commu",methods=('GET','POST'))
-# @login_required
+@login_required
 def delete_commu():
     if request.method == "POST":
         result = request.form.to_dict()
@@ -530,9 +520,9 @@ def edit_commu():
         id_ = result.get('id', '')
         account_id = result.get('account_id', '')
         message = result.get('message', '')
-        commu = Commu.query.get(id_)
+        commu = Community.query.get(id_)
         if account_id == current_user.id:
-            Commu.edit(message)
+            Community.edit(message)
             db.session.commit()
         return history_data()
 

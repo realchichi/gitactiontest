@@ -2,8 +2,8 @@ from app import db
 from sqlalchemy_serializer import SerializerMixin
 from datetime import datetime , timezone
 
-class Commu(db.Model, SerializerMixin):
-	__tablename__ = "commu"
+class Community(db.Model, SerializerMixin):
+	__tablename__ = "communities"
 
 	id = db.Column(db.Integer, primary_key=True)
 	history_id = db.Column(db.Integer, db.ForeignKey('histories.id'))
