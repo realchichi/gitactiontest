@@ -12,6 +12,8 @@ class History(db.Model, SerializerMixin):
 	removed_date = db.Column(db.DateTime, default=None)
 	removed_by = db.Column(db.String(100), default=None)
 	has_been_shared = db.Column(db.Boolean(), default=False)
+
+
 	def __init__(self, account_id, identified_img):
 		self.account_id = account_id
 		self.identified_date = datetime.now(timezone.utc)
@@ -24,3 +26,4 @@ class History(db.Model, SerializerMixin):
 
 	def share(self):
 		self.has_been_shared = True
+

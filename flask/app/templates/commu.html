@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="edit_container" style="display:none;">
-	<label>Edit Box</label>
-	<input type="text" name="edit" id="edit" c="">
-	<button id="submitt" >submit</button>
+<div>
+    <div id="edit_container" style="display:none;">
+    <label>Edit Box</label>
+    <input type="text" name="edit" id="edit" c="">
+    <button id="submitt" >submit</button>
+  </div>
+  <div id="commu_container">
+      
+  </div>
 </div>
-<div id="commu_container">
-    
-</div>
+
 
 <script >
 	function handleClickEdit(element) {
@@ -27,8 +30,8 @@
     	var y = $("#edit").val()
     	var cValue = $("#edit").attr("c");
     	var list_c = cValue.split(",")
-    	data = {"message":y "id":list_c[0] "account_id":list_c[1]}
-    	.post("/edit/commu",data,function (edit_commu){
+    	data = {"message":y ,"id":list_c[0] ,"account_id":list_c[1]}
+    	$.post("/edit/commu",data,function (edit_commu){
         	location.reload()
     	})
     })
@@ -43,12 +46,14 @@
       $.post("/delete/commu", data, function (data_commu) {
         location.reload()
       });
+    }
+  
 	function createbox(data){
         for(let i=0;i<data.length;i++){
             if(!(data[i]["removed_date"])){
                 var x =`<div id="box_add_history">
                           <button id="plant_ifo">
-                            <img id ="`+data[i]["identified_img"]+`" width=100 >
+                            <img src ="`+data[i]["identified_img"].slice(4)+`" width=100 >
                           </button>
                           <div id="data">
                             <p id="identified_date">identified_date :`+ data[i]["identified_date"]+`</p>
@@ -58,7 +63,8 @@
                         </div>
                         <div id="comment_zone">
                           <input id="input`+data[i]["id"]+`" x=`+data[i]["id"]+`>
-                            <div id="coment_container`+data[i]["id"]+`">
+                          <button id="submit_comment" value="`+[data[i]["id"]]+`" onclick="commentna(this)"> comment </button>
+                            <div id="coment_container`+data[i]["id"]+`" >
     
                             </div>
                         </div>`
@@ -68,15 +74,29 @@
             
         }
     }
+    function commentna(datay){
+      var value = document.getElementById("input"+datay.value+"").value
+      data={"history_id":datay.value,"message":value}
+      console.log(datay)
+      console.log(value)
+      $.post("/comment/add",data,function(data){
+        location.reload()
+      })
+    }
+    // $("#submit_comment").click(function(){
+    //   console.log("llll")
+    // // console.log(this.value)
+    // })
     $(document).ready(function () {
-        $.getJSON("/commu/data", function (data) {
+        $.getJSON("/history/data", function (data) {
 
             createbox(data);
+            // console.log(data)
       })
-        $.getJSON("/commu/data", function (data) {
+      //   $.getJSON("/commu/data", function (data) {
 
-            createbox(data);
-      })
+      //       createbox(data);
+      // })
     });
 
 </script>

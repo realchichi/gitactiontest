@@ -1,34 +1,23 @@
 import base64
 import json
 import http.client
-
 import requests
 import os
 import hashlib
-from io import BytesIO
-# from PIL import Image
-from app.forms import forms
-import secrets
-import string
-# from form.forms import RegistrationForm
-# from urllib.request import urlopen
-from app.forms.forms import RegistrationForm
-# from flask_wtf import FlaskForm
+import random
 from flask import (jsonify, render_template,request, url_for, flash, redirect,Flask)
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user, login_required, logout_user,current_user, LoginManager
-import random
-import psycopg2
+from app.forms.forms import RegistrationForm
 from app import app
-
 from app import oauth
 from sqlalchemy import desc
 from app import db
 from app.models.accounts import Account
 from app.models.history import History
 from app.models.plantinfo import PlantInfo
-from app.models.plantinfo import Commu
-# from sqlalchemy.sql import text
+from app.models.community import Community
+from app.models.community import Comment
 from app import login_manager
 
 
@@ -47,11 +36,6 @@ def write_file(filename, contents, mode="wt"):
         fout.write(contents)
 
 
-@app.route('/process', methods=['POST']) 
-def process():
-    data = request.form.get('data')
-    return
-
 
 @app.route("/")
 def home():
@@ -64,6 +48,7 @@ def landing():
 
 
 @app.route("/profile")
+@login_required
 def profile():
     return render_template("profile.html")
 
@@ -74,6 +59,7 @@ def user():
     user = list(map(lambda x: x.to_dict(), db_users))
     return jsonify(user)
 
+
 #bas
 @app.route("/user/validate", methods=["GET", "POST"])
 def validate_user():
@@ -83,6 +69,7 @@ def validate_user():
         validated = True
         validated_dict = {}
         valid_keys = ["firstname", "lastname"]
+
 
 #bas
 @app.route("/login",methods=('GET','POST'))
@@ -100,6 +87,7 @@ def login():
         login_user(user)
         return redirect(url_for('landing'))
     return render_template('login.html')
+
 
 #chi
 @app.route("/faqs")
@@ -138,31 +126,31 @@ def contact_us():
 # Written by Wachirapong
 # To call API
 @app.route("/api")
+@login_required
 def call_api(img):
     # with open('app/static/img/longan1.jpg', 'rb') as file:
     #     images = [base64.b64encode(file.read()).decode('ascii')]
 
-    # url = "https://plant.id/api/v3/identification"
-    # DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
-    # query = "?details=" + DETAILS +"&language=th"
-    # url += query
+    url = "https://plant.id/api/v3/identification"
+    DETAILS = "common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods"
+    query = "?details=" + DETAILS +"&language=th"
+    url += query
 
-    # payload = json.dumps({
-    #     "images": ["data:image/jpg;base64," + images[0]],
-    #     "similar_images": True
-    # })
-    # headers = {
-    #     'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
-    #     'Content-Type': 'application/json'
-    # }
+    payload = json.dumps({
+        "images": ["data:image/jpg;base64," + img],
+        "similar_images": True
+    })
+    headers = {
+        'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
+        'Content-Type': 'application/json'
+    }
+
     # if u need to call API use these 2 lines
-    # response = requests.request("POST", url, headers=headers, data=payload)
-    # list_data = get_data(json.loads(response.text))
+    response = requests.request("POST", url, headers=headers, data=payload)
+    list_data = get_data(json.loads(response.text))
     # these 2 lines for temp data
-    raw_data = read_file("app/sandbox/data.txt")
-    list_data = eval(raw_data)
-    # return render_template("plant_data.html", data=list_data)
-    # list_data["taxonomy"] = str(list_data["taxonomy"])
+    # raw_data = read_file("app/sandbox/data.txt")
+    # list_data = eval(raw_data)
 
     return list_data
 
@@ -185,8 +173,8 @@ def get_data(data):
         else:
             dict_val["description"] = "N/A"
         dict_val["wiki_url"] = val["details"].get("url", "N/A")
-        dict_val["taxonomy"] = str(val["details"].get("taxonomy", "N/A"))
-        dict_val["common_name"] = val["details"].get("common_names", "N/A")[0]
+        dict_val["taxonomy"] = str(val["details"].get("taxonomy", "N/A")).replace(":", ",")
+        dict_val["common_name"] = val["details"].get("common_names", "N/A")
         dict_val["similar_images"] = []
         count_img = 0
         for simi_img in val["similar_images"]:
@@ -204,16 +192,19 @@ def get_data(data):
 # To store plant data table that user who identified plant
 # and store it to history table
 @app.route("/identification", methods=["POST", "GET"])
+@login_required
 def identification():
     if request.method == "POST":
         img = request.form.to_dict().get("image", "")
-        hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], hash_img)
-        write_file(filename + ".jpeg",hash_img + ".jpeg")
-        result = {"identified_img" : hash_img}
-        account_id = current_user.id
-        if result.get("identified_img",""):
-            identified_img = result["identified_img"]
+        if img:
+            img_data = base64.b64decode(img.split(',')[1])
+            hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()[:16]
+            filename = os.path.join(app.config['UPLOAD_FOLDER'], hash_img + ".jpg")
+            with open(filename, "wb") as image_file:
+                image_file.write(img_data)
+
+            account_id = current_user.id
+            identified_img = filename
             entry = History(account_id, identified_img)
             db.session.add(entry)
             iden_plant = History.query.filter_by(identified_img=identified_img).all()
@@ -221,7 +212,7 @@ def identification():
             history = History.query.filter_by(identified_img=identified_img).first()
             if identified_img in list_iden_plant:
                 history = History.query.order_by(desc(History.identified_date)).first()
-            plant_data = call_api(identified_img)
+            plant_data = call_api(img.split(',')[1])
             for i in range(len(plant_data)):
                 temp = plant_data[i]
                 temp["history_id"] = history.id
@@ -236,9 +227,15 @@ def identification():
 # Written by Wachirapong
 # To show data form API call
 @app.route("/result")
+@login_required
 def result():
-    plant = request.args.get('plant_data')
+    plant = os.path.join(app.config['UPLOAD_FOLDER'], request.args.get('plant_data') + ".jpg")
     history = History.query.filter_by(identified_img=plant, removed_by=None).first()
+    iden_plant = History.query.filter_by(identified_img=plant).all()
+    list_iden_plant = list(map(lambda x: x.identified_img, iden_plant))
+    history = History.query.filter_by(identified_img=plant).first()
+    if plant in list_iden_plant:
+        history = History.query.order_by(desc(History.identified_date)).first()
     id = history.id
     plant_info = PlantInfo.query.filter_by(history_id=id).all()
     list_plant = list(map(lambda x: convert_to_list(x.to_dict()), plant_info))
@@ -247,12 +244,12 @@ def result():
 
 # Written by Wachirapong
 # some value in dict there is {} in it
-# To to strip {} and convert it to list
+# To strip {} and convert it to list
 def convert_to_list(dict_):
     for key in dict_:
         if key == "taxonomy":
             temp = dict_[key].split(",")
-            list_temp = list(map(lambda x: x.strip("{}'"), temp))
+            list_temp = list(map(lambda x: x.strip(''' { } " ' '''), temp))
             dict_[key] = list_temp
             continue
         if isinstance(dict_[key], str):
@@ -264,6 +261,7 @@ def convert_to_list(dict_):
                     result.append(item)
                 dict_[key] = result
     return dict_
+
 #bas
 def validate_email_domain(form, field):
     email = field.data
@@ -329,6 +327,7 @@ def si():
 
 #bas
 @app.route("/update",methods=('POST','GET'))
+@login_required
 def update():
     if request.method == 'POST':
         check = False
@@ -479,21 +478,13 @@ def facebook_auth():
 
     return redirect('/landing')
 
-#bas
-@app.route("/history/data")
-@login_required
-def history_data():
-    # history = History.query.get(current_user.id)
-    # plant = PlantInfo.query.get(account_id)
-    history = History.query.filter(History.account_id == current_user.id)
-    history_data = list(map(lambda x: x.to_dict(), history))
-    return jsonify(history_data)
+
 
 #bas
 @app.route("/commu/data")
 # @login_required
 def commu_data():
-    commu = Commu.query.all()
+    commu = Community.query.all()
     commu_data = list(map(lambda x: x.to_dict(), commu))
     for i in range(len(commu_data)):
         id_ = commu_data["history_id"]
@@ -510,7 +501,7 @@ def commu():
 
 #bas
 @app.route("/delete/commu",methods=('GET','POST'))
-# @login_required
+@login_required
 def delete_commu():
     if request.method == "POST":
         result = request.form.to_dict()
@@ -530,9 +521,9 @@ def edit_commu():
         id_ = result.get('id', '')
         account_id = result.get('account_id', '')
         message = result.get('message', '')
-        commu = Commu.query.get(id_)
+        commu = Community.query.get(id_)
         if account_id == current_user.id:
-            Commu.edit(message)
+            Community.edit(message)
             db.session.commit()
         return history_data()
 
@@ -557,5 +548,27 @@ def delete_history():
         return history_data()
 
 
+#bas
+@app.route("/history/data")
+@login_required
+def history_data():
+    # history = History.query.get(current_user.id)
+    # plant = PlantInfo.query.get(account_id)
+    history = History.query.filter(History.account_id == current_user.id)
+    history_data = list(map(lambda x: x.to_dict(), history))
+    return jsonify(history_data)
 
+#bas
+@app.route("/comment/add")
+@login_required
+def comment_add():
 
+    if request.method == "POST":
+        result = request.form.to_dict()
+        id_ = result.get('history_id', '')
+        message = result.get('message', '')
+        # comment = Comment.query.get(id_)
+        comment = Comment(history_id=id_,message=message)
+        db.session.add(comment)
+        db.session.commit()
+    return commu_data()
