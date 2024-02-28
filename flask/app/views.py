@@ -507,17 +507,25 @@ def commu():
 
 
 #bas
-@app.route("/comment",methods=('GET','POST'))
+@app.route("/<comment>",methods=('GET','POST'))
 @login_required
 def comment():
     if request.method == "POST":
         result = request.form.to_dict()
-        comment_id = result.get('comment_id','')
-        plant_img = result.get('plant_img','')
-        plant_name = result.get('plant_name','')
-        
+        commu_id = result.get('commu_id','')
+        comment = Community.query.get(commu_id).to_dict()
+        comment["img_user"] = current_user.avatar_url
+        comment["user_name"] = current_user.name
+    return render_template("comment.html",data = comment)
 
-    return render_template()
+#bas
+@app.route("/<comment/data>")
+@login_required
+def comment_data():
+    comment = Community.query.all()
+    comment_data = list(map(lambda x: x.to_dict(), comment))
+    return jsonify(comment_data)
+
 #bas
 @app.route("/delete/commu",methods=('GET','POST'))
 @login_required
@@ -578,16 +586,15 @@ def history_data():
     return jsonify(history_data)
 
 #bas
-@app.route("/comment/add")
+@app.route("</comment/add>")
 @login_required
 def comment_add():
-
     if request.method == "POST":
         result = request.form.to_dict()
-        id_ = result.get('history_id', '')
+        id_ = result.get('commu_id', '')
         message = result.get('message', '')
         # comment = Comment.query.get(id_)
-        comment = Comment(history_id=id_,message=message)
+        comment = Comment(commu_id=id_,message=message)
         db.session.add(comment)
         db.session.commit()
     return commu_data()

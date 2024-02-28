@@ -2,15 +2,53 @@
 
 {% block content %}
 <div>
-    <p id="name_plant">Name Plant :<p>
+    <p id="name_plant">Name Plant : {{data.plant_name}}<p>
+</div>
+<div>
+  <img src="img_user" width="50">
+  <p id="user_name">Name : {{data.user_name}}<p>
+  <p id="shared_date">Shared date : {{data.shared_date}}</p>
+  <p id="updated_date">Updated date : {{data.edited_date}}</p>
 </div>
 
+<div>
+  <label>Plant Name :</label>
+  <p id="name_plant">{{data.plant_name}}<p>
+  <p id="message">{{data.message}}</p>
+</div>
 
+<div id="comment_zone">
+  <input type="text" id="comment">
+  <button id="submitt" onclick="send(this)" value={{data.id}}>submit</button>
+</div>
+<div id="value" value={{data.id}},{{data.user_name}},{{data.img_user}}></div>
+<div id="show_comment">
+  
+</div>
 <script >
+  var commu = document.getElementById("comment")
+  var ka = document.getElementById("value").split(",")
+  function send(data){
+    var dataForm = {"commu_id":data.value,"message":commu.value}
+    $.post("/comment/add",dataForm,function(){
+      location.reload()
+    })
+  }
+  $(document).ready(function () {
+        $.getJSON("/commu/data", function (data) {
+          for(let i=0;i<data.length;i++){
+            if(data[i][commu_id]==ka[0].value){
+              createbox(data[i])
+            }
+          }
+    });
 
-
-
-
+  function createbox(data){
+    var value = `
+                <div id="comment_container">
+                
+                </div>`
+  }
 
 	// function handleClickEdit(element) {
 	// 	var input = document.getElementById("edit")
@@ -56,10 +94,7 @@
     //   })
     // }
 
-    $(document).ready(function () {
-        $.getJSON("/commu/data", function (data) {
-
-    });
+    
 
 </script>
 {% endblock %}
