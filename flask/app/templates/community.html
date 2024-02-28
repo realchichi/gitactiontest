@@ -42,6 +42,7 @@
       if (!confirm("Delete " + "sure" + '?')) {
       return false;
     }
+
     // console.log(value)
       $.post("/delete/commu", data, function (data_commu) {
         location.reload()
@@ -52,33 +53,38 @@
         for(let i=0;i<data.length;i++){
             if(!(data[i]["removed_date"])){
                 var x =`<div id="box_add_history">
-                          <button id="plant_ifo">
-                            <img src ="`+data[i]["identified_img"].slice(4)+`" width=100 >
+                          <img src ="`+data[i]["avatar_url"]+` width=50"<br>
+                          <p>Name :`+data[i]["name_user"]+`</p>
+                           <p id="shared_date">Shared date :`+ data[i]["shared_date"]+`</p>
+                           <p id="edited_date">Updated date :`+ data[i]["edited_date"]+`</p>
+                          <button id="plant_ifo" value="`+[data[i]["id"],data[i]["img"].slice(4),data[i]["plant_name"]]+`" onclick="go_to_comment(this)">
+                            <img src ="`+data[i]["img"].slice(4)+`" width=100 >
                           </button>
                           <div id="data">
-                            <p id="identified_date">identified_date :`+ data[i]["identified_date"]+`</p>
+                            <p>Message :</p>
+                            <p>`+data[i]["message"]+`</p>
+                           
                             <a id="delete_button" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick="handleClickDelete(this)">🗑️</a>
                             <a id="edit_button" value="`+[data[i]["id"],data[i]["account_id"],data[i]["message"]]+`" onclick="handleClickEdit(this)">✏️</a>
                           </div>
                         </div>
-                        <div id="comment_zone">
-                          <input id="input`+data[i]["id"]+`" x=`+data[i]["id"]+`>
-                          <button id="submit_comment" value="`+[data[i]["id"]]+`" onclick="commentna(this)"> comment </button>
-                            <div id="coment_container`+data[i]["id"]+`" >
-    
-                            </div>
-                        </div>`
+                        `
 
               $("#commu_container").prepend(x);
             }
             
         }
     }
+    function go_to_comment(element){
+      var x =element.split(",")
+      var data={"comment_id":x[0],"plant_img":x[1],"plant_name":x[2]}
+      $.post("/comment/data", data, function (data_commu){
+        // window.location.href = "comment.html";
+      })
+    }
     function commentna(datay){
       var value = document.getElementById("input"+datay.value+"").value
-      data={"history_id":datay.value,"message":value}
-      console.log(datay)
-      console.log(value)
+      var data={"history_id":datay.value,"message":value}
       $.post("/comment/add",data,function(data){
         location.reload()
       })

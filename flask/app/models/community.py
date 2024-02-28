@@ -6,20 +6,21 @@ class Community(db.Model, SerializerMixin):
 	__tablename__ = "communities"
 
 	id = db.Column(db.Integer, primary_key=True)
-	history_id = db.Column(db.Integer, db.ForeignKey('histories.id'))
+	account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
 	shared_date = db.Column(db.DateTime)
 	edited_date = db.Column(db.DateTime)
 	removed_date = db.Column(db.DateTime, default=None)
 	removed_by = db.Column(db.String(100), default=None)
 	message = db.Column(db.String(280))
-
-
-	def __init__(self, history_id):
-		self.history_id = history_id
+	plant_name = db.Column(db.String(100), default="Undefied")
+	img_plant = db.Column(db.String(100))
+	def __init__(self, account_id,message,img_plant,plant_name):
+		self.account_id = account_id
 		self.shared_date = datetime.now(timezone.utc)
 		self.edit_date = datetime.now(timezone.utc)
-
-
+		self.message = message
+		self.plant_name = plant_name
+		self.img_plant =img_plant
 	def edit(self,message):
 		self.message = message
 		self.edit_date = datetime.now(timezone.utc)

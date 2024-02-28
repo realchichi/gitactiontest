@@ -495,15 +495,29 @@ def commu_data():
         id_ = commu_data["history_id"]
         x = History.query.get(id_)
         commu_data[i]["img"] = x.get('identified_img', '')
-        commu_data[i]["account_id"] = x.get('account_id', '')
+        commu_data[i]["name_user"] = current_user.name
+        commu_data[i]["avatar_url"] = current_user.avatar_url
     return jsonify(commu_data)
 
 #bas
 @app.route("/commu")
-# @login_required
+@login_required
 def commu():
     return render_template("commu.html")
 
+
+#bas
+@app.route("/comment",methods=('GET','POST'))
+@login_required
+def comment():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        comment_id = result.get('comment_id','')
+        plant_img = result.get('plant_img','')
+        plant_name = result.get('plant_name','')
+        
+
+    return render_template()
 #bas
 @app.route("/delete/commu",methods=('GET','POST'))
 @login_required
