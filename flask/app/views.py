@@ -25,6 +25,7 @@ def load_user(user_id):
     return Account.query.get(int(user_id))
 
 
+
 def read_file(filename, mode="rt"):
     with open(filename, mode, encoding='utf-8') as fin:
         return fin.read()
@@ -93,6 +94,10 @@ def login():
 def feqs():
     return render_template("faqs.html")
 
+
+@app.route("/community")
+def community():
+    return render_template("community.html")
 
 # Written by Wachirapong
 # To call validate form and store to database
