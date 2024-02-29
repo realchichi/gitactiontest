@@ -4,20 +4,29 @@
         padding: 10px;
         margin-top:20px ;
         border: 1px solid gray;
-        width: 550px;
+        width: 200px;
+        height: 240px;
     }
     .history_container{
 /*        margin: auto;*/
 /*        background-color: gray;*/
+       grid-template-columns: repeat(2, 1fr);
+        
     }
     #identified_date,#data{
-        display: inline;
+        /* display: inline; */
+        /* width: 200px; */
     }
     #delete_button{
         border: none;
-        margin-inline:40px ;
+        /* margin-inline:40px ; */
+        float: right;
     }
     #plant_ifo{
         border: none;
         margin-right: 10px;
+    }
+    #identified_img{
+        width: 180px;
+        padding: 5px;
     }

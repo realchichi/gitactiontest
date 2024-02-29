@@ -14,20 +14,29 @@
       </div>
   
     </div>
-
+    
   <form method="POST" enctype="multipart/form-data" id="plant-img">
     <div class="contentCam">
         <button id="open-cam" type="button" onclick="openPopup()" >Open Camera</button>
         <label>Upload Image</label>
         <input type="file" id="tb-file-upload" name="image" accept="image/*" onchange="fileUpload(event);">
         <br>
+        <!-- Drag and drop zone -->
+        <div id="drop-zone" class="drop-zone">
+          Drag &amp; Drop or Click to Upload
+
+
         <canvas id="canvas"></canvas>
         <div class="output">
             <img id="photo" >
         </div>
         <input type="submit" name="submit" value="identify" id="identify">
+      </div>
+
     </div>
+ 
   </form>
+
 
 {% endblock %}
 

@@ -52,6 +52,10 @@
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     height: 5vh; /* Set the height to the full viewport height for vertical centering */
+    border-radius: 6px;
+    background-color: #CD5408;
+    color: black;
+    border: 1px solid #466946;
 }
 .containerR{
 	background-color: white;

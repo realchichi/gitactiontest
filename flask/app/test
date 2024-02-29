@@ -5,31 +5,41 @@
   
   <div class="card my-card" id="crad-commu">
     
-    <div class="card-image">
-        
-    </div>
     <div class="card-content">
-        <div class="head-right"><i class="fa-solid fa-user-group" id="set-group-icon" ></i></div>
-        <head class="card-head" id="set-head" ><img src="static/img/avatar/1.png" width="44px" style="margin-left: 10px; margin-top:10px;"> chi
+        <div class="head-right" id="set-group-icon">
+          <a id="edit_button" value="`+[data[i]["id"],data[i]["account_id"],data[i]["message"]]+`" onclick="handleClickEdit(this)">✏️</a>
+          <a id="delete_button" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick="handleClickDelete(this)">🗑️</a>
+        </div>
+        <head class="card-head" id="set-head" ><img src="`+data[i]["avatar_url"]+`" width="44px" style="margin-left: 10px; margin-top:10px;"> 
+          <p>Name :`+data[i]["name_user"]+`</p>
         
       </head>
-      <div class="set-time"><time datetime="2024-29-2" id="set-time" >Feb 29, 2024</time></div>
+      <div class="set-time">
+        <!-- <time datetime="2024-29-2" id="set-time" >Feb 29, 2024</time> -->
+        <!-- <p id="shared_date">Shared date :`+ data[i]["shared_date"]+`</p> -->
+        <p id="set-time">Shared date :`+ data[i]["shared_date"]+`</p>
+      </div>
       <div class="media">
         <div class="media-left">
           <figure class="image is-48x48" id="set-img">
-            <img src="static/img/pla.jpg" alt="Placeholder image" id="iden-img">
-            <!-- <img src="static/img/pla.jpg" alt="Placeholder image" id="iden-img"> -->
-            <!-- <img src="static/img/pla.jpg" alt="Placeholder image" id="iden-img"> -->
+            <img src="`+data[i]["img_plant"]+`" alt="Placeholder image" id="iden-img">
 
           </figure>
         </div>
         <div class="media-content" id="set-media">
-          <p>Real Chiiii</p>
-          <p>@realchii</p>
+          <p id="plant_name" >Plant Name:`+data[i]["plant_name"] +`</p>
+
+          <div id="data">
+            <p>Message :</p>
+            <p>`+data[i]["message"]+`</p>
+          </div>
         </div>
       </div>
 
-      <footer class="card-footer" id="set-footer"><i class="fa-solid fa-file-lines" style="padding-right: 4px;"></i>doc chichi</footer>
+      <footer class="card-footer" id="set-footer">
+        <p id="edited_date">Updated date :`+ data[i]["edited_date"]+`</p>
+        <button id="plant_ifo" value="`+[data[i]["id"],data[i]["img_plant"],data[i]["plant_name"]]+`" onclick="go_to_comment(this)" style="padding-right: 4px;"></button>
+      </footer>
     </div>
   </div>
 

@@ -21,7 +21,7 @@ function createbox(data){
                         <img id='identified_img' src="`+data[i]["identified_img"].slice(4)+`" width=100 onclick="redirectToResult(this)">
                       </button>
                       <div id="data">
-                        <p id="identified_date">identified_date :`+ data[i]["identified_date"]+`</p>
+                        <p id="identified_date">identified_date : `+ data[i]["identified_date"]+`</p>
                         <a id="delete_button" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick="handleClickDelete(this)">🗑️</a>
                       </div>
                     </div>`
