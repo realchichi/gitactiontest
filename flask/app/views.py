@@ -519,11 +519,17 @@ def comment():
     return render_template("comment.html",data = comment)
 
 #bas
-@app.route("/<comment/data>")
+@app.route("/comment/data")
 @login_required
 def comment_data():
-    comment = Community.query.all()
+    comment = Comment.query.all()
     comment_data = list(map(lambda x: x.to_dict(), comment))
+    # commu_id
+    for i in range(len(comment_data)):
+        # commu = Community.query.get(commu_id)
+        accounts = Account.query.get(comment_data)
+        comment_data[i]["user_img"] = accounts["avatar_url"]
+        comment_data[i]["user_name"] = accounts["name"]
     return jsonify(comment_data)
 
 #bas
@@ -586,7 +592,7 @@ def history_data():
     return jsonify(history_data)
 
 #bas
-@app.route("</comment/add>")
+@app.route("/comment/add")
 @login_required
 def comment_add():
     if request.method == "POST":

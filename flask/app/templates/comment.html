@@ -21,7 +21,7 @@
   <input type="text" id="comment">
   <button id="submitt" onclick="send(this)" value={{data.id}}>submit</button>
 </div>
-<div id="value" value={{data.id}},{{data.user_name}},{{data.img_user}}></div>
+<div id="value" value=[{{data.id}},{{data.user_name}},{{data.img_user}}]></div>
 <div id="show_comment">
   
 </div>
@@ -46,7 +46,18 @@
   function createbox(data){
     var value = `
                 <div id="comment_container">
-                
+                  <div>
+                    <img src="`+data["user_img"]+` width=50>
+                    <p>`+data["user_name"]+`</p>
+                    <p> Comment date:`+data["comment_date"]+`</p>
+                    <p> Update date:`+data["edited_date"]+`</p>
+                  </div>
+                  <div>
+                    <label>Message :</label>
+                    <p>`+data["message"]+`</p>
+                    <a id="delete_button" value="`+[]+`" onclick="handleClickDelete(this)">🗑️</a>
+                    <a id="edit_button" value="`+[]+`" onclick="handleClickEdit(this)">✏️</a>
+                  </div>
                 </div>`
   }
 
@@ -61,16 +72,16 @@
   //       $("#edit").attr("c", check);
   //       $('#edit').val(x[2]);
   //     }
-  //   $("#submitt").click(function(){
+    $("#submitt").click(function(){
 
-  //   	var y = $("#edit").val()
-  //   	var cValue = $("#edit").attr("c");
-  //   	var list_c = cValue.split(",")
-  //   	data = {"message":y ,"id":list_c[0] ,"account_id":list_c[1]}
-  //   	$.post("/edit/commu",data,function (edit_commu){
-  //       	location.reload()
-  //   	})
-  //   })
+    	var y = $("#edit").val()
+    	var cValue = $("#edit").attr("c");
+    	var list_c = cValue.split(",")
+    	data = {"message":y ,"id":list_c[0] ,"account_id":list_c[1]}
+    	$.post("/edit/commu",data,function (edit_commu){
+        	location.reload()
+    	})
+    })
 	// function handleClickDelete(element) {
   //     var value = element.getAttribute("value");
   //     value = value.split(",")

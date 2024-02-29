@@ -36,13 +36,15 @@ class Comment(db.Model, SerializerMixin):
 
 	id = db.Column(db.Integer, primary_key=True)
 	commu_id = db.Column(db.Integer, db.ForeignKey('communities.id'))
+	accout.id = db.Column(db.Integer, db.ForeignKey('account.id'))
 	comment_date = db.Column(db.DateTime)
 	edited_date = db.Column(db.DateTime)
 	removed_date = db.Column(db.DateTime)
 	removed_by = db.Column(db.String(100))
 	message = db.Column(db.String(280))
-	def __init__(self, commu_id,message):
+	def __init__(self, commu_id,message,account):
 		self.commu_id = commu_id
+		self.account = account
 		self.comment_date = datetime.now(timezone.utc)
 		self.edit_date = datetime.now(timezone.utc)
 		self.message = message
