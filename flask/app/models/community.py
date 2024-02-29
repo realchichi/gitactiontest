@@ -18,16 +18,16 @@ class Community(db.Model, SerializerMixin):
 	def __init__(self, account_id,message,img_plant,plant_name):
 		self.account_id = account_id
 		self.shared_date = datetime.now(timezone.utc)
-		self.edit_date = datetime.now(timezone.utc)
+		self.edited_date = datetime.now(timezone.utc)
 		self.message = message
 		self.plant_name = plant_name
 		self.img_plant =img_plant
 	def edit(self,message):
 		self.message = message
-		self.edit_date = datetime.now(timezone.utc)
+		self.edited_date = datetime.now(timezone.utc)
 
 
-	def remove_history(self, account_id):
+	def remove(self, account_id):
 		self.removed_date = datetime.now(timezone.utc)
 		self.removed_by = account_id
 
@@ -43,9 +43,9 @@ class Comment(db.Model, SerializerMixin):
 	removed_date = db.Column(db.DateTime)
 	removed_by = db.Column(db.String(100))
 	message = db.Column(db.String(280))
-	def __init__(self, commu_id,message,accounts):
+	def __init__(self, commu_id,message,accounts_id):
 		self.commu_id = commu_id
-		self.accounts = accounts
+		self.accounts_id = accounts_id
 		self.comment_date = datetime.now(timezone.utc)
 		self.edit_date = datetime.now(timezone.utc)
 		self.message = message

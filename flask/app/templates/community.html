@@ -34,37 +34,32 @@
         var check = [x[0],x[1]]
 
         $("#edit_container"+value[0]).toggle("fast")
-        $("#edit").attr("c", check);
-        $('#edit'+value[0]).val(x[2]);
+        $("#editValue").attr("c", check);
+        $('#editValue'+value[0]).val(x[2]);
       }
-    // $("#submitt").click(function(){
-    //   console.log(";;;;")
-    // 	// var y = $("#edit").val()
-    // 	// var cValue = $("#edit").attr("c");
-    // 	// var list_c = cValue.split(",")
-    // 	// data = {"message":y ,"id":list_c[0] ,"account_id":list_c[1]}
-    // 	// $.post("/edit/commu",data,function (edit_commu){
-    //   //   	location.reload()
-    // 	// })
-    // })
-  var buttons = document.querySelectorAll("#submitt");
-        buttons.forEach(function(button) {
-            button.addEventListener("click", function() {
-                var buttonValue = this.value.toString();
-                console.log(buttonValue)
-                // console.log("Button value:", buttonValue);
-                // $("#current_avatar").attr("src","static/img/avatar/"+buttonValue+".png")
-                // avatar = "static/img/avatar/"+buttonValue+".png"
-            });
-        });
+  function editgy(element){
+    var da = element.value.split(",")
+    var x = document.getElementById("editValue"+da[0]).value
+    // console.log(da[1])
+    var account_id = da[1]
+    var id = da[0]
+    var message = x
+    dataForm = {"account_id":account_id , "id":id,"message":x}
+    console.log(dataForm)
+    $.post("/edit/commu",dataForm,function(data){
+      location.reload()
+    })   
+  }
+
 	function handleClickDelete(element) {
       var value = element.getAttribute("value");
       value = value.split(",")
+      console.log(value)
       let data = {"id":value[0] , "account_id":value[1]}
       if (!confirm("Delete " + "sure" + '?')) {
       return false;
     }
-    // console.log(value)
+    console.log("pass")
       $.post("/delete/commu", data, function (data_commu) {
         location.reload()
       });
@@ -73,11 +68,12 @@
 	function createbox(data){
         var user = document.getElementById("value")
         var da = user.getAttribute("value")
-
+        console.log(data)
         for(let i=0;i<data.length;i++){
+            console.log(data[i]["avatar_url"])
             if(!(data[i]["removed_date"])){
                 var x =`<div id="box_add_history">
-                          <img src = "`+ data[i]["avatar_url"]+` width=50"
+                          <img src="`+data[i]["avatar_url"]+`" width=50>
                           <p>Name :`+data[i]["name_user"]+`</p>
                            <p id="shared_date">Shared date :`+ data[i]["shared_date"]+`</p>
                            <p id="edited_date">Updated date :`+ data[i]["edited_date"]+`</p>
@@ -99,8 +95,8 @@
                               </div>
                         <div id="edit_container`+data[i]["id"]+`" style="display:none;">
                             <label>Edit Box</label>
-                            <input type="text" name="edit" id="edit`+data[i]["id"]+`">
-                            <button id="submitt" >submit</button>
+                            <input type="text" name="edit" id="editValue`+data[i]["id"]+`">
+                            <button id="submitt" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick = "editgy(this)">submit</button>
                         </div>`
                   }
                   $("#con").prepend(x);
@@ -125,15 +121,11 @@
         location.reload()
       })
     }
-    $("#submit_comment").click(function(){
-      console.log("llll")
-    // console.log(this.value)
-    })
     $(document).ready(function () {
         $.getJSON("/commu/data", function (data) {
 
             createbox(data);
-            console.log(data)
+            // console.log(data)
       })
     });
 

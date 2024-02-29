@@ -578,9 +578,10 @@ def delete_commu():
     if request.method == "POST":
         result = request.form.to_dict()
         id_ = result.get('id', '')
-        commu = History.query.get(id_)
-        if history.account_id == current_user.id:
-            commu = commu.share()
+        user = result.get('account_id', '')
+        commu = Community.query.get(id_)
+        if int(user) == current_user.id:
+            commu.remove(user)
             db.session.commit()
         return commu_data()
 
@@ -588,16 +589,19 @@ def delete_commu():
 @app.route("/edit/commu",methods=('GET','POST'))
 @login_required
 def edit_commu():
+
     if request.method == "POST":
+        # print("5555555555555555555555555555")
         result = request.form.to_dict()
         id_ = result.get('id', '')
         account_id = result.get('account_id', '')
         message = result.get('message', '')
         commu = Community.query.get(id_)
-        if account_id == current_user.id:
-            Community.edit(message)
+        print("5555555555555555555555555555",account_id,current_user.id)
+        if int(account_id) == current_user.id:
+            commu.edit(message)
             db.session.commit()
-        return history_data()
+        return commu_data()
 
 #bas
 @app.route("/history")
