@@ -32,8 +32,8 @@ textarea {
 input[type=submit] {
     font-weight: 500;
     width: 280px;
-    background-color: #ACCAAC;
-    color: white;
+    background-color: #163020;
+    color: #C19277;
     padding: 6px;
     border: none;
     border-radius: 12px;
@@ -46,7 +46,7 @@ input[type=submit] {
 
 
 input[type=submit]:hover {
-    background-color: #56ab5a;
+    background-color: #CD5408;
     transition: 0.5s;
 }
 

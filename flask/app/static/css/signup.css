@@ -68,7 +68,7 @@ input[type=submit] {
 
 
 input[type=submit]:hover {
-    background-color: #56ab5a;
+    background-color: #CD5408;
     transition: 0.5s;
 }
 
@@ -176,10 +176,10 @@ input[type=submit]:hover {
 }
 .login{
     /* display: block; */
-    color: #ACCAAC;
+    color: #C19277;
 }
 .login:hover{
-    color:#56ab5a;
+    color:#CD5408;
     text-decoration: none;
 }
 

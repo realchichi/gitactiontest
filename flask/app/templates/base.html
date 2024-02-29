@@ -22,14 +22,10 @@
   <link rel="stylesheet" href="../static/css/camera.css">
   <link rel="stylesheet" href="../static/css/contact_us.css">
   <link rel="stylesheet" href="../static/css/history.css">
-<<<<<<< HEAD
   <link rel="stylesheet" href="../static/css/community.css">
 
-=======
-  <link rel="stylesheet" href="static/css/login.css">
-  <link rel="stylesheet" href="../static/css/result.css">
->>>>>>> bf553bcfda631bf908d633e094da4ca4584f0145
-
+  <!-- icon -->
+  <script src="https://kit.fontawesome.com/3d40f8c3a3.js" crossorigin="anonymous"></script>
 
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <!-- Bootstrap Table -->
@@ -69,7 +65,6 @@
             <a href="{{ url_for('landing')}}" class="logo">BotaniBuzz</a>
 
             <ul class="navlist">
-<<<<<<< HEAD
                 <li><a href="{{ url_for('landing')}}">Home</a></li>
                 <li><a href="{{ url_for('contact_us')}}">Contact us</a></li>
                 {% if  current_user.is_authenticated %}
@@ -81,17 +76,6 @@
                 {% endif %}
                 
 
-=======
-                {% if current_user.is_authenticated %}
-                    <li><a><img src={{current_user.avatar_url}} width="40"><li></a>
-                    <li><a href="{{ url_for('profile')}}">Profile</a></li>
-                    <li><a href="{{ url_for('logout')}}">Logout</a></li>    
-                {% endif %}
-                <li><a href="{{ url_for('landing')}}">Home</a></li>
-                <li><a href="{{ url_for('contact_us')}}">Contact us</a></li>
-                <li><a href="{{ url_for('history')}}">History</a></li>
-                <li><a href="{{ url_for('identification')}}">Identify</a></li>
->>>>>>> bf553bcfda631bf908d633e094da4ca4584f0145
             </ul>
             <i class="ri-menu-line" id="menu-icon"></i>
         </header>

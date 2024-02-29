@@ -78,6 +78,7 @@ header{
     height: 100%;
     width: 100%;
     min-height: 100vh;
+    /* background-color: #45523e; */
     background-image: linear-gradient(to right, #c9c9c7, #d3d2cc, #dcdcd0, #e7e5d5, #f1eed9);
     position: relative;
     display:grid;
@@ -92,25 +93,26 @@ section{
 .plant-text h5{
     font-size: 14px;
     font-weight: 400;
-    color: #accaac;
+    color: #3C2A21;
     margin-bottom: 40px;
 }
+
 .plant-text h1{
     font-family: 'Poppins',sans-serif;
     font-size: 72px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1;
-    color: #accaac;
+    color: #CD5408;
     margin: 0 0 45px;
 }
 .plant-text h4{
     font-size: 18px;
     font-weight: 600;
-    color: #accaac;
+    color: #3C2A21;
     margin-bottom: 10px;
 }
 .plant-text p{
-    color: #accaac;
+    color: #3C2A21;
     font-size: 15px;
     line-height: 1.9;
     margin-bottom: 40px;
@@ -122,12 +124,12 @@ section{
 }
 .plant-text a{
     display: inline-block;
-    color: white;
-    background: #accaac;
+    color:#C19277;
+    background: #163020;
     border:4px solid transparent;
     padding: 12px 30px;
     line-height: 1.4;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     border-radius: 12px;
     /* text-transform: uppercase; */
@@ -136,10 +138,12 @@ section{
 
 }
 .plant-text a:hover{
+    text-decoration: none;
     background: transparent;
     border: 1px solid #466946;
     transform: translateX(8px);
 }
+
 
 @media (max-width:1535px) {
     header{

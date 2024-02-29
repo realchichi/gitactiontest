@@ -17,10 +17,10 @@
                 <p>the secrete of improved plant breeding,<br> apart from scientific know, is love</p>
                 <!-- <a href="#">the secrete of improved plant breeding, apart from scientific know,is love</a> -->
                 {% if current_user.is_authenticated%}
-                <a href="{{ url_for('identification')}}">Discover</a>
+                <a href="{{ url_for('identification')}}" id="let-start">Let's Start</a>
                 <!-- <a href="#" class="ctaa"></a> -->
                 {% else %}
-                <a href="{{ url_for('login')}}">Discover</a>
+                <a href="{{ url_for('login')}}" id="let-start">Let's Start</a>
                 {% endif %}
             </div>
             <div class="plant-img">

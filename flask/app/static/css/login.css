@@ -9,15 +9,10 @@ body {
     box-sizing: border-box;
     
 }
-<<<<<<< HEAD
 #eye,#password{
         display: inline;
     }
 #edit_email{
-=======
-
-#edit_email, #edit_button_email {
->>>>>>> bf553bcfda631bf908d633e094da4ca4584f0145
         display: inline;
         /* color: white; */
 
@@ -146,14 +141,14 @@ label {
 }
 
 .forget-password:hover{
-    color:#56ab5a;
+    color:#CD5408;
     text-decoration: none;
 }
 
 input[type=submit] {
     font-weight: 500;
     width: 280px;
-    background-color: #ACCAAC;
+    background-color: #163020;
     color: white;
     padding: 6px;
     border: none;
@@ -167,7 +162,7 @@ input[type=submit] {
 
 
 input[type=submit]:hover {
-    background-color: #56ab5a;
+    background-color: #CD5408;
     transition: 0.5s;
 }
 
@@ -275,9 +270,9 @@ input[type=submit]:hover {
 }
 .signup{
     /* display: block; */
-    color: #ACCAAC;
+    color: #C19277;
 }
 .signup:hover{
-    color:#56ab5a;
+    color:#163020;
     text-decoration: none;
 }

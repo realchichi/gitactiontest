@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <div id="edit_container" style="display:none;">
 	<label>Edit Box</label>
 	<input type="text" name="edit" id="edit" c="">
@@ -60,6 +61,7 @@
             
         }
     }
+   
     $(document).ready(function () {
         $.getJSON("/commu/data", function (data) {
 

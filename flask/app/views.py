@@ -27,7 +27,7 @@ from app import db
 from app.models.accounts import Account
 from app.models.history import History
 from app.models.plantinfo import PlantInfo
-from app.models.plantinfo import Commu
+from app.models.commu import Commu
 # from sqlalchemy.sql import text
 from app import login_manager
 
@@ -55,17 +55,17 @@ def process():
     data = request.form.get('data')
     return
 
-
+#chi
 @app.route("/")
 def home():
     return render_template("landing.html")
 
-
+#chi
 @app.route("/landing")
 def landing():
     return render_template("landing.html")
 
-
+#chi
 @app.route("/profile")
 def profile():
     return render_template("profile.html")
@@ -109,7 +109,7 @@ def login():
 def feqs():
     return render_template("faqs.html")
 
-
+#chi
 @app.route("/community")
 def community():
     return render_template("community.html")
