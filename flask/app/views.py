@@ -14,7 +14,10 @@ from app import db
 from app.models.accounts import Account
 from app.models.history import History
 from app.models.plantinfo import PlantInfo
+# from app.models.community import Community
+# from app.models.community import Comment
 from app import login_manager
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -172,32 +175,64 @@ def get_data(data):
 # and store it to history table
 @app.route("/identification", methods=["POST", "GET"])
 def identification():
-    a = "test"
     if request.method == "POST":
-        # result = {}
-        # print(request.files.keys())
-        # image_file = request.files['image']
-        # filename = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.jpg')
-        # image_file.save(filename)
-        # print(len(result["photoDataUrl"]))
-        # print(result)
-        # account_id = current_user.id
-        # if result.get("idendtfied_img",""):
-        #     idendtfied_img = result["idendtfied_img"]
-        #     entry = History(account_id, idendtfied_img)
-        #     db.session.add(entry)
-        #     history = History.query.filter_by(idendtfied_img=idendtfied_img).first()
-            # plant_data = call_api(idendtfied_img)
-        #     for i in range(len(plant_data)):
-        #         temp = plant_data[i]
-        #         temp["history_id"] = history.id
-        #         plant_info = PlantInfo(**temp)
-        #         db.session.add(plant_info)
+        result = {}
+        print(request.files.keys())
+        image_file = request.files['image']
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], 'captured_image.jpg')
+        image_file.save(filename)
+        print(len(result["photoDataUrl"]))
+        print(result)
+        account_id = current_user.id
+        if result.get("idendtfied_img",""):
+            idendtfied_img = result["idendtfied_img"]
+            entry = History(account_id, idendtfied_img)
+            db.session.add(entry)
+            history = History.query.filter_by(idendtfied_img=idendtfied_img).first()
+            plant_data = call_api(idendtfied_img)
+            for i in range(len(plant_data)):
+                temp = plant_data[i]
+                temp["history_id"] = history.id
+                plant_info = PlantInfo(**temp)
+                db.session.add(plant_info)
 
-        #     db.session.commit()
-        plant_data = call_api(a)
+            db.session.commit()
         return render_template("plant_data.html", plant_data=plant_data)
     return render_template("identification.html")
+
+#ohm
+@app.route("/communtity", methods=["POST","GET"])
+def storedata_commu():
+    if request.method == 'POST' :
+        result = request.form.to_dict()
+        validated_dict = dict()
+        valid_keys = ['name', 'message', 'datetime','image']
+        account_id = current_user.id
+
+        for key in result:
+            app.logger.debug(f"{key}: {result[key]}")
+
+            if key not in valid_keys:
+                continue
+
+            value = result[key].strip()
+
+            if not value or value == 'undefined':
+                validated = False
+                break
+
+            validated_dict[key] = value
+
+        if validated:
+            validated_dict['account_id']=account_id
+            plant_share = Community(**validated_dict)
+            db.session.add(plant_share) 
+            db.session.commit()
+    # print(validated_dict)
+    return render_template('community.html')
+
+
+
 
 @app.route("/signup", methods=('GET', 'POST'))
 def signup():

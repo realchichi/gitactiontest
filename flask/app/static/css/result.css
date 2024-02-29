@@ -42,7 +42,7 @@
 /*	background-color: lightpink;*/
 }
 .plantData{
-	display: none;
+	display: '';
 /*	margin-top: 25%;*/
 	width: 250%; /* Set the fixed width for the container */
     height: auto; /* Set the fixed height for the container */
@@ -56,6 +56,8 @@
 .containerR{
 	background-color: white;
 }
+
+/*###################*/
 #toggleButton{
 	margin-top: 25%;
 }
@@ -74,20 +76,75 @@
 }
 .forum{
 	text-align: center;
-/*	background-color: lightsalmon;*/
 }
+
 #myTextarea{
-	width: 50%;
+	width: 90%;
 }
 #message{
-	width: 50%;
+	width: 90%;
 }
-.forcenter{
-	padding-bottom: 10%;
+
+
+.forcenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Adjust based on your needs */
 }
-.yourimg{
-/*	background-color: greenyellow;*/
+#forsend {
+
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: lightgray;
 }
-/*.center-container button {
-     
-}*/
+h2 {
+    text-align: center;
+}
+.yourimg {
+    text-align: center;
+}
+.yourimg img {
+    max-width: 100%;
+    height: auto;
+}
+.forum {
+    margin-top: 20px;
+}
+p {
+    margin: 10px 0;
+}
+textarea, input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+#datetimeInput {
+    width: calc(50% - 20px); 
+}
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 768px) {
+    #forsend {
+/*    	width: 300%;*/
+        padding: 10px;
+   	}
+
+    #datetimeInput {
+        width: 50%;
+    }
+}
