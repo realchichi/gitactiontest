@@ -67,12 +67,10 @@
   function editgy(element){
     var da = element.value.split(",")
     var x = document.getElementById("editValue"+da[0]).value
-    // console.log(da[1])
     var account_id = da[1]
     var id = da[0]
     var message = x
     dataForm = {"account_id":account_id , "id":id,"message":x}
-    console.log(dataForm)
     $.post("/edit/commu",dataForm,function(data){
       location.reload()
     })   
@@ -81,12 +79,10 @@
 	function handleClickDelete(element) {
       var value = element.getAttribute("value");
       value = value.split(",")
-      console.log(value)
       let data = {"id":value[0] , "account_id":value[1]}
       if (!confirm("Delete " + "sure" + '?')) {
       return false;
     }
-    console.log("pass")
       $.post("/delete/commu", data, function (data_commu) {
         location.reload()
       });
@@ -95,9 +91,7 @@
 	function createbox(data){
         var user = document.getElementById("value")
         var da = user.getAttribute("value")
-        console.log(data)
         for(let i=0;i<data.length;i++){
-            console.log(data[i]["avatar_url"])
             if(!(data[i]["removed_date"])){
                 var x =`<div class="card my-card" id="crad-commu">
     
@@ -156,18 +150,17 @@
         }
     }
     function go_to_comment(element){
-      var x =element.split(",")
-      var data={"comment_id":x[0],"plant_img":x[1],"plant_name":x[2]}
-      $.post("/comment/data", data, function (data_commu){
-        // window.location.href = "comment.html";
-      })
+      var x =element.value.split(",")
+      var data={"commu_id":x[0],"account_id":x[1]}
+
+      $.post("/<comment>", data, function (data_commu){
+        window.location.href = "/comment_next?commu_id=" + data['commu_id'] + "&account_id=" + data['account_id'];
+});
     }
     
     function commentna(datay){
       var value = document.getElementById("input"+datay.value+"").value
       var data={"history_id":datay.value,"message":value}
-      // console.log(datay)
-      // console.log(value)
       $.post("/comment/add",data,function(data){
         location.reload()
       })
@@ -176,7 +169,6 @@
         $.getJSON("/commu/data", function (data) {
 
             createbox(data);
-            // console.log(data)
       })
     });
 

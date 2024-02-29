@@ -137,7 +137,7 @@
     textarea.value = data;
     document.getElementById('forsend').scrollIntoView({ behavior: 'smooth' });
   }
-
+  
   function submitForm() {
         const form = document.getElementById('forsend');
         const formData = new FormData(form);
@@ -149,7 +149,7 @@
         const nameval = formData.get('name')
         const messageval = formData.get('message')
         if (nameval === "") {
-        formData.set('name',"Undefined_Plant");} 
+        formData.set('name',"Undetermined Plant");} 
 
         if (messageval === "") {
         formData.set('message',"What Plant?");} 
@@ -158,19 +158,13 @@
         console.log(`${key}: ${value}`);
     });
         console.log(formData)
-        fetch('/communtity', {
+        fetch('/share_form', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            // Handle success, e.g., show a success message
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Handle error, e.g., show an error message
-        });
+        .then(
+          window.location.href="/commu")
+
     }
   
 </script>
