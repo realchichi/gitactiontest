@@ -66,8 +66,11 @@
 
             <ul class="navlist">
                 <li><a href="{{ url_for('landing')}}">Home</a></li>
+                <li><a href="{{ url_for('identification')}}">Identify</a></li>
+                <li><a href="{{ url_for('community')}}">Community</a></li>
                 <li><a href="{{ url_for('contact_us')}}">Contact us</a></li>
                 {% if  current_user.is_authenticated %}
+                    <li><a href="{{ url_for('history')}}">History</a></li>
                     <li><a href="{{ url_for('logout')}}">Logout</a></li>
                     <li id="profile_button"><a href="{{ url_for('profile')}}"><img src={{current_user.avatar_url}} width="40"></a><li>
                     
@@ -76,6 +79,7 @@
                 {% endif %}
                 
 
+                
             </ul>
             <i class="ri-menu-line" id="menu-icon"></i>
         </header>
@@ -122,8 +126,7 @@
                 </div>
             </div>
         </footer>
-        <script>
-        </script>
+
 </body>
 
 

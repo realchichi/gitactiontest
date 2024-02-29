@@ -3,8 +3,8 @@ from app import app, db
 from app.models.accounts import Account
 from app.models.history import History
 from app.models.plantinfo import PlantInfo
-
-
+from app.models.community import Community
+from app.models.community import Comment
 
 cli = FlaskGroup(app)
 

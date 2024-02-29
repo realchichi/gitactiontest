@@ -6,22 +6,35 @@
       <div class="plantData">
         <img src="{{ identified_img[4:] }}" alt="identified_img">
         <h1>Result</h1>
+      <div class="containerData">
+      <button id="toggleButton">Toggle Result</button>
+      <br>
+      <div class="plantData " id="toggledDiv" style="padding-top: 3%">
+        
           {% for plant in plant_data %}
-            <div class="datacard">
-              <div class="cardheader">
+
+            <div class="datacard  col-8 col-md-6 col-lg-9 " >
+              <div class="cardheader ">
                 <div class="row">
                   <div class="col-md-9">
-                    <span style="font-size: 20px; font-style: italic; font-weight: bold;">{{ plant.name }} </span>
+                    <div id="myData" >
+                       <p class="namePlant"><span style="font-size: 20px; font-style: italic; font-weight: bold;">{{ plant.name }} </span></p>
+                    </div>
+                    <br>
                     <div class="row">
-                      <div class="col-9 text-truncate">
+                      <div class=" col-9 text-truncate">
                         {% if plant.common_name is none %}
                           <span style="font-size: 17px;">Common Name:</span> <span style="font-size: 17px; font-style: italic;">N/A </span>
                         {% else %}
                           {% for name in plant.common_name %}
 
-                          <span style="font-size: 17px;">Common Name : {{ plant.common_name[0] }}</span>
+                          <span style="font-size: 17px;">Common Name : {{ name }}</span>
+                            
+                        
+                          
                           {% endfor %}
                         {% endif %}
+                        <br>
                       </div>
                     </div>
                   </div>
@@ -30,7 +43,7 @@
                   </div>
                 </div>
               </div>
-              <div class="cardbody">
+              <div class="cardbody ">
                 <div class="row">
                   <div class="image-container ">
                     <img src="{{ plant.url_image }}" alt="{{ plant.name }} Image">
@@ -66,7 +79,7 @@
               <div class="cardfooter">
                 <!-- <div class="row"> -->
                   <div class="center-container">
-                    <button> ถูกต้อง? </button>
+                    <button onclick="sendData(this)" > ถูกต้อง? </button>
                   </div>
                 <!-- </div> -->
               </div>
@@ -75,9 +88,92 @@
           {% endfor %}
       </div>
     </div>
-  <!-- </div> -->
+  </div>
     
+  <br>
+  <div class="forcenter ">
+    <form action="/communtity" method="post" id="forsend">
+    <h2>Share To Community</h2>
+    <div class="yourimg">
+      <img src= {{identified_img}} name='image'>
+    </div>
+    <div class="forum">
+      <br>
+      <p>Suggest Name</p>
+      <label for="message"></label>
+      <textarea id="myTextarea" name="plant_name" rows="1" ></textarea>
+      <br>
+      <p>Message</p>
+      <label for="message"></label>
+      <textarea id="message" name="message" rows="2"></textarea>
+      <br>
+      <label for="datetimeInput"> วันที่ค้น :</label>
 
+      <!-- Datetime Input -->
+      <input  id="datetimeInput" name="datetime" readonly>
+      <br>
+      <button type="button" onclick="submitForm()">Share</button>
+    </div>
+  </form>
+  </div>
+  
+<script>
+  var now = new Date();
+  var formattedNow = now.toLocaleDateString('en-GB');
+  // var formattedNow = now.toISOString().slice(0, 16); //withtime
+  document.getElementById('datetimeInput').value = formattedNow;
+  console.log(formattedNow)
+
+  document.getElementById('toggleButton').addEventListener('click', function() {
+    var div = document.getElementById('toggledDiv');
+    div.style.display = (div.style.display === 'none' || div.style.display === '') ? 'block' : 'none';
+  });
+
+  function sendData(button) {
+
+    var textarea = document.getElementById('myTextarea');
+    var currentDiv = button.closest('.datacard')
+    var data = currentDiv.querySelector('p.namePlant span').innerText;
+    textarea.value = data;
+    document.getElementById('forsend').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function submitForm() {
+        const form = document.getElementById('forsend');
+        const formData = new FormData(form);
+        const image = document.querySelector('.yourimg img').getAttribute('src');
+        formData.append('img_plant', image);
+    //     formData.forEach((value, key) => {
+    //     console.log(`${key}: ${value}`);
+    // });
+        const nameval = formData.get('name')
+        const messageval = formData.get('message')
+        if (nameval === "") {
+        formData.set('name',"Undefined_Plant");} 
+
+        if (messageval === "") {
+        formData.set('message',"What Plant?");} 
+
+        formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+    });
+        console.log(formData)
+        fetch('/communtity', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Handle success, e.g., show a success message
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle error, e.g., show an error message
+        });
+    }
+  
+</script>
 {% endblock %}
 
 

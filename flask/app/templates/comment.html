@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <p id="name_plant">Name Plant : {{data.plant_name}}<p>
+</div>
+<div>
+  <img src="img_user" width="50">
+  <p id="user_name">Name : {{data.user_name}}<p>
+  <p id="shared_date">Shared date : {{data.shared_date}}</p>
+  <p id="updated_date">Updated date : {{data.edited_date}}</p>
+</div>
+
+<div>
+  <label>Plant Name :</label>
+  <p id="name_plant">{{data.plant_name}}<p>
+  <p id="message">{{data.message}}</p>
+</div>
+
+<div id="comment_zone">
+  <input type="text" id="comment">
+  <button id="submitt" onclick="send(this)" value={{data.id}}>submit</button>
+</div>
+<div id="value" value=[{{data.id}},{{data.user_name}},{{data.img_user}}]></div>
+<div id="show_comment">
+  
+</div>
+<script >
+  var commu = document.getElementById("comment")
+  var ka = document.getElementById("value").split(",")
+  function send(data){
+    var dataForm = {"commu_id":data.value,"message":commu.value}
+    $.post("/comment/add",dataForm,function(){
+      location.reload()
+    })
+  }
+  $(document).ready(function () {
+        $.getJSON("/commu/data", function (data) {
+          for(let i=0;i<data.length;i++){
+            if(data[i][commu_id]==ka[0].value){
+              createbox(data[i])
+            }
+          }
+    });
+
+  function createbox(data){
+    var value = `
+                <div id="comment_container">
+                  <div>
+                    <img src="`+data["user_img"]+` width=50>
+                    <p>`+data["user_name"]+`</p>
+                    <p> Comment date:`+data["comment_date"]+`</p>
+                    <p> Update date:`+data["edited_date"]+`</p>
+                  </div>
+                  <div>
+                    <label>Message :</label>
+                    <p>`+data["message"]+`</p>
+                    <a id="delete_button" value="`+[]+`" onclick="handleClickDelete(this)">🗑️</a>
+                    <a id="edit_button" value="`+[]+`" onclick="handleClickEdit(this)">✏️</a>
+                  </div>
+                </div>`
+  }
+
+	// function handleClickEdit(element) {
+	// 	var input = document.getElementById("edit")
+  //       var value = element.getAttribute("value");
+
+  //       var x = value.split(',')
+  //       var check = [x[0],x[1]]
+
+  //       $("#edit_container").toggle("fast")
+  //       $("#edit").attr("c", check);
+  //       $('#edit').val(x[2]);
+  //     }
+    $("#submitt").click(function(){
+
+    	var y = $("#edit").val()
+    	var cValue = $("#edit").attr("c");
+    	var list_c = cValue.split(",")
+    	data = {"message":y ,"id":list_c[0] ,"account_id":list_c[1]}
+    	$.post("/edit/commu",data,function (edit_commu){
+        	location.reload()
+    	})
+    })
+	// function handleClickDelete(element) {
+  //     var value = element.getAttribute("value");
+  //     value = value.split(",")
+  //     let data = {"id":value[0] , "account_id":value[1]}
+  //     if (!confirm("Delete " + "sure" + '?')) {
+  //     return false;
+  //   }
+  //   // console.log(value)
+  //     $.post("/delete/commu", data, function (data_commu) {
+  //       location.reload()
+  //     });
+  //   }
+  
+    // function commentna(datay){
+    //   var value = document.getElementById("input"+datay.value+"").value
+    //   data={"history_id":datay.value,"message":value}
+    //   console.log(datay)
+    //   console.log(value)
+    //   $.post("/comment/add",data,function(data){
+    //     location.reload()
+    //   })
+    // }
+
+    
+
+</script>
+{% endblock %}
