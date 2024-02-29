@@ -47,7 +47,7 @@ class Comment(db.Model, SerializerMixin):
 		self.commu_id = commu_id
 		self.accounts_id = accounts_id
 		self.comment_date = datetime.now(timezone.utc)
-		self.edit_date = datetime.now(timezone.utc)
+		self.edited_date = datetime.now(timezone.utc)
 		self.message = message
 	def edit_comment(self,message):
 		self.message = message

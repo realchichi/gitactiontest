@@ -21,6 +21,7 @@ from app.models.community import Comment
 # from app.models.community import Community
 # from app.models.community import Comment
 from app import login_manager
+from urllib.parse import unquote
 
 
 @login_manager.user_loader
@@ -278,10 +279,10 @@ def validate_email_domain(form, field):
         raise ValidationError(f'Invalid email domain. Allowed domains are: {", ".join(allowed_domains)}')
 
 #ohm
-@app.route("/communtity", methods=("POST","GET"))
+@app.route("/share_form", methods=("POST","GET"))
 def storedata_commu():
-    validated = True
     if request.method == 'POST' :
+        validated = True
         result = request.form.to_dict()
         validated_dict = dict()
         valid_keys = ['plant_name', 'message','img_plant']
@@ -300,14 +301,14 @@ def storedata_commu():
                 break
 
             validated_dict[key] = value
-        print(validated_dict,"66666666666666666666666")
         if validated:
             validated_dict['account_id']=account_id
             plant_share = Community(**validated_dict)
             db.session.add(plant_share) 
             db.session.commit()
     # print(validated_dict)
-    return render_template('community.html')
+            return redirect(url_for('commu'))
+    return render_template('resulte.html')
 
 
 
@@ -524,6 +525,45 @@ def facebook_auth():
 
 
 
+
+
+#bas
+@app.route("/commu")
+@login_required
+def commu():
+    return render_template("community.html")
+
+
+@app.route("/<comment>", methods=('GET', 'POST'))
+@login_required
+def comment(comment):
+    if request.method == "POST":
+        print("oooooooooo")
+        result = request.form.to_dict()
+        commu_id = result.get('commu_id', '')
+        account_id = result.get('account_id', '')
+        # data = [{"account_id": account_id, "commu_id": commu_id}]
+        commu = Community.query.get(commu_id).to_dict()
+        return redirect(url_for('comment_next', commu_id=commu_id, account_id=account_id))
+    return render_template("comment.html")
+
+@app.route("/comment_next")
+@login_required
+def comment_next():
+    commu_id = request.args.get('commu_id', '')
+    account_id = request.args.get('account_id', '')
+    commu = Community.query.get(commu_id).to_dict()
+    account = Account.query.get(commu_id).to_dict()
+    user_name = account["name"]
+    avatar_url = account["avatar_url"]
+    img_plant = commu["img_plant"]
+    plant_name = commu["plant_name"]
+    message = commu["message"]
+    shared_date = commu["shared_date"]
+    edited_date = commu["edited_date"]
+    current_user_id = current_user.id
+    return render_template("comment.html",commu_id=commu_id,user_name=user_name,avatar_url=avatar_url,img_plant=img_plant,plant_name=plant_name,message=message,shared_date=shared_date,edited_date=edited_date,current_user_id=current_user_id)
+
 #bas
 @app.route("/commu/data")
 # @login_required
@@ -539,36 +579,16 @@ def commu_data():
     return jsonify(commu_data)
 
 #bas
-@app.route("/commu")
-@login_required
-def commu():
-    return render_template("community.html")
-
-
-#bas
-@app.route("/<comment>",methods=('GET','POST'))
-@login_required
-def comment():
-    if request.method == "POST":
-        result = request.form.to_dict()
-        commu_id = result.get('commu_id','')
-        comment = Community.query.get(commu_id).to_dict()
-        comment["img_user"] = current_user.avatar_url
-        comment["user_name"] = current_user.name
-    return render_template("comment.html",data = comment)
-
-#bas
 @app.route("/comment/data")
 @login_required
 def comment_data():
     comment = Comment.query.all()
     comment_data = list(map(lambda x: x.to_dict(), comment))
-    # commu_id
     for i in range(len(comment_data)):
-        # commu = Community.query.get(commu_id)
-        accounts = Account.query.get(comment_data)
-        comment_data[i]["user_img"] = accounts["avatar_url"]
-        comment_data[i]["user_name"] = accounts["name"]
+        accounts_id = comment_data[i]["accounts_id"]
+        user = Account.query.get(accounts_id).to_dict()
+        comment_data[i]["name_user"]= user["name"]
+        comment_data[i]["avatar_url"]= user["avatar_url"]
     return jsonify(comment_data)
 
 #bas
@@ -603,6 +623,24 @@ def edit_commu():
             db.session.commit()
         return commu_data()
 
+
+#bas
+@app.route("/edit/comment",methods=('GET','POST'))
+@login_required
+def edit_comment():
+
+    if request.method == "POST":
+        # print("5555555555555555555555555555")
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        account_id = result.get('account_id', '')
+        message = result.get('message', '')
+        comment = Comment.query.get(id_)
+        # print("5555555555555555555555555555",account_id,current_user.id)
+        if int(account_id) == current_user.id:
+            comment.edit_comment(message)
+            db.session.commit()
+        return comment_data()
 #bas
 @app.route("/history")
 @login_required
@@ -616,10 +654,24 @@ def delete_history():
     if request.method == "POST":
         result = request.form.to_dict()
         id_ = result.get('id', '')
-        account_id = result.get('account_id', '')
+        accounts_id = result.get('account_id', '')
         history = History.query.get(id_)
-        if history.account_id == current_user.id:
-            history.remove_history(account_id)
+        if int(accounts_id) == current_user.id:
+            history.remove_history(accounts_id)
+            db.session.commit()
+        return history_data()
+
+#bas
+@app.route("/delete/comment",methods=('GET','POST'))
+@login_required
+def delete_comment():
+    if request.method == "POST":
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        account_id = result.get('account_id', '')
+        comment = Comment.query.get(id_)
+        if int(account_id) == current_user.id:
+            comment.remove_comment(account_id)
             db.session.commit()
         return history_data()
 
@@ -635,15 +687,19 @@ def history_data():
     return jsonify(history_data)
 
 #bas
-@app.route("/comment/add")
+@app.route("/comment/add",methods=('GET','POST'))
 @login_required
 def comment_add():
     if request.method == "POST":
         result = request.form.to_dict()
         id_ = result.get('commu_id', '')
         message = result.get('message', '')
+        accounts_id = result.get('accounts_id', '')
         # comment = Comment.query.get(id_)
-        comment = Comment(commu_id=id_,message=message)
-        db.session.add(comment)
-        db.session.commit()
+        print("11111111111111111111111")
+        if int(accounts_id) == current_user.id:
+            print("222222222")
+            comment = Comment(commu_id=id_,message=message,accounts_id=accounts_id)
+            db.session.add(comment)
+            db.session.commit()
     return commu_data()

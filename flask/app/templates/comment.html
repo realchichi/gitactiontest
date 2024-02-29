@@ -1,111 +1,145 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div>
-    <p id="name_plant">Name Plant : {{data.plant_name}}<p>
+
+<style >
+  #container{
+    background-color: blue;
+    width: 1000px;
+  }
+  #show_comment{
+    background-color: gray;
+    width: 1000px;
+/*    height: 50px;*/
+  }
+  #comment_container{
+    background-color: white;
+    width: 600px;
+    margin-top: 20px;
+  }
+  #sub{
+    /*width: 100px;
+    height: 50px;*/
+  }
+</style>
+
+<div id="container" value={{commu_id}}>
+  <div>
+    <p id="name_plant">Name Plant : {{plant_name}}<p>
+    <img src={{img_plant}} width="200">
 </div>
 <div>
-  <img src="img_user" width="50">
-  <p id="user_name">Name : {{data.user_name}}<p>
-  <p id="shared_date">Shared date : {{data.shared_date}}</p>
-  <p id="updated_date">Updated date : {{data.edited_date}}</p>
+  <img src={{avatar_url}} width="50">
+  <p id="user_name">Name : {{user_name}}<p>
+  <p id="shared_date">Shared date : {{shared_date}}</p>
+  <p id="updated_date">Updated date : {{edited_date}}</p>
 </div>
 
 <div>
-  <label>Plant Name :</label>
-  <p id="name_plant">{{data.plant_name}}<p>
-  <p id="message">{{data.message}}</p>
+  <p id="message">Message :{{message}}</p>
 </div>
 
 <div id="comment_zone">
   <input type="text" id="comment">
-  <button id="submitt" onclick="send(this)" value={{data.id}}>submit</button>
+  <button id="submitt" value={{commu_id}} onclick="handleClickAdd(this)" >submit</button>
 </div>
-<div id="value" value=[{{data.id}},{{data.user_name}},{{data.img_user}}]></div>
+</div>
+<br>
+
 <div id="show_comment">
   
 </div>
+<div id="data" value={{current_user_id}} ></div>
 <script >
+  var div = document.getElementById("container")
+  var com_id = div.getAttribute("value")
   var commu = document.getElementById("comment")
-  var ka = document.getElementById("value").split(",")
-  function send(data){
-    var dataForm = {"commu_id":data.value,"message":commu.value}
-    $.post("/comment/add",dataForm,function(){
+  // var ka = document.getElementById("value").split(",")
+  var currentUser = document.getElementById("data")
+  var val_user = currentUser.getAttribute("value")
+  
+
+  function handleClickAdd(data){
+    var dataForm = {"commu_id":data.value,"message":commu.value,"accounts_id":val_user}
+    // console.log(dataForm)
+    $.post("/comment/add",dataForm,function(data){
       location.reload()
     })
   }
-  $(document).ready(function () {
-        $.getJSON("/commu/data", function (data) {
-          for(let i=0;i<data.length;i++){
-            if(data[i][commu_id]==ka[0].value){
-              createbox(data[i])
-            }
-          }
-    });
 
   function createbox(data){
-    var value = `
+    for(let i=0;i<data.length;i++){
+      // console.log(com_id,data[i]["commu_id"])
+      if(data[i]["commu_id"]==com_id){
+        if(!(data[i]["removed_date"])){
+          var value = `
                 <div id="comment_container">
                   <div>
-                    <img src="`+data["user_img"]+` width=50>
-                    <p>`+data["user_name"]+`</p>
-                    <p> Comment date:`+data["comment_date"]+`</p>
-                    <p> Update date:`+data["edited_date"]+`</p>
+                    <img src="`+data[i]["avatar_url"]+`" width=50>
+                    <p>`+data[i]["name_user"]+`</p>
+                    <p> Comment date:`+data[i]["comment_date"]+`</p>
+                    <p> Update date:`+data[i]["edited_date"]+`</p>
                   </div>
                   <div>
                     <label>Message :</label>
-                    <p>`+data["message"]+`</p>
-                    <a id="delete_button" value="`+[]+`" onclick="handleClickDelete(this)">🗑️</a>
-                    <a id="edit_button" value="`+[]+`" onclick="handleClickEdit(this)">✏️</a>
-                  </div>
+                    <p>`+data[i]["message"]+`</p>
+                    `
+          // console.log(value)
+
+          if(val_user==data[i]["accounts_id"]){
+
+            value+=`<a id="delete_button" value="`+[data[i]["id"],data[i]["accounts_id"]]+`" onclick="handleClickDelete(this)">🗑️</a>
+                    <a id="edit_button" value="`+data[i]["id"]+`" onclick="handleClickEdit(this)">✏️</a>
+                    `
+                  
+          }
+          value+=`</div>
+                <div id="edit_message`+data[i]["id"]+`" style="display:none;">
+                  <input type="text" id="commet`+data[i]["id"]+`">
+                  <button id="sub" value="`+[data[i]["id"],data[i]["accounts_id"]]+`" onclick="Ena(this)">comment</button>
+                </div>
                 </div>`
-  }
+          // var pa = "<p>hi</p>"
+          $("#show_comment").prepend(value);
+        }
+        
+      }
+      
 
-	// function handleClickEdit(element) {
-	// 	var input = document.getElementById("edit")
-  //       var value = element.getAttribute("value");
-
-  //       var x = value.split(',')
-  //       var check = [x[0],x[1]]
-
-  //       $("#edit_container").toggle("fast")
-  //       $("#edit").attr("c", check);
-  //       $('#edit').val(x[2]);
-  //     }
-    $("#submitt").click(function(){
-
-    	var y = $("#edit").val()
-    	var cValue = $("#edit").attr("c");
-    	var list_c = cValue.split(",")
-    	data = {"message":y ,"id":list_c[0] ,"account_id":list_c[1]}
-    	$.post("/edit/commu",data,function (edit_commu){
-        	location.reload()
-    	})
-    })
-	// function handleClickDelete(element) {
-  //     var value = element.getAttribute("value");
-  //     value = value.split(",")
-  //     let data = {"id":value[0] , "account_id":value[1]}
-  //     if (!confirm("Delete " + "sure" + '?')) {
-  //     return false;
-  //   }
-  //   // console.log(value)
-  //     $.post("/delete/commu", data, function (data_commu) {
-  //       location.reload()
-  //     });
-  //   }
-  
-    // function commentna(datay){
-    //   var value = document.getElementById("input"+datay.value+"").value
-    //   data={"history_id":datay.value,"message":value}
-    //   console.log(datay)
-    //   console.log(value)
-    //   $.post("/comment/add",data,function(data){
-    //     location.reload()
-    //   })
-    // }
-
+    }
     
+  }
+  function handleClickDelete(event){
+    var value = event.getAttribute("value");
+      value = value.split(",")
+      let data = {"id":value[0] , "account_id":value[1]}
+      if (!confirm("Delete " + "sure" + '?')) {
+      return false;
+    }
+      $.post("/delete/comment", data, function (data_commu) {
+        location.reload()
+      });
+  }
+  function handleClickEdit(event){
+    var x = event.getAttribute("value")
+    $("#edit_message"+x).toggle("fast")
+  }
+  $(document).ready(function () {
+        $.getJSON("/comment/data", function (data) {
+            createbox(data);
+      })
+    });
+
+    function Ena(data){
+      var y =data.value.split(",")
+      var x =document.getElementById("commet"+y[0])
+      // console.log(x.value)
+      data={"id":y[0],"account_id":y[1],"message":x.value}
+      $.post("/edit/comment",data,function(){
+        location.reload()
+      })
+
+    }
 
 </script>
 {% endblock %}
