@@ -64,18 +64,8 @@ def user():
     return jsonify(user)
 
 
-#bas
-@app.route("/user/validate", methods=["GET", "POST"])
-def validate_user():
-    if request.method == "POST":
-        result = request.form.to_dict()
-        id_ = result.get("id", "")
-        validated = True
-        validated_dict = {}
-        valid_keys = ["firstname", "lastname"]
-
-
-#bas
+# Written by Napat
+# to login
 @app.route("/login",methods=('GET','POST'))
 def login():
     logout_user()
@@ -270,13 +260,6 @@ def convert_to_list(dict_):
                 dict_[key] = result
     return dict_
 
-#bas
-def validate_email_domain(form, field):
-    email = field.data
-    allowed_domains = ['gmail.com', 'hotmail.com','cmu.ac.th']
-    domain = email.split('@')[-1]
-    if domain not in allowed_domains:
-        raise ValidationError(f'Invalid email domain. Allowed domains are: {", ".join(allowed_domains)}')
 
 #ohm
 @app.route("/share_form", methods=("POST","GET"))
@@ -312,7 +295,8 @@ def storedata_commu():
 
 
 
-
+# Written by Napat
+# to signup
 @app.route("/signup", methods=('GET', 'POST'))
 def signup():
     if request.method == 'POST' :
@@ -359,7 +343,8 @@ def signup():
     return render_template("signup.html")
 
 
-#bas
+# Written by Napat
+# to get data signup
 @app.route("/signup/data")
 def si():
     db_accounts = Account.query.all()
@@ -367,7 +352,8 @@ def si():
     return jsonify(accounts)
 
 
-#bas
+# Written by Napat
+# to update accounts
 @app.route("/update",methods=('POST','GET'))
 @login_required
 def update():
@@ -400,9 +386,10 @@ def update():
     return redirect(url_for('landing'))
 
 
-#bas
+# Written by Napat
+# to check password between hash password and input password
 @app.route("/checkpassword",methods=('GET','POST'))
-def hw10_update():
+def check_pass():
     ans={"ans":False}
     if request.method == "POST":
         result = request.form.to_dict()
@@ -417,24 +404,29 @@ def hw10_update():
     return ans
 
 
-#bas
+# Written by Napat
+# to logout
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('landing'))
 
-
+# Written by Napat
+# to validate email
 def is_valid_email_domain(email):
     domain = email.split('@')[-1]
     return domain in ['gmail.com', 'hotmail.com', 'cmu.ac.th']
 
 
+# Written by Napat
+# to check is valid password
 def is_valid_password(password):
     return len(password) >= 8 and any(c.isdigit() for c in password) and any(c.islower() for c in password) and any(c.isupper() for c in password) and any(c in '!@#$%^&*()-_=+[]{}|;:,.<>?/~' for c in password)
 
 
-#bas
+## Written by Napat
+# to google login
 @app.route('/google/')
 def google():
     oauth.register(
@@ -451,8 +443,8 @@ def google():
 
 
 
-
-#bas
+# Written by Napat
+# to google login
 @app.route('/google/auth/')
 def google_auth():
     token = oauth.google.authorize_access_token()
@@ -475,7 +467,10 @@ def google_auth():
         user = Account.query.filter_by(email=email).first()
         login_user(user)
     return redirect('/landing')
-#bas
+
+
+# Written by Napat
+# to facebook login
 @app.route('/facebook/')
 def facebook():
    
@@ -497,7 +492,9 @@ def facebook():
     redirect_uri = url_for('facebook_auth', _external=True)
     return oauth.facebook.authorize_redirect(redirect_uri)
  
-#bas
+
+# Written by Napat
+# to facebook login
 @app.route('/facebook/auth/')
 def facebook_auth():
     token = oauth.facebook.authorize_access_token()
@@ -524,29 +521,30 @@ def facebook_auth():
     return redirect('/landing')
 
 
-
-
-
-#bas
+# Written by Napat
+# to go to community
 @app.route("/commu")
 @login_required
 def commu():
     return render_template("community.html")
 
 
+# Written by Napat
+# to keep data [commu_id,account_id]
 @app.route("/<comment>", methods=('GET', 'POST'))
 @login_required
 def comment(comment):
     if request.method == "POST":
-        print("oooooooooo")
         result = request.form.to_dict()
         commu_id = result.get('commu_id', '')
         account_id = result.get('account_id', '')
-        # data = [{"account_id": account_id, "commu_id": commu_id}]
         commu = Community.query.get(commu_id).to_dict()
         return redirect(url_for('comment_next', commu_id=commu_id, account_id=account_id))
     return render_template("comment.html")
 
+
+# Written by Napat
+# to send data to comment.html
 @app.route("/comment_next")
 @login_required
 def comment_next():
@@ -564,7 +562,9 @@ def comment_next():
     current_user_id = current_user.id
     return render_template("comment.html",commu_id=commu_id,user_name=user_name,avatar_url=avatar_url,img_plant=img_plant,plant_name=plant_name,message=message,shared_date=shared_date,edited_date=edited_date,current_user_id=current_user_id)
 
-#bas
+
+# Written by Napat
+# to keep data community
 @app.route("/commu/data")
 # @login_required
 def commu_data():
@@ -578,7 +578,9 @@ def commu_data():
         commu_data[i]["avatar_url"] = x["avatar_url"]
     return jsonify(commu_data)
 
-#bas
+
+# Written by Napat
+# to keep data comment
 @app.route("/comment/data")
 @login_required
 def comment_data():
@@ -591,7 +593,9 @@ def comment_data():
         comment_data[i]["avatar_url"]= user["avatar_url"]
     return jsonify(comment_data)
 
-#bas
+
+# Written by Napat
+# to delete community post
 @app.route("/delete/commu",methods=('GET','POST'))
 @login_required
 def delete_commu():
@@ -605,7 +609,9 @@ def delete_commu():
             db.session.commit()
         return commu_data()
 
-#bas
+
+# Written by Napat
+# to edit message in community post
 @app.route("/edit/commu",methods=('GET','POST'))
 @login_required
 def edit_commu():
@@ -617,14 +623,15 @@ def edit_commu():
         account_id = result.get('account_id', '')
         message = result.get('message', '')
         commu = Community.query.get(id_)
-        print("5555555555555555555555555555",account_id,current_user.id)
+        # print("5555555555555555555555555555",account_id,current_user.id)
         if int(account_id) == current_user.id:
             commu.edit(message)
             db.session.commit()
         return commu_data()
 
 
-#bas
+# Written by Napat
+# to edit message in comment post
 @app.route("/edit/comment",methods=('GET','POST'))
 @login_required
 def edit_comment():
@@ -641,13 +648,18 @@ def edit_comment():
             comment.edit_comment(message)
             db.session.commit()
         return comment_data()
-#bas
+
+
+# Written by Napat
+# to go to history identify
 @app.route("/history")
 @login_required
 def history():
     return render_template("history.html")
 
-#bas
+
+# Written by Napat
+# to delete history
 @app.route("/delete/history",methods=('GET','POST'))
 @login_required
 def delete_history():
@@ -661,7 +673,9 @@ def delete_history():
             db.session.commit()
         return history_data()
 
-#bas
+
+# Written by Napat
+# to delete comment
 @app.route("/delete/comment",methods=('GET','POST'))
 @login_required
 def delete_comment():
@@ -676,7 +690,8 @@ def delete_comment():
         return history_data()
 
 
-#bas
+# Written by Napat
+# to keep history data
 @app.route("/history/data")
 @login_required
 def history_data():
@@ -686,7 +701,9 @@ def history_data():
     history_data = list(map(lambda x: x.to_dict(), history))
     return jsonify(history_data)
 
-#bas
+
+# Written by Napat
+# to add comment
 @app.route("/comment/add",methods=('GET','POST'))
 @login_required
 def comment_add():
