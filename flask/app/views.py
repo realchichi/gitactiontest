@@ -18,6 +18,8 @@ from app.models.history import History
 from app.models.plantinfo import PlantInfo
 from app.models.community import Community
 from app.models.community import Comment
+# from app.models.community import Community
+# from app.models.community import Comment
 from app import login_manager
 
 
@@ -244,7 +246,7 @@ def result():
     id = history.id
     plant_info = PlantInfo.query.filter_by(history_id=id).all()
     list_plant = list(map(lambda x: convert_to_list(x.to_dict()), plant_info))
-    return render_template("result.html", plant_data=list_plant, identified_img=plant)
+    return render_template("result.html", plant_data=list_plant, identified_img=plant[4:])
 
 
 # Written by Wachirapong
@@ -275,7 +277,41 @@ def validate_email_domain(form, field):
     if domain not in allowed_domains:
         raise ValidationError(f'Invalid email domain. Allowed domains are: {", ".join(allowed_domains)}')
 
-#bas
+#ohm
+@app.route("/communtity", methods=("POST","GET"))
+def storedata_commu():
+    validated = True
+    if request.method == 'POST' :
+        result = request.form.to_dict()
+        validated_dict = dict()
+        valid_keys = ['plant_name', 'message','img_plant']
+        account_id = current_user.id
+
+        for key in result:
+            app.logger.debug(f"{key}: {result[key]}")
+
+            if key not in valid_keys:
+                continue
+
+            value = result[key].strip()
+
+            if not value or value == 'undefined':
+                validated = False
+                break
+
+            validated_dict[key] = value
+        print(validated_dict,"66666666666666666666666")
+        if validated:
+            validated_dict['account_id']=account_id
+            plant_share = Community(**validated_dict)
+            db.session.add(plant_share) 
+            db.session.commit()
+    # print(validated_dict)
+    return render_template('community.html')
+
+
+
+
 @app.route("/signup", methods=('GET', 'POST'))
 def signup():
     if request.method == 'POST' :
@@ -434,6 +470,9 @@ def google_auth():
         user = Account.query.filter_by(email=email).first()
         login_user(user)
         flash("your password is 12345678, you can change it in the profile.")
+    else:
+        user = Account.query.filter_by(email=email).first()
+        login_user(user)
     return redirect('/landing')
 #bas
 @app.route('/facebook/')
@@ -466,12 +505,10 @@ def facebook_auth():
     print("Facebook User ", profile)
     email = profile['email']
     name = profile['name']
-    random_pass_len = random_pass_len = 8
+    # random_pass_len = random_pass_len = 8
     # password = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(random_pass_len))
     password = "12345678"
     user = Account.query.filter_by(email=email).first()
-
-
     if not user:
 
         picture = "static/img/avatar/"+str(random.randint(1, 16))+".png"
@@ -480,7 +517,9 @@ def facebook_auth():
         db.session.commit()
         user = Account.query.filter_by(email=email).first()
         login_user(user)
-
+    else:
+        user = Account.query.filter_by(email=email).first()
+        login_user(user)
     return redirect('/landing')
 
 
@@ -491,19 +530,19 @@ def facebook_auth():
 def commu_data():
     commu = Community.query.all()
     commu_data = list(map(lambda x: x.to_dict(), commu))
+    # print(";;;;;;;;;;;;;",commu_data)
     for i in range(len(commu_data)):
-        id_ = commu_data["history_id"]
-        x = History.query.get(id_)
-        commu_data[i]["img"] = x.get('identified_img', '')
-        commu_data[i]["name_user"] = current_user.name
-        commu_data[i]["avatar_url"] = current_user.avatar_url
+        id_ = commu_data[i]["account_id"]
+        x = Account.query.get(id_).to_dict()
+        commu_data[i]["name_user"] = x["name"]
+        commu_data[i]["avatar_url"] = x["avatar_url"]
     return jsonify(commu_data)
 
 #bas
 @app.route("/commu")
 @login_required
 def commu():
-    return render_template("commu.html")
+    return render_template("community.html")
 
 
 #bas

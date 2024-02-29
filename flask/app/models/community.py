@@ -1,12 +1,13 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
 from datetime import datetime , timezone
+from app.models.accounts import Account
 
 class Community(db.Model, SerializerMixin):
 	__tablename__ = "communities"
 
 	id = db.Column(db.Integer, primary_key=True)
-	account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
+	account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
 	shared_date = db.Column(db.DateTime)
 	edited_date = db.Column(db.DateTime)
 	removed_date = db.Column(db.DateTime, default=None)
@@ -32,19 +33,19 @@ class Community(db.Model, SerializerMixin):
 
 
 class Comment(db.Model, SerializerMixin):
-	__tablename__ = "comment"
+	__tablename__ = "comments"
 
 	id = db.Column(db.Integer, primary_key=True)
 	commu_id = db.Column(db.Integer, db.ForeignKey('communities.id'))
-	accout.id = db.Column(db.Integer, db.ForeignKey('account.id'))
+	accounts_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
 	comment_date = db.Column(db.DateTime)
 	edited_date = db.Column(db.DateTime)
 	removed_date = db.Column(db.DateTime)
 	removed_by = db.Column(db.String(100))
 	message = db.Column(db.String(280))
-	def __init__(self, commu_id,message,account):
+	def __init__(self, commu_id,message,accounts):
 		self.commu_id = commu_id
-		self.account = account
+		self.accounts = accounts
 		self.comment_date = datetime.now(timezone.utc)
 		self.edit_date = datetime.now(timezone.utc)
 		self.message = message

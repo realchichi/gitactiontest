@@ -1,19 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div>
-    <div id="edit_container" style="display:none;">
-    <label>Edit Box</label>
-    <input type="text" name="edit" id="edit" c="">
-    <button id="submitt" >submit</button>
-  </div>
+<style >
+  #con{
+    width: 1000px;
+/*    background-color: blue;*/
+    margin-top: 200px;
+    margin-bottom: 200px;
+/*    text-align: center;*/
+/*  padding: ;*/
+/*    position: center;*/
+  }
+</style>
+
+  <div>
+            
   <div id="commu_container">
       
+      <div id="con">
+          
+      </div>
   </div>
 </div>
-
+<div id="value" value ={{current_user.id}}></div>
 
 <script >
+
 	function handleClickEdit(element) {
 		var input = document.getElementById("edit")
         var value = element.getAttribute("value");
@@ -21,20 +33,30 @@
         var x = value.split(',')
         var check = [x[0],x[1]]
 
-        $("#edit_container").toggle("fast")
+        $("#edit_container"+value[0]).toggle("fast")
         $("#edit").attr("c", check);
-        $('#edit').val(x[2]);
+        $('#edit'+value[0]).val(x[2]);
       }
-    $("#submitt").click(function(){
-
-    	var y = $("#edit").val()
-    	var cValue = $("#edit").attr("c");
-    	var list_c = cValue.split(",")
-    	data = {"message":y ,"id":list_c[0] ,"account_id":list_c[1]}
-    	$.post("/edit/commu",data,function (edit_commu){
-        	location.reload()
-    	})
-    })
+    // $("#submitt").click(function(){
+    //   console.log(";;;;")
+    // 	// var y = $("#edit").val()
+    // 	// var cValue = $("#edit").attr("c");
+    // 	// var list_c = cValue.split(",")
+    // 	// data = {"message":y ,"id":list_c[0] ,"account_id":list_c[1]}
+    // 	// $.post("/edit/commu",data,function (edit_commu){
+    //   //   	location.reload()
+    // 	// })
+    // })
+  var buttons = document.querySelectorAll("#submitt");
+        buttons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var buttonValue = this.value.toString();
+                console.log(buttonValue)
+                // console.log("Button value:", buttonValue);
+                // $("#current_avatar").attr("src","static/img/avatar/"+buttonValue+".png")
+                // avatar = "static/img/avatar/"+buttonValue+".png"
+            });
+        });
 	function handleClickDelete(element) {
       var value = element.getAttribute("value");
       value = value.split(",")
@@ -42,7 +64,6 @@
       if (!confirm("Delete " + "sure" + '?')) {
       return false;
     }
-
     // console.log(value)
       $.post("/delete/commu", data, function (data_commu) {
         location.reload()
@@ -50,27 +71,39 @@
     }
   
 	function createbox(data){
+        var user = document.getElementById("value")
+        var da = user.getAttribute("value")
+
         for(let i=0;i<data.length;i++){
             if(!(data[i]["removed_date"])){
                 var x =`<div id="box_add_history">
-                          <img src ="`+data[i]["avatar_url"]+` width=50"<br>
+                          <img src = "`+ data[i]["avatar_url"]+` width=50"
                           <p>Name :`+data[i]["name_user"]+`</p>
                            <p id="shared_date">Shared date :`+ data[i]["shared_date"]+`</p>
                            <p id="edited_date">Updated date :`+ data[i]["edited_date"]+`</p>
-                          <button id="plant_ifo" value="`+[data[i]["id"],data[i]["img"].slice(4),data[i]["plant_name"]]+`" onclick="go_to_comment(this)">
-                            <img src ="`+data[i]["img"].slice(4)+`" width=100 >
+                          <button id="plant_ifo" value="`+[data[i]["id"],data[i]["img_plant"],data[i]["plant_name"]]+`" onclick="go_to_comment(this)">
+                            <img src ="`+data[i]["img_plant"]+`" width=100 >
                           </button>
                           <div id="data">
                             <p>Message :</p>
                             <p>`+data[i]["message"]+`</p>
-                           
-                            <a id="delete_button" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick="handleClickDelete(this)">🗑️</a>
-                            <a id="edit_button" value="`+[data[i]["id"],data[i]["account_id"],data[i]["message"]]+`" onclick="handleClickEdit(this)">✏️</a>
-                          </div>
+
+                          
                         </div>
                         `
-
-              $("#commu_container").prepend(x);
+                  
+                  if(data[i]["account_id"]==da){
+                    x+=`<div id="data">
+                                <a id="delete_button" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick="handleClickDelete(this)">🗑️</a>
+                                <a id="edit_button" value="`+[data[i]["id"],data[i]["account_id"],data[i]["message"]]+`" onclick="handleClickEdit(this)">✏️</a>
+                              </div>
+                        <div id="edit_container`+data[i]["id"]+`" style="display:none;">
+                            <label>Edit Box</label>
+                            <input type="text" name="edit" id="edit`+data[i]["id"]+`">
+                            <button id="submitt" >submit</button>
+                        </div>`
+                  }
+                  $("#con").prepend(x);
             }
             
         }
@@ -82,27 +115,26 @@
         // window.location.href = "comment.html";
       })
     }
+    
     function commentna(datay){
       var value = document.getElementById("input"+datay.value+"").value
       var data={"history_id":datay.value,"message":value}
+      // console.log(datay)
+      // console.log(value)
       $.post("/comment/add",data,function(data){
         location.reload()
       })
     }
-    // $("#submit_comment").click(function(){
-    //   console.log("llll")
-    // // console.log(this.value)
-    // })
+    $("#submit_comment").click(function(){
+      console.log("llll")
+    // console.log(this.value)
+    })
     $(document).ready(function () {
-        $.getJSON("/history/data", function (data) {
+        $.getJSON("/commu/data", function (data) {
 
             createbox(data);
-            // console.log(data)
+            console.log(data)
       })
-      //   $.getJSON("/commu/data", function (data) {
-
-      //       createbox(data);
-      // })
     });
 
 </script>
