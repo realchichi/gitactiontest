@@ -66,14 +66,14 @@
             <ul class="navlist">
                 {% if current_user.is_authenticated %}
                     <li><a><img src={{current_user.avatar_url}} width="40"><li></a>
-                    <li><a href="{{ url_for('profile')}}">Profile</a></li>
+                    <li id ="profile"><a href="{{ url_for('profile')}}">Profile</a></li>
                     <li><a href="{{ url_for('logout')}}">Logout</a></li>    
                 {% endif %}
-                <li><a href="{{ url_for('landing')}}">Home</a></li>
-                <li><a href="{{ url_for('contact_us')}}">Contact us</a></li>
-                <li><a href="{{ url_for('history')}}">History</a></li>
-                <li><a href="{{ url_for('identification')}}">Identify</a></li>
-                <li><a href="{{ url_for('community')}}">Community</a></li>
+                <li id="landing"><a href="{{ url_for('landing')}}" >Home</a></li>
+                <li id="contact_us"><a href="{{ url_for('contact_us')}}" >Contact us</a></li>
+                <li id="history"><a href="{{ url_for('history')}}" >History</a></li>
+                <li id="identification"><a href="{{ url_for('identification')}}" >Identify</a></li>
+                <li id="community"><a href="{{ url_for('community')}}" >Community</a></li>
             </ul>
             <i class="ri-menu-line" id="menu-icon"></i>
         </header>
@@ -120,8 +120,18 @@
                 </div>
             </div>
         </footer>
-
+        <script>
+            var path = window.location.pathname.slice(1);
+            $('#'+path).attr('hidden', 'hidden');      
+        </script>
 </body>
 
 
 </html>
+<!-- if ($('#contact_display').attr('hidden')) {
+        $('#contact_display').removeAttr('hidden');
+        $('#add-edit').attr('hidden', 'hidden');
+      } else {
+        $('#contact_display').attr('hidden', 'hidden');
+        $('#add-edit').removeAttr('hidden');
+      }   -->    
