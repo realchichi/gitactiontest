@@ -65,7 +65,8 @@
 
             <ul class="navlist">
                 {% if current_user.is_authenticated %}
-                    <li><a><img src={{current_user.avatar_url}} width="40"><li></a>
+                    <li><a><img src={{current_user.avatar_url}} width="40"></a><li>
+                    <li>identify left:{{current_user.value}}<li>
                     <li id ="profile"><a href="{{ url_for('profile')}}">Profile</a></li>
                     <li><a href="{{ url_for('logout')}}">Logout</a></li>    
                 {% endif %}
