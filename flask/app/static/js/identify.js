@@ -99,9 +99,18 @@ $("#plant-img").submit(function(event) {
   
   var url = "/identification"
   $.post(url, formData, function(data){
-    console.log(data)
+    // console.log(data)
     // var additionalData = data.additionalData;
-    window.location.href = "/result?plant_data=" + data["identified_plant"];
+    var x = document.getElementById("value")
+    var value = x.getAttribute("value")
+    console.log(value)
+    if(value<=0){
+      location.reload()
+      // window.location.href =
+    }else{
+      window.location.href = "/result?plant_data=" + data["identified_plant"];
+    }
+    
 
     
   });

@@ -22,7 +22,20 @@ from app.models.community import Comment
 # from app.models.community import Comment
 from app import login_manager
 from urllib.parse import unquote
+from apscheduler.schedulers.background import BackgroundScheduler
 
+scheduler = BackgroundScheduler()
+def delete_accounts():
+    pass
+def re_value():
+    x = Account.query.all().to_dict()
+    for i in range(len(x)):
+        user = Account.query.get(i+1)
+        user.re_value()
+    db.session.commit()
+scheduler.add_job(func=delete_accounts, trigger="cron", day="1", month="*/3", hour="0", minute="0")
+scheduler.add_job(func=re_value, trigger="cron", hour="0")
+scheduler.start()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -73,7 +86,7 @@ def login():
         email = request.form.get('email').lower()
         password = request.form.get('password')
         user = Account.query.filter_by(email=email).first()
-        remember = bool(request.form.get('is_active'))
+        # remember = bool(request.form.get('is_active'))
         print("login",email,password)
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
@@ -139,7 +152,7 @@ def call_api(img):
         "similar_images": True
     })
     headers = {
-        'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
+        'Api-Key': 'FXtTSWi74JjnZ2p4A7EYDpjo9tubC6avOe53Ox8iUrgD0dqYak',
         'Content-Type': 'application/json'
     }
 
@@ -193,32 +206,39 @@ def get_data(data):
 @login_required
 def identification():
     if request.method == "POST":
-        img = request.form.to_dict().get("image", "")
-        if img:
-            img_data = base64.b64decode(img.split(',')[1])
-            hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()[:16]
-            filename = os.path.join(app.config['UPLOAD_FOLDER'], hash_img + ".jpg")
-            with open(filename, "wb") as image_file:
-                image_file.write(img_data)
+        if current_user.value<=0:
+            # print("22222")
+            flash("The number of searches per day for your account has been exceeded.")
+            return "x"
+        else:
+            img = request.form.to_dict().get("image", "")
+            if img:
+                img_data = base64.b64decode(img.split(',')[1])
+                hash_img = hashlib.sha256(img.encode('UTF-8')).hexdigest()[:16]
+                filename = os.path.join(app.config['UPLOAD_FOLDER'], hash_img + ".jpg")
+                with open(filename, "wb") as image_file:
+                    image_file.write(img_data)
 
-            account_id = current_user.id
-            identified_img = filename
-            entry = History(account_id, identified_img)
-            db.session.add(entry)
-            iden_plant = History.query.filter_by(identified_img=identified_img).all()
-            list_iden_plant = list(map(lambda x: x.identified_img, iden_plant))
-            history = History.query.filter_by(identified_img=identified_img).first()
-            if identified_img in list_iden_plant:
-                history = History.query.order_by(desc(History.identified_date)).first()
-            plant_data = call_api(img.split(',')[1])
-            for i in range(len(plant_data)):
-                temp = plant_data[i]
-                temp["history_id"] = history.id
-                plant_info = PlantInfo(**temp)
-                db.session.add(plant_info)
+                account_id = current_user.id
+                identified_img = filename
+                entry = History(account_id, identified_img)
+                db.session.add(entry)
+                user_value = Account.query.filter_by(email=current_user.email).first()
+                user_value.increse()
+                iden_plant = History.query.filter_by(identified_img=identified_img).all()
+                list_iden_plant = list(map(lambda x: x.identified_img, iden_plant))
+                history = History.query.filter_by(identified_img=identified_img).first()
+                if identified_img in list_iden_plant:
+                    history = History.query.order_by(desc(History.identified_date)).first()
+                plant_data = call_api(img.split(',')[1])
+                for i in range(len(plant_data)):
+                    temp = plant_data[i]
+                    temp["history_id"] = history.id
+                    plant_info = PlantInfo(**temp)
+                    db.session.add(plant_info)
 
-            db.session.commit()
-            return jsonify({"identified_plant" : hash_img})
+                db.session.commit()
+                return jsonify({"identified_plant" : hash_img})
     return render_template("identification.html")
 
 
