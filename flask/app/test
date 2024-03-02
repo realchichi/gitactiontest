@@ -44,3 +44,30 @@
   </div>
 
 {% endblock %}
+
+
+
+function createbox(data){
+  for(let i=0;i<data.length;i++){
+      if(!(data[i]["removed_date"])){
+          console.log(data[i])
+          var x =`<div id="box_add_history">
+                    <button id="plant_ifo" >
+                      <img id='identified_img' src="`+data[i]["identified_img"].slice(4)+`" width=100 onclick="redirectToResult(this)">
+                    </button>
+                    <div id="data">
+                      <p id="identified_date">identified_date :`+ data[i]["identified_date"]+`</p>
+                      <a id="delete_button" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick="handleClickDelete(this)">🗑️</a>
+                    </div>
+                  </div>`
+        $("#history_container").prepend(x);
+      }
+      
+  }
+}
+$(document).ready(function () {
+  $.getJSON("/history/data", function (data) {
+
+      createbox(data);
+})
+});
