@@ -90,7 +90,7 @@
                               </div>
                         <div id="edit_container`+data[i]["id"]+`" style="display:none;">
                             <label>Edit Box</label>
-                            <input type="text" name="edit" id="editValue`+data[i]["id"]+`">
+                            <input type="text" maxlength="140" name="edit" id="editValue`+data[i]["id"]+`">
                             <button id="submitt" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick = "editgy(this)">submit</button>
                         </div>`
                   }

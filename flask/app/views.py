@@ -733,9 +733,9 @@ def comment_add():
         message = result.get('message', '')
         accounts_id = result.get('accounts_id', '')
         # comment = Comment.query.get(id_)
-        print("11111111111111111111111")
-        if int(accounts_id) == current_user.id:
-            print("222222222")
+        if len(message)>140:
+            flash("Can you type a message within 140 characters")
+        elif int(accounts_id) == current_user.id:
             comment = Comment(commu_id=id_,message=message,accounts_id=accounts_id)
             db.session.add(comment)
             db.session.commit()
