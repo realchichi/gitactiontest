@@ -144,7 +144,7 @@ def call_api(img):
         "similar_images": True
     })
     headers = {
-        'Api-Key': 'XbcsHOYrpQJBei7BNsrP7TeXUyerkYd1SpqRVAfSgq2T9lIZbu',
+        'Api-Key': 'FXtTSWi74JjnZ2p4A7EYDpjo9tubC6avOe53Ox8iUrgD0dqYak',
         'Content-Type': 'application/json'
     }
 

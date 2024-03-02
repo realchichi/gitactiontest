@@ -1,69 +1,54 @@
 
     .my-card{
       border: 2px solid #ccc;
-    }
-    .card{
       display: flex;
       border-radius: 8px;
-      width: 650px;
-      /* height: auto; */
-      height: 325px;
-    }
-    #set-head{
-      display: flex;
-      justify-content: space-between; 
-      align-items: center; 
+      height: auto;
+      margin-bottom: 30px;
     }
     
+    #set-head{
+      justify-content: space-between; 
+      align-items: center; 
+      margin-top: 100px;
+      margin-bottom: 20px;
+    }
+    
+  
     #iden-img{
-      width: 100%;
-      max-width: 150px;
+      width: auto;
+      height: 100px;
+      margin-top: 40px;
     }
-    .media-content p{
-      /* padding-bottom: 2px; */
-      margin-top: -10px;
-      margin-bottom: 3px;
-      text-align: right;
-    }
-
-
+    
     #set-footer{
-      /* display: flex; */
+      height: 50px; /* Adjust the height as needed */
+      font-size: 14px;
+      /* text-align: right; */
+    }
+    #edited_date{
       text-align: right;
+      
     }
     #set-img{
       display: inline-block;
-      /* display: grid; */
       padding-left: 10px;
-      padding-right: 375px;
-      /* grid-template-columns: repeat(2, 1fr); */
-      /* grid-template-columns: auto min-content max-content; */
-      
-      /* padding-top: 20px; */
-      /* margin-top: 50px; */
-
-    }
-
-
-    .set-time {
-      display: flex;
-      margin-top: -18px;
-      margin-bottom: 50px;
-      /* padding-top: 0px; */
-      /* padding-bottom: 20px; */
-      margin-left: 60px; 
-      font-size: 14px;
-      font-weight:100;
+      padding-right: 78px;
     }
 
     #set-group-icon{
       color: #b9bfcb; 
       float:right; 
       margin-top:10px; 
-      margin-right:10px;
+      margin-right:30px;
     }
-    /* #commu_container{
-      grid-template-columns: repeat(2, 1fr);
-      margin: auto;
-
-    } */
+    #plant_name{
+      color: #557A46;
+      font-weight: 700;
+      font-size: 20px;
+      font-style: italic;
+      padding-left: 30px;
+    }
+    #post-message{
+      padding-left: 30px;
+    }

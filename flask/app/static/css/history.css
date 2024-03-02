@@ -1,32 +1,66 @@
-    #box_add_history{
+   .col-md-3{
+    width: 25%;
+    padding: 2px 60px;
+   }
+   #history_container{
+        margin: auto;
+        /* background-color: gray; */
+        display: flex;
+        flex-wrap: wrap;
+        /* width: calc(25% - 40px); 40px for spacing */
+        /* grid-template-columns: repeat(1, 1fr);  */
+        /* grid-gap:60px; */
+        /* grid-auto-rows: minmax(200px, auto); */
+        /* display: flex;
+        flex-wrap: wrap; */
+        justify-content: space-between;
+            
+            
+    }
+   #box_add_history{
+        /* flex-basis:calc(25%-10px); */
         background-color: #f2f2f2;
         border-radius: 15px;
         padding: 10px;
-        margin-top:20px ;
+        /* margin-top:20px ; */
         border: 1px solid gray;
+        /* width: calc(25% - 40px);  */
         width: 200px;
         height: 240px;
+        display: flex;
+        /* flex-direction: column; */
+        /* justify-content: space-between; */
+        /* justify-content: center;
+        align-items: center; */
     }
-    .history_container{
-/*        margin: auto;*/
-/*        background-color: gray;*/
-       grid-template-columns: repeat(2, 1fr);
-        
-    }
-    #identified_date,#data{
-        /* display: inline; */
-        /* width: 200px; */
-    }
+    
     #delete_button{
         border: none;
         /* margin-inline:40px ; */
+        /* margin-top: 5px; */
+        /* margin-bottom: -15px; */
+        /* padding-top: 15px; */
         float: right;
+        margin-top: -50px;
+        /* padding-right: -10px; */
+        /* margin-bottom: 50px; */
+        /* padding-top: -50px; */
     }
     #plant_ifo{
         border: none;
         margin-right: 10px;
     }
     #identified_img{
-        width: 180px;
-        padding: 5px;
+        height: 130px; 
+        width:130px;
+        /* align-items: center; */
+        /* width: 180px; */
+         /* padding: 0px;  */
+         /* margin:2px; */
+
     }
+
+    /* #data{
+        padding-top: 20px;
+        padding-bottom: 20px;
+    } */

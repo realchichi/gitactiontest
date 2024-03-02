@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="../static/css/contact_us.css">
   <link rel="stylesheet" href="../static/css/history.css">
   <link rel="stylesheet" href="../static/css/community.css">
+  <link rel="stylesheet" href="../static/css/result.css">
+
 
   <!-- icon -->
   <script src="https://kit.fontawesome.com/3d40f8c3a3.js" crossorigin="anonymous"></script>
@@ -54,7 +56,13 @@
       color: #970020;
       background-color: #ffd5de;
     }
-
+    /*#navbar{
+      position: fixed;
+      top: 0;
+      transition: top 0.3s;
+      margin-top: 34px;
+      float:left;
+    }*/
   </style>
 </head>
 
@@ -64,7 +72,7 @@
 
             <a href="{{ url_for('landing')}}" class="logo">BotaniBuzz</a>
 
-            <ul class="navlist">
+            <ul class="navlist" id="navbar">
                 <li><a href="{{ url_for('landing')}}">Home</a></li>
                 <li><a href="{{ url_for('identification')}}">Identify</a></li>
                 <li><a href="{{ url_for('community')}}">Community</a></li>
@@ -131,3 +139,16 @@
 
 
 </html>
+
+        <script>
+            var prevScrollpos = window.pageYOffset;
+            window.onscroll = function() {
+            var currentScrollPos = window.pageYOffset;
+            if (prevScrollpos > currentScrollPos) {
+                document.getElementById("navbar").style.top = "0";
+            } else {
+                document.getElementById("navbar").style.top = "-50px";
+            }
+            prevScrollpos = currentScrollPos;
+            }
+        </script>

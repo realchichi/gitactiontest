@@ -179,18 +179,20 @@ input[type=submit]:hover {
 }
 
 
-.container {
+#con-login {
     width: 380px;
-    height: 560px;
+    /* height: 560px; */
+    height: auto;
     border-radius: 40px;
     background-color: #f2f2f2;
     padding: 50px;
     margin-top: 80px; 
     margin-left: 200px;
     /* margin: 80px auto; */
+    margin-bottom: 30px;
     
 }
-.container h1{
+#con-login h1{
     font-weight: 700;
     text-align: center;
 }

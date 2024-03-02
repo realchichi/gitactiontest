@@ -4,13 +4,13 @@
     <!-- <div class="containerR"> -->
       
       <div class="plantData">
-        <img src="{{ identified_img[4:] }}" alt="identified_img">
-        <h1>Result</h1>
+        <!-- <img src="{{ identified_img[4:] }}" alt="identified_img" style="max-width:200px; max-height:150px;"> -->
+        <!-- <h1>Result</h1> -->
       <div class="containerData">
-      <button id="toggleButton">Toggle Result</button>
+      <!-- <button id="toggleButton">Toggle Result</button> -->
       <br>
       <div class="plantData " id="toggledDiv" style="padding-top: 3%">
-        
+          <h1>Result</h1>
           {% for plant in plant_data %}
 
             <div class="datacard  col-8 col-md-6 col-lg-9 " >
@@ -46,11 +46,11 @@
               <div class="cardbody ">
                 <div class="row">
                   <div class="image-container ">
-                    <img src="{{ plant.url_image }}" alt="{{ plant.name }} Image">
+                    <img src="{{ plant.url_image }}" alt="{{ plant.name }} Image" id="plant-img" style="max-width:300px; height:auto;">
                   </div>
                   {% for image in plant.similar_images %}
                     <div class="image-container ">
-                      <img src="{{ image }}" alt="Similar Image">
+                      <img src="{{ image }}" alt="Similar Image" id="similar-img" style="max-width:300px; height:auto;">
                     </div>
                   {% endfor %}
                 </div> 
@@ -79,7 +79,7 @@
               <div class="cardfooter">
                 <!-- <div class="row"> -->
                   <div class="center-container">
-                    <button onclick="sendData(this)" > ถูกต้อง? </button>
+                    <button onclick="sendData(this)" id="correct-button"> ถูกต้อง ! </button>
                   </div>
                 <!-- </div> -->
               </div>
@@ -95,7 +95,7 @@
     <form action="/communtity" method="post" id="forsend">
     <h2>Share To Community</h2>
     <div class="yourimg">
-      <img src= {{identified_img}} name='image'>
+      <img src= {{identified_img}} name='image' style="max-width:300px; max-height:300px;">
     </div>
     <div class="forum">
       <br>
@@ -112,7 +112,7 @@
       <!-- Datetime Input -->
       <input  id="datetimeInput" name="datetime" readonly>
       <br>
-      <button type="button" onclick="submitForm()">Share</button>
+      <button type="button" onclick="submitForm()" id="share-button">Share</button>
     </div>
   </form>
   </div>

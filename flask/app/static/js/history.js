@@ -16,16 +16,18 @@ function createbox(data){
     for(let i=0;i<data.length;i++){
         if(!(data[i]["removed_date"])){
             console.log(data[i])
-            var x =`<div id="box_add_history">
-                      <button id="plant_ifo" >
-                        <img id='identified_img' src="`+data[i]["identified_img"].slice(4)+`" width=100 onclick="redirectToResult(this)">
-                      </button>
-                      <div id="data">
-                        <p id="identified_date">identified_date : `+ data[i]["identified_date"]+`</p>
-                        <a id="delete_button" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick="handleClickDelete(this)">🗑️</a>
-                      </div>
-                    </div>`
-          $("#history_container").prepend(x);
+            var x ='<div class="col-md-4">' +
+            '<div id="box_add_history" class="card">' +
+                '<button id="plant_ifo" class="card-img-top">' +
+                    '<img id="identified_img" src="' + data[i]["identified_img"].slice(4) + '" max-width="100" onclick="redirectToResult(this)">' +
+                '</button>' +
+                '<div id="data" class="card-body">' +
+                    '<p id="identified_date" class="card-text">identified_date : ' + data[i]["identified_date"] + '</p>' +
+                    '<a id="delete_button" class="btn" value="' + [data[i]["id"], data[i]["account_id"]] + '" onclick="handleClickDelete(this)">🗑️</a>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+        $("#history_container").append(x);
         }
         
     }
