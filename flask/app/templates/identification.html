@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
-
-        
+<div>
+    {% for message in get_flashed_messages() %}
+      <div class="alert">{{ message }}</div><br>
+    {% endfor %}
     <div class="modal" id="modal">
+
       <div class="contentarea">
+        
         <video id="camera-preview" width="640" height="480" autoplay></video>
         <br>
+
         <button id="close-cam" type="button">Close Camera</button>
         <button id="capture-btn">Capture Photo</button>  
       </div>
-  
+      
+    
     </div>
     
   <form method="POST" enctype="multipart/form-data" id="plant-img">
@@ -36,8 +40,9 @@
     </div>
  
   </form>
-
-
+</div>
+    
+  <div id="value" value={{current_user.value}}></div>
 {% endblock %}
 
 

@@ -17,10 +17,7 @@
     width: 600px;
     margin-top: 20px;
   }
-  #sub{
-    /*width: 100px;
-    height: 50px;*/
-  }
+  
 </style>
 
 <div id="container" value={{commu_id}}>
@@ -40,7 +37,7 @@
 </div>
 
 <div id="comment_zone">
-  <input type="text" id="comment">
+  <input maxlength="140" type="text" id="comment">
   <button id="submitt" value={{commu_id}} onclick="handleClickAdd(this)" >submit</button>
 </div>
 </div>
@@ -95,7 +92,7 @@
           }
           value+=`</div>
                 <div id="edit_message`+data[i]["id"]+`" style="display:none;">
-                  <input type="text" id="commet`+data[i]["id"]+`">
+                  <input maxlength="140" type="text" id="commet`+data[i]["id"]+`">
                   <button id="sub" value="`+[data[i]["id"],data[i]["accounts_id"]]+`" onclick="Ena(this)">comment</button>
                 </div>
                 </div>`

@@ -112,12 +112,12 @@
                       </div> `;
   
               if (data[i]["account_id"] == da) {
-                  x += `<div id="edit_container` + data[i]["id"] + `" style="display:none;">
-                              <label>Edit Box</label>
-                              <input type="text" name="edit" id="editValue` + data[i]["id"] + `">
-                              <button id="submitt" value="` + [data[i]["id"], data[i]["account_id"]] + `" onclick="editgy(this)">submit</button>
-                          </div>
-                          `;
+                  x += `<div id="edit_container`+data[i]["id"]+`" style="display:none;">
+                    <label>Edit Box</label>
+                    <input type="text" maxlength="100" name="edit" id="editValue`+data[i]["id"]+`">
+                    <button id="submitt" value="`+[data[i]["id"],data[i]["account_id"]]+`" onclick = "editgy(this)">submit</button>
+                </div>`
+                          ;
               }
               $("#con").prepend(x);
           }
@@ -125,6 +125,7 @@
       }
   }
   
+                        
     function go_to_comment(element){
       var x =element.value.split(",")
       var data={"commu_id":x[0],"account_id":x[1]}

@@ -134,7 +134,10 @@
                 </div>
             </div>
         </footer>
-
+        <script>
+            var path = window.location.pathname.slice(1);
+            $('#'+path).attr('hidden', 'hidden');      
+        </script>
 </body>
 
 

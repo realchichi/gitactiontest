@@ -105,12 +105,7 @@
       <br>
       <p>Message</p>
       <label for="message"></label>
-      <textarea id="message" name="message" rows="2"></textarea>
-      <br>
-      <label for="datetimeInput"> วันที่ค้น :</label>
-
-      <!-- Datetime Input -->
-      <input  id="datetimeInput" name="datetime" readonly>
+      <textarea maxlength="140" id="message" name="message" rows="2"></textarea>
       <br>
       <button type="button" onclick="submitForm()" id="share-button">Share</button>
     </div>
@@ -118,12 +113,6 @@
   </div>
   
 <script>
-  var now = new Date();
-  var formattedNow = now.toLocaleDateString('en-GB');
-  // var formattedNow = now.toISOString().slice(0, 16); //withtime
-  document.getElementById('datetimeInput').value = formattedNow;
-  console.log(formattedNow)
-
   document.getElementById('toggleButton').addEventListener('click', function() {
     var div = document.getElementById('toggledDiv');
     div.style.display = (div.style.display === 'none' || div.style.display === '') ? 'block' : 'none';
