@@ -32,7 +32,7 @@ COPY . /flask_app
 
 
 # specify the entry point
-ENTRYPOINT [ "./gunicorn_starter.sh" ]
+ENTRYPOINT [ "./flask/gunicorn_starter.sh" ]
 
 
 # keep the Docker process running even when crashes
