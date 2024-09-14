@@ -38,8 +38,3 @@ jobs:
       run: |
         docker build -t $ECR_URI:$IMAGE_TAG .
         docker push $ECR_URI:$IMAGE_TAG
-
-    - name: Image digest
-      run: |
-        IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${{ env.REPO_URI }}:${{ github.sha }})
-        echo "Docker image pushed: $IMAGE_DIGEST"
