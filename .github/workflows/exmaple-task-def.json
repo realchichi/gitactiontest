@@ -19,9 +19,7 @@
            "environment": [],
            "mountPoints": [],
            "volumesFrom": [],
-           "secrets": [
-              
-           ],
+       
            "logConfiguration": {
                "logDriver": "awslogs",
                "options": {

@@ -20,7 +20,7 @@ RUN apk add git
 
 
 # install dependencies
-COPY ./requirements.txt /flask_app
+COPY ./flask/requirements.txt /flask_app
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install --upgrade pip
 RUN --mount=type=cache,target=/root/.cache/pip \
